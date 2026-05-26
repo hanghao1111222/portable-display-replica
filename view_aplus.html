@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A+ Images Preview</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #111;
+      color: #fff;
+      padding: 20px;
+    }
+    h1, h2 { text-align: center; }
+    .grid {
+      display: grid;
+      grid-template-cols: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .card {
+      background: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .img-container {
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+      margin: 0 auto;
+      border: 1px solid #00bcff;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #333;
+    }
+    .label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h1>A+ Images Preview</h1>
+
+  <h2>A6 A+ Banner Images</h2>
+  <div class="grid" id="a6-grid"></div>
+
+  <h2>S10 Pro A+ Images</h2>
+  <div class="grid" id="s10-grid"></div>
+
+  <script>
+    const a6Banners = [
+      "a6-aplus-1.jpg",
+      "a6-aplus-2.jpg",
+      "a6-aplus-3.jpg",
+      "a6-aplus-4.jpg",
+      "a6-aplus-5.jpg",
+      "a6-aplus-6.jpg",
+      "a6-aplus-7.jpg",
+      "a6-aplus-banner-1-01.jpg",
+      "a6-aplus-banner-1-02.jpg",
+      "a6-aplus-banner-1.jpg",
+      "a6-aplus-banner-2.jpg",
+      "a6-aplus-banner-3.jpg",
+      "a6-aplus-banner-4.jpg",
+      "a6-aplus-banner-5.jpg",
+      "a6-aplus-banner-6.jpg",
+      "a6-aplus-banner-7-1.jpg",
+      "a6-aplus-banner-7-2.jpg",
+      "a6-aplus-banner-7.jpg",
+      "a6-aplus-banner-8.jpg",
+      "a6-aplus-banner-9.jpg",
+      "a6-aplus-banner-10.jpg",
+      "a6-aplus-banner-11.jpg",
+      "a6-aplus-banner-12.jpg",
+      "a6-aplus-banner-14.jpg"
+    ];
+
+    const s10Banners = [
+      "s10pro-aplus-anywhere.jpg",
+      "s10pro-aplus-display.jpg",
+      "s10pro-aplus-ecosystem.jpg",
+      "s10pro-aplus-hero.jpg",
+      "s10pro-aplus-meeting.jpg",
+      "s10pro-aplus-teaching.jpg",
+      "s10pro-aplus-travel.jpg"
+    ];
+
+    const a6Grid = document.getElementById("a6-grid");
+    a6Banners.forEach(img => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="img-container"><img src="./src/assets/${img}" /></div>
+        <div class="label">${img}</div>
+      `;
+      a6Grid.appendChild(card);
+    });
+
+    const s10Grid = document.getElementById("s10-grid");
+    s10Banners.forEach(img => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="img-container"><img src="./src/assets/${img}" /></div>
+        <div class="label">${img}</div>
+      `;
+      s10Grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>

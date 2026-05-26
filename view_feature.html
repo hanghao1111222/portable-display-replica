@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery Images Preview</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #111;
+      color: #fff;
+      padding: 20px;
+    }
+    h1, h2 { text-align: center; }
+    .grid {
+      display: grid;
+      grid-template-cols: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .card {
+      background: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .img-container {
+      width: 300px;
+      height: 225px; /* 4:3 aspect */
+      overflow: hidden;
+      margin: 0 auto;
+      border: 1px solid #ff4500;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #333;
+    }
+    .label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gallery Images Preview (aspect-[4/3] object-cover)</h1>
+
+  <h2>S10 Pro Gallery Images</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/product-s10pro-a.jpg" /></div>
+      <div class="label">product-s10pro-a.jpg (主图 1)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/product-s10pro-1.1.jpg" /></div>
+      <div class="label">product-s10pro-1.1.jpg (主图 1.1)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/product-s10pro-700x900-1.1.jpg" /></div>
+      <div class="label">product-s10pro-700x900-1.1.jpg (700x900 1.1)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-1-multitasking.jpg" /></div>
+      <div class="label">s10pro-gallery-1-multitasking.jpg (主图 3)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-2-display.jpg" /></div>
+      <div class="label">s10pro-gallery-2-display.jpg (主图 2)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-3-modes.jpg" /></div>
+      <div class="label">s10pro-gallery-3-modes.jpg (主图 6)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-4-fit.jpg" /></div>
+      <div class="label">s10pro-gallery-4-fit.jpg (主图 4)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-5-slim.jpg" /></div>
+      <div class="label">s10pro-gallery-5-slim.jpg (主图 5)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-6-devices.jpg" /></div>
+      <div class="label">s10pro-gallery-6-devices.jpg (主图 7)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/s10pro-gallery-7-anywhere.jpg" /></div>
+      <div class="label">s10pro-gallery-7-anywhere.jpg (主图 8)</div>
+    </div>
+  </div>
+
+  <h2>A6 Gallery Images</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/product-a6-a.jpg" /></div>
+      <div class="label">product-a6-a.jpg (1.1.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-1.jpg" /></div>
+      <div class="label">a6-gallery-1.jpg (1.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-2.jpg" /></div>
+      <div class="label">a6-gallery-2.jpg (2.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-3.jpg" /></div>
+      <div class="label">a6-gallery-3.jpg (3.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-4.jpg" /></div>
+      <div class="label">a6-gallery-4.jpg (4.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-5.jpg" /></div>
+      <div class="label">a6-gallery-5.jpg (5.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-6.jpg" /></div>
+      <div class="label">a6-gallery-6.jpg (6.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-7.jpg" /></div>
+      <div class="label">a6-gallery-7.jpg (7.jpg)</div>
+    </div>
+    <div class="card">
+      <div class="img-container"><img src="./src/assets/a6-gallery-8.jpg" /></div>
+      <div class="label">a6-gallery-8.jpg (8.jpg)</div>
+    </div>
+  </div>
+</body>
+</html>
