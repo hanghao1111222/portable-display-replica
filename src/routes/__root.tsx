@@ -11,6 +11,8 @@ import { LangProvider } from "@/i18n/LangContext";
 import { Toaster } from "sonner";
 import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/CartDrawer";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import appCss from "../styles.css?url";
 
@@ -123,6 +125,8 @@ function RootComponent() {
           <Outlet />
           <CartDrawer />
           <Toaster theme="dark" position="bottom-right" />
+          <Analytics />
+          <SpeedInsights />
         </CartProvider>
       </LangProvider>
     </QueryClientProvider>
