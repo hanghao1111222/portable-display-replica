@@ -71,7 +71,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
     const newItems = cartItems.map((item) =>
-      item.product.slug === slug ? { ...item, quantity: qty } : item
+      item.product.slug === slug ? { ...item, quantity: qty } : item,
     );
     saveCart(newItems);
   };

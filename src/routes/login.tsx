@@ -27,7 +27,9 @@ function LoginPage() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="login-email">Email</label>
+            <label className="text-sm font-medium" htmlFor="login-email">
+              Email
+            </label>
             <input
               id="login-email"
               type="email"
@@ -39,7 +41,9 @@ function LoginPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="login-password">{t.auth.password}</label>
+            <label className="text-sm font-medium" htmlFor="login-password">
+              {t.auth.password}
+            </label>
             <input
               id="login-password"
               type="password"

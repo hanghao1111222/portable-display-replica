@@ -73,7 +73,9 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
                 />
               ))}
             </div>
-            <span>{product.rating.toFixed(2)} · ({product.reviews})</span>
+            <span>
+              {product.rating.toFixed(2)} · ({product.reviews})
+            </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-xl font-semibold text-sale">

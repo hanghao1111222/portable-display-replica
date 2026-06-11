@@ -28,7 +28,9 @@ function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="register-name">{t.auth.name}</label>
+            <label className="text-sm font-medium" htmlFor="register-name">
+              {t.auth.name}
+            </label>
             <input
               id="register-name"
               type="text"
@@ -39,7 +41,9 @@ function RegisterPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="register-email">Email</label>
+            <label className="text-sm font-medium" htmlFor="register-email">
+              Email
+            </label>
             <input
               id="register-email"
               type="email"
@@ -51,7 +55,9 @@ function RegisterPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="register-password">{t.auth.password}</label>
+            <label className="text-sm font-medium" htmlFor="register-password">
+              {t.auth.password}
+            </label>
             <input
               id="register-password"
               type="password"

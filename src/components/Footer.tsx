@@ -94,9 +94,7 @@ export function Footer() {
             </div>
 
             <div className="space-y-5">
-              <h3 className="text-sm font-semibold tracking-[0.18em] text-slate-900">
-                FOLLOW US
-              </h3>
+              <h3 className="text-sm font-semibold tracking-[0.18em] text-slate-900">FOLLOW US</h3>
               <div className="flex items-center gap-4 text-slate-600">
                 <a href="#" className="transition hover:text-sky-600" aria-label="Facebook">
                   <Facebook className="h-5 w-5" />
@@ -129,9 +127,7 @@ export function Footer() {
         </div>
 
         <div className="relative mt-14 border-t border-slate-200 pt-8">
-          <p className="text-center text-xs text-slate-500">
-            © {new Date().getFullYear()} Anyking
-          </p>
+          <p className="text-center text-xs text-slate-500">© {new Date().getFullYear()} Anyking</p>
           <button
             onClick={scrollToTop}
             className="absolute right-0 top-4 rounded-md bg-slate-200 px-3 py-3 text-slate-500 shadow-sm transition hover:bg-slate-300 hover:text-slate-700"

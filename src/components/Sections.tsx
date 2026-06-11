@@ -1,4 +1,13 @@
-import { ChevronLeft, ChevronRight, ShieldCheck, Play, Pause, Volume2, VolumeX, Check } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Check,
+} from "lucide-react";
 import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
@@ -45,7 +54,6 @@ export function BrandStory() {
   );
 }
 
-
 export function ReviewsSection() {
   const { t } = useLang();
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -62,9 +70,7 @@ export function ReviewsSection() {
     <section className="bg-foreground text-background py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            {t.reviewsSec.title}
-          </h2>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">{t.reviewsSec.title}</h2>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <span className="text-lg md:text-xl font-medium">Excellent</span>
             <span className="text-2xl md:text-3xl font-bold">
@@ -297,9 +303,7 @@ function ShowcaseRow({
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         className="space-y-6"
       >
-        <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white">
-          {title}
-        </h3>
+        <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white">{title}</h3>
         <p className="text-muted-foreground text-lg leading-relaxed">{body}</p>
 
         <ul className="space-y-4 pt-2">

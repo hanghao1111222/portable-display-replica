@@ -60,8 +60,8 @@ export function CheckoutModal() {
                     <div>
                       <p className="font-semibold">Purchase completes on Amazon</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        We will open the product page in a new tab so you can finish the order
-                        on Amazon, just like your reference flow.
+                        We will open the product page in a new tab so you can finish the order on
+                        Amazon, just like your reference flow.
                       </p>
                     </div>
                   </div>

@@ -3,7 +3,16 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { getProduct, products } from "@/data/products";
 import { useLang, formatPrice } from "@/i18n/LangContext";
-import { Star, Truck, RotateCcw, ShieldCheck, Plus, Minus, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Star,
+  Truck,
+  RotateCcw,
+  ShieldCheck,
+  Plus,
+  Minus,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useState, useRef } from "react";
 import { motion } from "motion/react";
 import { reviews, expertReviews, starDistributions } from "@/data/reviews";
@@ -57,9 +66,13 @@ function ProductDetail() {
     <SiteLayout>
       <div className="mx-auto max-w-7xl px-5 lg:px-10 pt-8 pb-6">
         <nav className="text-xs text-muted-foreground space-x-2">
-          <Link to="/" className="hover:text-primary">Home</Link>
+          <Link to="/" className="hover:text-primary">
+            Home
+          </Link>
           <span>/</span>
-          <Link to="/products" className="hover:text-primary">{t.products.breadcrumb}</Link>
+          <Link to="/products" className="hover:text-primary">
+            {t.products.breadcrumb}
+          </Link>
           <span>/</span>
           <span className="text-foreground">{product.name}</span>
         </nav>
@@ -126,9 +139,7 @@ function ProductDetail() {
           </div>
 
           <div className="flex items-baseline gap-3 pt-2">
-            <span className="text-3xl font-bold text-sale">
-              {formatPrice(product.price, lang)}
-            </span>
+            <span className="text-3xl font-bold text-sale">{formatPrice(product.price, lang)}</span>
             <span className="text-lg text-muted-foreground line-through">
               {formatPrice(product.compareAt, lang)}
             </span>
@@ -431,30 +442,28 @@ function ProductDetail() {
 
       <section className="bg-black text-white py-16">
         <div className="mx-auto max-w-7xl px-5 lg:px-10 space-y-16">
-        {product.features.map((f, i) => (
-          <div
-            key={i}
-            className={`grid lg:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "lg:[&>:first-child]:order-2" : ""}`}
-          >
-            <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-[#e9eef5] border border-white/10 p-2 md:p-3">
-              <img
-                src={f.image || product.images[i % product.images.length]}
-                alt={f.title[lang]}
-                className="w-full h-full object-contain"
-                loading="lazy"
-                width={1024}
-                height={1024}
-              />
+          {product.features.map((f, i) => (
+            <div
+              key={i}
+              className={`grid lg:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "lg:[&>:first-child]:order-2" : ""}`}
+            >
+              <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-[#e9eef5] border border-white/10 p-2 md:p-3">
+                <img
+                  src={f.image || product.images[i % product.images.length]}
+                  alt={f.title[lang]}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                  width={1024}
+                  height={1024}
+                />
+              </div>
+              <div className="space-y-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-amber-400">— 0{i + 1}</p>
+                <h2 className="text-3xl md:text-5xl font-bold">{f.title[lang]}</h2>
+                <p className="text-white/60 text-lg leading-relaxed">{f.body[lang]}</p>
+              </div>
             </div>
-            <div className="space-y-4">
-              <p className="text-xs uppercase tracking-[0.3em] text-amber-400">
-                — 0{i + 1}
-              </p>
-              <h2 className="text-3xl md:text-5xl font-bold">{f.title[lang]}</h2>
-              <p className="text-white/60 text-lg leading-relaxed">{f.body[lang]}</p>
-            </div>
-          </div>
-        ))}
+          ))}
         </div>
       </section>
 
@@ -462,12 +471,44 @@ function ProductDetail() {
         <h2 className="text-3xl font-bold mb-6">{t.detail.specs}</h2>
         {(() => {
           const groupDefs: { key: string; title: { en: string; ja: string }; match: string[] }[] = [
-            { key: "display", title: { en: "Display", ja: "ディスプレイ" }, match: ["Display type", "Display technology", "Aspect ratio", "Screen finish", "Contrast ratio", "Refresh rate", "Picture enhancement", "Response time", "Panel", "Brightness", "HDR"] },
-            { key: "measurements", title: { en: "Measurements", ja: "サイズ・重量" }, match: ["Screen size", "Item dimensions", "Weight"] },
-            { key: "resolution", title: { en: "Display resolution", ja: "解像度" }, match: ["Resolution"] },
-            { key: "connectivity", title: { en: "Connectivity", ja: "接続" }, match: ["Connectivity"] },
+            {
+              key: "display",
+              title: { en: "Display", ja: "ディスプレイ" },
+              match: [
+                "Display type",
+                "Display technology",
+                "Aspect ratio",
+                "Screen finish",
+                "Contrast ratio",
+                "Refresh rate",
+                "Picture enhancement",
+                "Response time",
+                "Panel",
+                "Brightness",
+                "HDR",
+              ],
+            },
+            {
+              key: "measurements",
+              title: { en: "Measurements", ja: "サイズ・重量" },
+              match: ["Screen size", "Item dimensions", "Weight"],
+            },
+            {
+              key: "resolution",
+              title: { en: "Display resolution", ja: "解像度" },
+              match: ["Resolution"],
+            },
+            {
+              key: "connectivity",
+              title: { en: "Connectivity", ja: "接続" },
+              match: ["Connectivity"],
+            },
             { key: "ports", title: { en: "Ports", ja: "ポート" }, match: ["Ports", "HDMI ports"] },
-            { key: "item", title: { en: "Item details", ja: "商品詳細" }, match: ["Brand", "Model", "Manufacturer", "Warranty", "ASIN", "Color"] },
+            {
+              key: "item",
+              title: { en: "Item details", ja: "商品詳細" },
+              match: ["Brand", "Model", "Manufacturer", "Warranty", "ASIN", "Color"],
+            },
           ];
           const groups = groupDefs
             .map((g) => ({
@@ -511,10 +552,13 @@ function ProductDetail() {
         })()}
       </section>
 
-
       <ExpertReviewsSection slug={product.slug} />
 
-      <CustomerReviewsSection slug={product.slug} productName={product.name} rating={product.rating} />
+      <CustomerReviewsSection
+        slug={product.slug}
+        productName={product.name}
+        rating={product.rating}
+      />
 
       <section className="mx-auto max-w-7xl px-5 lg:px-10 py-16">
         <h2 className="text-3xl font-bold mb-8">{t.detail.relatedTitle}</h2>
@@ -546,7 +590,9 @@ function AplusSliderBlock({
 
   return (
     <div className="bg-white rounded-2xl border border-neutral-200 p-4 md:p-6">
-      {title && <h3 className="hidden md:block text-xl font-semibold mb-4 text-neutral-900">{title}</h3>}
+      {title && (
+        <h3 className="hidden md:block text-xl font-semibold mb-4 text-neutral-900">{title}</h3>
+      )}
       <div className="relative overflow-hidden rounded-xl bg-white">
         <motion.div
           className="flex"
@@ -561,7 +607,10 @@ function AplusSliderBlock({
           }}
         >
           {slides.map((src, i) => (
-            <div key={i} className="w-full shrink-0 flex items-center justify-center bg-white px-2 py-4">
+            <div
+              key={i}
+              className="w-full shrink-0 flex items-center justify-center bg-white px-2 py-4"
+            >
               <img
                 src={src}
                 alt={`${productName} slider ${i + 1}`}
@@ -677,10 +726,7 @@ function CustomerReviewsSection({
 }) {
   const dist = starDistributions[slug] ?? [0, 0, 0, 0, 0];
   const total = dist.reduce((a, b) => a + b, 0);
-  const avg =
-    total > 0
-      ? dist.reduce((sum, count, i) => sum + count * (5 - i), 0) / total
-      : rating;
+  const avg = total > 0 ? dist.reduce((sum, count, i) => sum + count * (5 - i), 0) / total : rating;
   const productReviews = reviews.filter((r) => r.product === productName).slice(0, 8);
 
   return (
@@ -694,9 +740,7 @@ function CustomerReviewsSection({
             <div className="space-y-2 shrink-0">
               <div className="flex items-center gap-3">
                 <TrustStars rating={avg} size={24} />
-                <span className="text-white font-semibold text-lg">
-                  {avg.toFixed(2)} out of 5
-                </span>
+                <span className="text-white font-semibold text-lg">{avg.toFixed(2)} out of 5</span>
               </div>
               <p className="text-white/50 text-sm flex items-center gap-1">
                 Based on {total.toLocaleString()} reviews

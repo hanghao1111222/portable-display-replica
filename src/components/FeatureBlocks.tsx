@@ -18,7 +18,14 @@ export function FeatureBlock() {
         transition={{ duration: 0.7 }}
         className="rounded-3xl overflow-hidden aspect-[4/3]"
       >
-        <img src={feature} alt="" className="w-full h-full object-cover" loading="lazy" width={1600} height={1024} />
+        <img
+          src={feature}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="lazy"
+          width={1600}
+          height={1024}
+        />
       </motion.div>
       <div className="space-y-6">
         <p className="text-xs uppercase tracking-[0.3em] text-primary">— 02</p>
@@ -65,14 +72,14 @@ export function ScenesBlock() {
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-card"
           >
-            <img 
-              src={it.img} 
-              alt={it.t} 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+            <img
+              src={it.img}
+              alt={it.t}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               style={{ objectPosition: it.pos }}
-              loading="lazy" 
-              width={1280} 
-              height={896} 
+              loading="lazy"
+              width={1280}
+              height={896}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-6">
