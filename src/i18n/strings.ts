@@ -68,7 +68,8 @@ export const strings = {
         {
           name: "Marcus T.",
           role: "Software engineer",
-          quote: "I bring it to every client meeting. Replaced my home dual-monitor setup entirely.",
+          quote:
+            "I bring it to every client meeting. Replaced my home dual-monitor setup entirely.",
         },
         {
           name: "Yuki S.",
@@ -85,12 +86,30 @@ export const strings = {
     faq: {
       title: "Frequently asked questions",
       items: [
-        { q: "Does it work with my laptop?", a: "Any laptop with a USB-C port that supports DisplayPort Alt Mode (almost all modern MacBook, Dell, HP, Lenovo, ASUS). For older laptops, the included mini HDMI cable works as well." },
-        { q: "Do I need to install drivers?", a: "No. Connect a single USB-C cable and the screen lights up — true plug & play on macOS, Windows, ChromeOS, iPadOS and Android." },
-        { q: "How long is shipping?", a: "Free worldwide shipping. Delivery in 3–6 business days to most countries." },
-        { q: "What is your return policy?", a: "30-day free returns. If you're not happy, send it back for a full refund." },
-        { q: "Is there a warranty?", a: "2-year limited warranty on every monitor, including the panel and ports." },
-        { q: "Can I use it as a second screen for my phone?", a: "Yes — pair it with Samsung DeX or iPad Stage Manager for a desktop-class experience." },
+        {
+          q: "Does it work with my laptop?",
+          a: "Any laptop with a USB-C port that supports DisplayPort Alt Mode (almost all modern MacBook, Dell, HP, Lenovo, ASUS). For older laptops, the included mini HDMI cable works as well.",
+        },
+        {
+          q: "Do I need to install drivers?",
+          a: "No. Connect a single USB-C cable and the screen lights up — true plug & play on macOS, Windows, ChromeOS, iPadOS and Android.",
+        },
+        {
+          q: "How long is shipping?",
+          a: "Free worldwide shipping. Delivery in 3–6 business days to most countries.",
+        },
+        {
+          q: "What is your return policy?",
+          a: "30-day free returns. If you're not happy, send it back for a full refund.",
+        },
+        {
+          q: "Is there a warranty?",
+          a: "2-year limited warranty on every monitor, including the panel and ports.",
+        },
+        {
+          q: "Can I use it as a second screen for my phone?",
+          a: "Yes — pair it with Samsung DeX or iPad Stage Manager for a desktop-class experience.",
+        },
       ],
     },
     cta: {
@@ -214,7 +233,10 @@ export const strings = {
     },
     scenes: {
       title: "一台で、あらゆるシーンに。",
-      office: { t: "オフィス", b: "ノートPCを本格的なコラボレーション用ワークステーションに拡張。" },
+      office: {
+        t: "オフィス",
+        b: "ノートPCを本格的なコラボレーション用ワークステーションに拡張。",
+      },
       gaming: { t: "リラックス空間", b: "自宅のラウンジやカフェでも、快適なセカンド画面で作業。" },
       travel: { t: "トラベル", b: "飛行機、列車、ホテルの部屋でも瞬時に生産性を向上。" },
     },
@@ -251,12 +273,21 @@ export const strings = {
     faq: {
       title: "よくあるご質問",
       items: [
-        { q: "私のノートPCで使えますか?", a: "DisplayPort Alt Modeに対応するUSB-Cポート搭載のノートPCで利用可能です(現行のほぼすべてのMacBook、Dell、HP、Lenovo、ASUS)。古いPC向けには付属のmini HDMIケーブルも使えます。" },
-        { q: "ドライバーのインストールは必要ですか?", a: "不要です。USB-Cケーブル一本で画面が点灯。macOS、Windows、ChromeOS、iPadOS、Androidで真のプラグ＆プレイ。" },
+        {
+          q: "私のノートPCで使えますか?",
+          a: "DisplayPort Alt Modeに対応するUSB-Cポート搭載のノートPCで利用可能です(現行のほぼすべてのMacBook、Dell、HP、Lenovo、ASUS)。古いPC向けには付属のmini HDMIケーブルも使えます。",
+        },
+        {
+          q: "ドライバーのインストールは必要ですか?",
+          a: "不要です。USB-Cケーブル一本で画面が点灯。macOS、Windows、ChromeOS、iPadOS、Androidで真のプラグ＆プレイ。",
+        },
         { q: "配送はどのくらいかかりますか?", a: "全世界送料無料。多くの国で3〜6営業日でお届け。" },
         { q: "返品ポリシーは?", a: "30日間の無料返品。ご満足いただけない場合は返送で全額返金。" },
         { q: "保証はありますか?", a: "パネルとポートを含む2年間の限定保証付き。" },
-        { q: "スマホのセカンドスクリーンとして使えますか?", a: "はい。Samsung DeXやiPadのステージマネージャと組み合わせてデスクトップ級の体験を。" },
+        {
+          q: "スマホのセカンドスクリーンとして使えますか?",
+          a: "はい。Samsung DeXやiPadのステージマネージャと組み合わせてデスクトップ級の体験を。",
+        },
       ],
     },
     cta: {

@@ -140,42 +140,48 @@ export const expertReviews: ExpertReview[] = [
   {
     source: "Techradar.pro",
     stars: 5,
-    quote: "If you use a laptop between 11in and 18in and need a three-screen set-up for meetings and multitasking, this is a very flexible option.",
+    quote:
+      "If you use a laptop between 11in and 18in and need a three-screen set-up for meetings and multitasking, this is a very flexible option.",
     product: "s10-pro",
   },
   {
     source: "Press Circuit",
     stars: 4,
-    quote: "Well-designed, efficient and easy to carry. Run multiple applications simultaneously and the built-in clip means you can take it with you anywhere without worrying about a power supply.",
+    quote:
+      "Well-designed, efficient and easy to carry. Run multiple applications simultaneously and the built-in clip means you can take it with you anywhere without worrying about a power supply.",
     product: "s10-pro",
   },
   {
     source: "Gadget Flow",
     stars: 5,
-    quote: "The S10 Pro transforms any laptop into a full triple-screen workstation in under 30 seconds — no drivers, no faff.",
+    quote:
+      "The S10 Pro transforms any laptop into a full triple-screen workstation in under 30 seconds — no drivers, no faff.",
     product: "s10-pro",
   },
   {
     source: "PCMag Editors",
     stars: 4,
-    quote: "At just 1.87 lb the A6 slides into any bag and connects via a single USB-C. A genuine productivity upgrade for frequent flyers.",
+    quote:
+      "At just 1.87 lb the A6 slides into any bag and connects via a single USB-C. A genuine productivity upgrade for frequent flyers.",
     product: "a6",
   },
   {
     source: "Wirecutter Pick",
     stars: 5,
-    quote: "Outstanding plug-and-play experience. The IPS panel with 100% sRGB means colours are accurate enough for serious creative work on the go.",
+    quote:
+      "Outstanding plug-and-play experience. The IPS panel with 100% sRGB means colours are accurate enough for serious creative work on the go.",
     product: "a6",
   },
   {
     source: "The Verge",
     stars: 4,
-    quote: "Anyking has quietly built the best clip-on monitor on the market — great image quality, genuine portability and a price that undercuts the competition.",
+    quote:
+      "Anyking has quietly built the best clip-on monitor on the market — great image quality, genuine portability and a price that undercuts the competition.",
   },
 ];
 
 // Per-product star distribution  [5★, 4★, 3★, 2★, 1★] counts
 export const starDistributions: Record<string, [number, number, number, number, number]> = {
   "s10-pro": [382, 21, 6, 2, 1],
-  "a6": [125, 13, 5, 4, 0],
+  a6: [125, 13, 5, 4, 0],
 };

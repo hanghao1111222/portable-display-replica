@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { Analytics } from "@vercel/analytics/react";
 import { LangProvider } from "@/i18n/LangContext";
 import { Toaster } from "sonner";
 import { CartProvider } from "@/context/CartContext";
@@ -77,9 +78,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Anyking — Premium portable USB-C monitors" },
-      { name: "description", content: "Ultra-portable USB-C monitors for productivity, gaming and travel. Free worldwide shipping, 30-day returns, 2-year warranty." },
+      {
+        name: "description",
+        content:
+          "Ultra-portable USB-C monitors for productivity, gaming and travel. Free worldwide shipping, 30-day returns, 2-year warranty.",
+      },
       { property: "og:title", content: "Anyking" },
-      { property: "og:description", content: "Ultra-portable USB-C monitors trusted by 800,000+ remote workers." },
+      {
+        property: "og:description",
+        content: "Ultra-portable USB-C monitors trusted by 800,000+ remote workers.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -108,6 +116,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <Analytics />
       </body>
     </html>
   );

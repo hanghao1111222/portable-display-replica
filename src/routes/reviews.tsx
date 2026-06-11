@@ -24,9 +24,7 @@ function ReviewsPage() {
     <SiteLayout>
       <section className="bg-foreground text-background">
         <div className="mx-auto max-w-7xl px-5 lg:px-10 pt-20 pb-16 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            {t.reviewsSec.title}
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">{t.reviewsSec.title}</h1>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <span className="text-lg md:text-xl font-medium">Excellent</span>
             <span className="text-2xl md:text-3xl font-bold">

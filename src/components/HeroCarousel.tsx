@@ -59,12 +59,8 @@ export function HeroCarousel() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-2xl space-y-5"
           >
-            <p className="text-xs tracking-[0.3em] uppercase text-primary">
-              {t.hero.eyebrow}
-            </p>
-            <h1 className="text-5xl md:text-7xl font-bold leading-[1.05]">
-              {slides[i].title}
-            </h1>
+            <p className="text-xs tracking-[0.3em] uppercase text-primary">{t.hero.eyebrow}</p>
+            <h1 className="text-5xl md:text-7xl font-bold leading-[1.05]">{slides[i].title}</h1>
             <p className="text-lg text-foreground/80 max-w-lg">{slides[i].sub}</p>
             <div className="flex flex-wrap items-center gap-3 pt-4">
               <Link

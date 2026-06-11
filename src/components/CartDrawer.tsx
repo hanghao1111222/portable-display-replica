@@ -5,14 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 
 export function CartDrawer() {
-  const {
-    cartItems,
-    isCartOpen,
-    setCartOpen,
-    updateQuantity,
-    removeFromCart,
-    cartSubtotal,
-  } = useCart();
+  const { cartItems, isCartOpen, setCartOpen, updateQuantity, removeFromCart, cartSubtotal } =
+    useCart();
   const { lang } = useLang();
   const navigate = useNavigate();
 
@@ -71,9 +65,7 @@ export function CartDrawer() {
                         <div className="mt-2 flex items-center justify-between gap-2">
                           <div className="flex items-center border border-border rounded-full">
                             <button
-                              onClick={() =>
-                                updateQuantity(item.product.slug, item.quantity - 1)
-                              }
+                              onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
                               className="w-8 h-8 flex items-center justify-center"
                               aria-label="Decrease quantity"
                             >
@@ -81,9 +73,7 @@ export function CartDrawer() {
                             </button>
                             <span className="w-8 text-center text-sm">{item.quantity}</span>
                             <button
-                              onClick={() =>
-                                updateQuantity(item.product.slug, item.quantity + 1)
-                              }
+                              onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
                               className="w-8 h-8 flex items-center justify-center"
                               aria-label="Increase quantity"
                             >

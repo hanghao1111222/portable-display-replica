@@ -93,7 +93,11 @@ export type Product = {
   };
   badge?: { en: string; ja: string };
   specs: { label: { en: string; ja: string }; value: string }[];
-  features: { image?: string; title: { en: string; ja: string }; body: { en: string; ja: string } }[];
+  features: {
+    image?: string;
+    title: { en: string; ja: string };
+    body: { en: string; ja: string };
+  }[];
 };
 
 const s10ProSpecs = [
@@ -116,7 +120,10 @@ const s10ProSpecs = [
   { label: { en: "Weight", ja: "重量" }, value: "1.6 kg (3.53 lbs)" },
   { label: { en: "Color", ja: "カラー" }, value: "Black" },
   { label: { en: "Warranty", ja: "保証" }, value: "2 Years Manufacturer" },
-  { label: { en: "Manufacturer", ja: "製造元" }, value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
+  {
+    label: { en: "Manufacturer", ja: "製造元" },
+    value: "Shenzhen Baijiayoupu Technology Co., Ltd",
+  },
   { label: { en: "ASIN", ja: "ASIN" }, value: "B0GJSXHDCG" },
 ];
 
@@ -132,7 +139,10 @@ const a6Specs = [
   { label: { en: "Response time", ja: "応答速度" }, value: "0.1 ms" },
   { label: { en: "Contrast ratio", ja: "コントラスト比" }, value: "1000:1" },
   { label: { en: "Screen finish", ja: "画面仕上げ" }, value: "Matte" },
-  { label: { en: "Picture enhancement", ja: "画質補正" }, value: "Anti-Glare Screen, Blue Light Filter" },
+  {
+    label: { en: "Picture enhancement", ja: "画質補正" },
+    value: "Anti-Glare Screen, Blue Light Filter",
+  },
   { label: { en: "Connectivity", ja: "接続方式" }, value: "USB Type-C, mini HDMI" },
   { label: { en: "Ports", ja: "ポート" }, value: "2× USB-C, 1× mini HDMI, 1x Audio Jack" },
   { label: { en: "HDMI ports", ja: "HDMIポート" }, value: "1" },
@@ -140,7 +150,10 @@ const a6Specs = [
   { label: { en: "Weight", ja: "重量" }, value: "850 g (1.87 lbs)" },
   { label: { en: "Color", ja: "カラー" }, value: "Black" },
   { label: { en: "Warranty", ja: "保証" }, value: "1 Year Manufacturer" },
-  { label: { en: "Manufacturer", ja: "製造元" }, value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
+  {
+    label: { en: "Manufacturer", ja: "製造元" },
+    value: "Shenzhen Baijiayoupu Technology Co., Ltd",
+  },
   { label: { en: "ASIN", ja: "ASIN" }, value: "B0GJS4XGDJ" },
 ];
 
@@ -155,18 +168,13 @@ export const products: Product[] = [
     },
     description: {
       en: 'Two 14" FHD IPS panels clip onto either side of your laptop to form an instant triple‑display setup. Anti‑glare coating, HDR10+, and a precision hinge that holds exactly where you set it.',
-      ja: '14インチのフルHD IPSパネル2枚をノートPCの両側にクリップで装着し、瞬時にトリプルディスプレイ環境を構築。アンチグレア加工、HDR10+対応、設定した角度を正確に保つ高精度ヒンジを搭載。',
+      ja: "14インチのフルHD IPSパネル2枚をノートPCの両側にクリップで装着し、瞬時にトリプルディスプレイ環境を構築。アンチグレア加工、HDR10+対応、設定した角度を正確に保つ高精度ヒンジを搭載。",
     },
     price: 189.98,
     compareAt: 239.99,
     rating: 4.81,
     reviews: 412,
-    images: [
-      s10proA11,
-      s10g1,
-      s10g2,
-      s10g6,
-    ],
+    images: [s10proA11, s10g1, s10g2, s10g6],
     gallery: [s10g1, s10g2, s10g3, s10g4, s10g5, s10g6, s10g7],
     gallerySection: {
       heroTitle: { en: "Be comfortable everywhere", ja: "どこでも快適に" },
@@ -195,7 +203,7 @@ export const products: Product[] = [
       deployTitle: { en: "Deploy it", ja: "展開する" },
       deployBody: {
         en: 'Introducing the Anyking S10 Pro: effortlessly attach the dual 14" panels to the back of your Mac or Windows laptop with the integrated kickstand. Connect with a single USB-C cable and watch your three-screen workstation spring into action.',
-        ja: 'Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークステーションが瞬時に展開します。',
+        ja: "Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークステーションが瞬時に展開します。",
       },
     },
     aplus: {
@@ -208,7 +216,10 @@ export const products: Product[] = [
       },
       scenes: [
         { image: s10g1, label: { en: "Multitasking Workspace", ja: "マルチタスクワークスペース" } },
-        { image: s10g3, label: { en: "Flexible Presentation Mode", ja: "プレゼンテーション・共有" } },
+        {
+          image: s10g3,
+          label: { en: "Flexible Presentation Mode", ja: "プレゼンテーション・共有" },
+        },
         { image: s10g5, label: { en: "Ultra-slim Portability", ja: "極薄で持ち運びも簡単" } },
         { image: s10g7, label: { en: "Work Anywhere", ja: "どこでも快適に作業" } },
       ],
@@ -217,7 +228,7 @@ export const products: Product[] = [
         title: { en: "Deploy it", ja: "展開する" },
         body: {
           en: 'Introducing the Anyking S10 Pro: effortlessly attach the dual 14" panels to the back of your Mac or Windows laptop with the integrated kickstand. Connect with a single USB-C cable and watch your three-screen workstation spring into action.',
-          ja: 'Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークスペースが瞬時に展開します。',
+          ja: "Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークスペースが瞬時に展開します。",
         },
       },
     },
@@ -245,7 +256,7 @@ export const products: Product[] = [
         title: { en: "100% sRGB · HDR10+", ja: "100% sRGB · HDR10+" },
         body: {
           en: 'Color‑accurate 14" IPS panels with anti‑glare coating, ready for design, video and gameplay.',
-          ja: '色精度の高い14インチIPSパネルにアンチグレア加工を施し、デザイン、動画、ゲームに最適。',
+          ja: "色精度の高い14インチIPSパネルにアンチグレア加工を施し、デザイン、動画、ゲームに最適。",
         },
       },
     ],
@@ -260,24 +271,21 @@ export const products: Product[] = [
     },
     description: {
       en: 'A featherlight 14" portable monitor that clips onto your laptop in seconds. 1080P FHD IPS, just 1.87 lb, with full USB-C plug‑and‑play and an integrated RGB ambient light.',
-      ja: '14インチの超軽量ポータブルモニター、ノートPCに数秒で装着。1080PフルHD IPS、わずか1.87lb、USB-Cプラグ＆プレイ対応、RGBアンビエントライト内蔵。',
+      ja: "14インチの超軽量ポータブルモニター、ノートPCに数秒で装着。1080PフルHD IPS、わずか1.87lb、USB-Cプラグ＆プレイ対応、RGBアンビエントライト内蔵。",
     },
     price: 99.98,
     compareAt: 135.99,
     rating: 4.76,
     reviews: 287,
-    images: [
-      a6A,
-      a6g2,
-      a6g3,
-      a6g4,
-      a6g6,
-    ],
+    images: [a6A, a6g2, a6g3, a6g4, a6g6],
     aplus: {
       banners: [a6b1, a6b2, a6b3, a6b4, a6b5, a6b6],
       sliders: [
         {
-          title: { en: "Details you don't notice. Until you do.", ja: "細部に宿るこだわり。違いを実感。" },
+          title: {
+            en: "Details you don't notice. Until you do.",
+            ja: "細部に宿るこだわり。違いを実感。",
+          },
           slides: [a6b7_1, a6b7_2],
         },
         {
@@ -298,7 +306,7 @@ export const products: Product[] = [
         title: { en: "Deploy it", ja: "展開する" },
         body: {
           en: 'Introducing the Anyking A6 14": effortlessly place it next to your Mac or Windows laptop with its integrated kickstand. Connect it with a USB-C cable and watch as your dual-screen workstation springs into action.',
-          ja: 'Anyking A6 14インチのご紹介：内蔵キックスタンドでMacまたはWindowsノートPCの隣に簡単に設置。USB-Cケーブルで接続すれば、デュアルスクリーンワークステーションが瞬時に展開します。',
+          ja: "Anyking A6 14インチのご紹介：内蔵キックスタンドでMacまたはWindowsノートPCの隣に簡単に設置。USB-Cケーブルで接続すれば、デュアルスクリーンワークステーションが瞬時に展開します。",
         },
       },
     },

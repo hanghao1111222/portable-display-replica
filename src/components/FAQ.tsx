@@ -13,16 +13,17 @@ export function FAQ() {
         {t.faq.items.map((item, i) => {
           const isOpen = open === i;
           return (
-            <div
-              key={i}
-              className="border border-border rounded-xl bg-card/30 overflow-hidden"
-            >
+            <div key={i} className="border border-border rounded-xl bg-card/30 overflow-hidden">
               <button
                 onClick={() => setOpen(isOpen ? null : i)}
                 className="w-full px-5 py-5 flex items-center justify-between text-left gap-4"
               >
                 <span className="font-medium">{item.q}</span>
-                {isOpen ? <Minus className="w-4 h-4 shrink-0 text-primary" /> : <Plus className="w-4 h-4 shrink-0" />}
+                {isOpen ? (
+                  <Minus className="w-4 h-4 shrink-0 text-primary" />
+                ) : (
+                  <Plus className="w-4 h-4 shrink-0" />
+                )}
               </button>
               <AnimatePresence initial={false}>
                 {isOpen && (
