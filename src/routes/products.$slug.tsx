@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { getProduct, products } from "@/data/products";
@@ -8,6 +8,7 @@ import { useState, useRef } from "react";
 import { motion } from "motion/react";
 import { reviews, expertReviews, starDistributions } from "@/data/reviews";
 import { TrustStars } from "@/components/TrustStars";
+import { useCart } from "@/context/CartContext";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -43,8 +44,10 @@ export const Route = createFileRoute("/products/$slug")({
 function ProductDetail() {
   const { product } = Route.useLoaderData() as { product: import("@/data/products").Product };
   const { t, lang } = useLang();
+  const { addToCart, setCartOpen } = useCart();
   const [active, setActive] = useState(0);
   const [qty, setQty] = useState(1);
+  const navigate = useNavigate();
   const amazonUrl =
     "https://www.amazon.com/Anyking-Extender-Portable-External-Business/dp/B0GJS4XGDJ/";
   const walmartUrl =
@@ -155,23 +158,47 @@ function ProductDetail() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <a
-              href={amazonUrl}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="flex-1 px-7 py-4 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
-            >
-              Buy on Amazon
-            </a>
-            <a
-              href={walmartUrl}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="px-7 py-4 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition text-center"
-            >
-              Buy at Walmart
-            </a>
+          <div className="space-y-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => {
+                  addToCart(product, qty);
+                  setCartOpen(true);
+                }}
+                className="flex-1 px-5 py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:bg-primary hover:text-primary-foreground transition"
+              >
+                {t.detail.addToCart} — {formatPrice(product.price * qty, lang)}
+              </button>
+              <button
+                onClick={() => {
+                  addToCart(product, qty);
+                  setCartOpen(false);
+                  navigate({ to: "/checkout" });
+                }}
+                className="sm:w-40 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition"
+              >
+                {t.detail.buyNow}
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <a
+                href={amazonUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
+              >
+                Buy on Amazon
+              </a>
+              <a
+                href={walmartUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition text-center"
+              >
+                Buy at Walmart
+              </a>
+            </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3 pt-6 border-t border-border">
