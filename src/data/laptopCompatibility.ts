@@ -1,0 +1,658 @@
+export type CompatibilityProfile = {
+  id: string;
+  brand: string;
+  family: string;
+  aliases: string[];
+  yearRange: [number, number];
+  connection: string;
+  cable: string;
+  cableKey: "usb-c-to-c" | "usb-a-to-c" | "hdmi-to-type-c" | "h5-hdmi-adapter";
+  fitLabel: "High" | "Medium-high" | "Medium" | "Low";
+  confidenceLabel: "High" | "Strong" | "Brand-level";
+  notes: string[];
+};
+
+export type TrendRow = {
+  brand: string;
+  early: string;
+  middle: string;
+  recent: string;
+  adapter: string;
+};
+
+export type BrandSnapshot = {
+  brand: string;
+  commonPorts: string;
+  directPath: string;
+  fallbackPath: string;
+};
+
+export const trendRows: TrendRow[] = [
+  {
+    brand: "Apple",
+    early: "2015-2017 mostly Mini DisplayPort / Thunderbolt 2 transition models",
+    middle: "2018-2020 USB-C / Thunderbolt 3 becomes the norm",
+    recent: "2021-2026 USB-C / Thunderbolt 4 / 5 is standard",
+    adapter:
+      "Older laptops usually need MiniDP or HDMI; newer ones often work with one full-featured USB-C cable",
+  },
+  {
+    brand: "Dell",
+    early: "2015-2017 HDMI + Mini DP were common; USB-C started to spread",
+    middle: "2018-2020 XPS / Latitude moved mostly to USB-C",
+    recent: "2021-2026 USB-C / Thunderbolt is standard",
+    adapter: "Older models often need HDMI or MiniDP; newer ones usually connect directly",
+  },
+  {
+    brand: "Lenovo",
+    early: "2015-2017 ThinkPad often used HDMI + Mini DP",
+    middle: "2018-2020 USB-C spread quickly",
+    recent: "2021-2026 USB-C / Thunderbolt / HDMI all coexist",
+    adapter: "Older ThinkPad models often need HDMI or DP adapters",
+  },
+  {
+    brand: "HP",
+    early: "2015-2017 HDMI was more common, USB-C was still rare",
+    middle: "2018-2020 Spectre / EliteBook adopted USB-C widely",
+    recent: "2021-2026 USB-C + HDMI combinations are stable",
+    adapter: "Older laptops usually start with HDMI; some business models also need a power cable",
+  },
+  {
+    brand: "ASUS",
+    early: "2015-2017 HDMI, USB-A, and some Mini DP were common",
+    middle: "2018-2020 ZenBook / ROG moved gradually to USB-C",
+    recent: "2021-2026 USB-C / Thunderbolt and HDMI often coexist",
+    adapter: "Creator and gaming models vary a lot, so the exact model matters",
+  },
+  {
+    brand: "Acer",
+    early: "2015-2017 mainly HDMI",
+    middle: "2018-2020 Swift / Predator models started moving toward USB-C",
+    recent: "2021-2026 direct USB-C connection is much more common",
+    adapter: "Older models often use HDMI; newer ones are more likely to use USB-C",
+  },
+  {
+    brand: "Microsoft Surface",
+    early: "2015-2017 Surface Connect + some MiniDP",
+    middle: "2018-2020 still centered on Surface Connect",
+    recent: "2021-2026 USB-C is more common, but some models still need adapters",
+    adapter: "Surface Connect adapters are the key item",
+  },
+  {
+    brand: "Huawei / Honor",
+    early: "2015-2017 mostly HDMI / USB-A",
+    middle: "2018-2020 MateBook models started adopting USB-C",
+    recent: "2021-2026 USB-C / Thunderbolt is more consistent",
+    adapter: "Slim models often work directly over USB-C; older ones should check HDMI",
+  },
+  {
+    brand: "Samsung",
+    early: "2015-2017 mixed ports, with HDMI common",
+    middle: "2018-2020 Galaxy Book models gradually shifted to USB-C",
+    recent: "2021-2026 USB-C is the main option",
+    adapter: "Older models should check HDMI; newer ones often connect directly",
+  },
+  {
+    brand: "LG / Xiaomi / Razer",
+    early: "2015-2017 port layouts varied a lot",
+    middle: "2018-2020 thin-and-light models moved toward USB-C",
+    recent: "2021-2026 USB-C / Thunderbolt / HDMI are mixed together",
+    adapter: "Identify the exact model first, then choose the cable",
+  },
+];
+
+export const brandSnapshots: BrandSnapshot[] = [
+  {
+    brand: "Apple",
+    commonPorts: "2015-2017 Mini DisplayPort / Thunderbolt 2; 2018+ USB-C / Thunderbolt",
+    directPath: "MacBook Air / Pro 2018+ usually direct-connect with USB-C",
+    fallbackPath: "2015-2017 models often need HDMI or MiniDP-to-HDMI before H5",
+  },
+  {
+    brand: "Dell",
+    commonPorts: "XPS and Latitude often USB-C; Inspiron often mixes HDMI and USB-A",
+    directPath: "XPS / modern Latitude usually direct-connect with USB-C",
+    fallbackPath: "Inspiron / older business models often need HDMI or H5",
+  },
+  {
+    brand: "Lenovo",
+    commonPorts: "ThinkPad often USB-C + HDMI; IdeaPad often HDMI first",
+    directPath: "ThinkPad X1 / Yoga / newer T and E models often direct-connect",
+    fallbackPath: "IdeaPad and older ThinkPad models often need HDMI or H5",
+  },
+  {
+    brand: "HP",
+    commonPorts: "Spectre / EliteBook / Envy / Pavilion often mix USB-C and HDMI",
+    directPath: "Spectre and EliteBook are most likely to direct-connect",
+    fallbackPath: "Pavilion / ProBook / older Envy often need HDMI or H5",
+  },
+  {
+    brand: "ASUS",
+    commonPorts: "ZenBook / ROG / VivoBook vary a lot between USB-C, HDMI, and USB-A",
+    directPath: "ZenBook and many ROG / creator models often direct-connect",
+    fallbackPath: "Older VivoBook and budget models often need HDMI or H5",
+  },
+  {
+    brand: "Acer",
+    commonPorts: "Swift / Nitro newer models often USB-C; Aspire often HDMI-first",
+    directPath: "Swift and newer Nitro models often direct-connect",
+    fallbackPath: "Aspire and older budget models often need HDMI or H5",
+  },
+  {
+    brand: "Microsoft Surface",
+    commonPorts: "Surface Connect plus USB-C on newer models; older ones may use MiniDP",
+    directPath: "Surface Laptop 3 / Pro 7 and newer often support USB-C direct",
+    fallbackPath:
+      "Surface Laptop 1 / 2 and older models often need Surface or MiniDP adapters first",
+  },
+  {
+    brand: "Samsung",
+    commonPorts: "Galaxy Book models mostly USB-C with HDMI on many configs",
+    directPath: "Galaxy Book Flex / Pro / Book4 families often direct-connect",
+    fallbackPath: "Older Samsung laptops may need HDMI or a special adapter path",
+  },
+  {
+    brand: "LG / Razer",
+    commonPorts: "LG gram usually USB-C + HDMI; Razer Blade often USB-C / Thunderbolt + HDMI",
+    directPath: "Modern LG gram and Razer Blade models often direct-connect",
+    fallbackPath: "Older ultrabooks or HDMI-only configs may need H5",
+  },
+];
+
+export const laptopProfiles: CompatibilityProfile[] = [
+  {
+    id: "macbook-air-m1-m3",
+    brand: "Apple",
+    family: "MacBook Air M1 / M2 / M3",
+    aliases: [
+      "macbook air m1",
+      "macbook air m2",
+      "macbook air m3",
+      "air m1",
+      "air m2",
+      "air m3",
+      "macbook air 2020",
+      "macbook air 2021",
+      "macbook air 2022",
+      "macbook air 2023",
+      "macbook air 2024",
+      "macbook air 2025",
+      "苹果笔记本 air m1",
+      "苹果笔记本 air m2",
+      "苹果笔记本 air m3",
+    ],
+    yearRange: [2020, 2026],
+    connection: "USB-C / Thunderbolt direct",
+    cable: "Full-featured USB-C cable (with DP Alt Mode)",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "High",
+    notes: [
+      "If your display supports USB-C video input, one cable is usually enough.",
+      "If you want power delivery and display output together, choose a full-featured USB-C cable.",
+    ],
+  },
+  {
+    id: "macbook-pro-2016-2019",
+    brand: "Apple",
+    family: "MacBook Pro 2016 - 2019",
+    aliases: ["macbook pro", "mbp", "pro 2016", "pro 2017", "pro 2018", "pro 2019"],
+    yearRange: [2016, 2019],
+    connection: "USB-C / Thunderbolt 3 direct",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "This generation is mostly USB-C already.",
+      "If you use a dock, you can also connect the display through the dock.",
+    ],
+  },
+  {
+    id: "macbook-air-retina-2018-2019",
+    brand: "Apple",
+    family: "MacBook Air Retina 2018 / 2019",
+    aliases: ["macbook air 2018", "macbook air 2019", "air retina", "macbook air retina"],
+    yearRange: [2018, 2019],
+    connection: "USB-C / Thunderbolt 3 direct",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "High",
+    notes: [
+      "This is the first mainstream Air generation that moved into USB-C territory.",
+      "Use USB-C to USB-C if the laptop port supports video output.",
+    ],
+  },
+  {
+    id: "macbook-legacy",
+    brand: "Apple",
+    family: "MacBook Pro / Air 2015-2017",
+    aliases: [
+      "macbook 2015",
+      "macbook 2016",
+      "macbook 2017",
+      "macbook pro 2015",
+      "macbook air 2015",
+      "macbook air 2016",
+      "macbook air 2017",
+      "mini displayport",
+      "thunderbolt 2",
+    ],
+    yearRange: [2015, 2017],
+    connection: "Mini DisplayPort / Thunderbolt 2, usually no USB-C video output",
+    cable: "H5 HDMI Adapter, plus Mini DP-to-HDMI if the laptop has no HDMI port",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Strong",
+    notes: [
+      "These older laptops should not be judged as USB-C direct-connect devices.",
+      "If the laptop has no HDMI port, use Mini DP-to-HDMI first, then connect through the H5 adapter.",
+    ],
+  },
+  {
+    id: "dell-xps",
+    brand: "Dell",
+    family: "XPS 13 / 15 / 17",
+    aliases: ["dell xps", "xps 13", "xps 15", "xps 17"],
+    yearRange: [2018, 2026],
+    connection: "USB-C / Thunderbolt direct",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "High",
+    notes: [
+      "Recent XPS models are almost always USB-C.",
+      "If you want to charge and display at the same time, choose a cable that supports both video and power delivery.",
+    ],
+  },
+  {
+    id: "dell-latitude-modern",
+    brand: "Dell",
+    family: "Dell Latitude 5000 / 7000 series 2021-2026",
+    aliases: ["dell latitude", "latitude 5420", "latitude 5430", "latitude 7420", "latitude 7430"],
+    yearRange: [2021, 2026],
+    connection: "Usually USB-C / Thunderbolt direct, with HDMI available on many business models",
+    cable:
+      "Full-featured USB-C cable first; H5 HDMI Adapter if USB-C video is disabled or unavailable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "Medium-high",
+    confidenceLabel: "Strong",
+    notes: [
+      "Recent Latitude models commonly support USB-C display output, but exact business configurations can vary.",
+      "If a company-issued laptop blocks or lacks USB-C video, switch to HDMI through the H5 adapter.",
+    ],
+  },
+  {
+    id: "dell-precision-modern",
+    brand: "Dell",
+    family: "Dell Precision 5000 / 7000 series 2020-2026",
+    aliases: ["dell precision", "precision 5570", "precision 5680", "precision 7780"],
+    yearRange: [2020, 2026],
+    connection: "USB-C / Thunderbolt direct on most mobile workstations",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Precision machines usually include strong video-capable USB-C support.",
+      "If a dock or corporate policy changes the port behavior, HDMI through H5 is the fallback.",
+    ],
+  },
+  {
+    id: "dell-inspiron-older",
+    brand: "Dell",
+    family: "Dell Inspiron 13 / 15 / 5000 series 2015-2020",
+    aliases: ["dell inspiron", "inspiron 15", "inspiron 5000", "inspiron 3000"],
+    yearRange: [2015, 2020],
+    connection: "Often HDMI + USB-A, with USB-C missing or data-only on many models",
+    cable: "H5 HDMI Adapter",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "This is a common support case: HDMI can carry video, while USB-A/USB-C may only provide power or data.",
+      "If USB-C direct connection does not light the monitor, use HDMI through the H5 adapter.",
+    ],
+  },
+  {
+    id: "lenovo-thinkpad-x1",
+    brand: "Lenovo",
+    family: "ThinkPad X1 Carbon / X1 Yoga",
+    aliases: ["thinkpad x1 carbon", "x1 carbon", "x1 yoga", "联想 thinkpad"],
+    yearRange: [2018, 2026],
+    connection: "USB-C / Thunderbolt direct",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "High",
+    notes: [
+      "There is a high chance this will work directly over USB-C video output.",
+      "Some office models still need confirmation that the USB-C port supports video.",
+    ],
+  },
+  {
+    id: "lenovo-thinkpad-t14",
+    brand: "Lenovo",
+    family: "ThinkPad T14 / T14s / T16",
+    aliases: [
+      "thinkpad t14",
+      "thinkpad t14s",
+      "thinkpad t16",
+      "t14 gen 1",
+      "t14 gen 2",
+      "t14 gen 3",
+      "t14 gen 4",
+    ],
+    yearRange: [2020, 2026],
+    connection: "USB-C / Thunderbolt direct",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Modern ThinkPad T-series machines usually support video over USB-C.",
+      "If a specific corporate build disables video over USB-C, use HDMI through H5.",
+    ],
+  },
+  {
+    id: "lenovo-thinkpad-t",
+    brand: "Lenovo",
+    family: "ThinkPad T / E / L series",
+    aliases: ["thinkpad t", "thinkpad e", "thinkpad l", "联想 t 系列", "联想 e 系列"],
+    yearRange: [2015, 2026],
+    connection: "May be HDMI or USB-C direct, depending on model",
+    cable:
+      "USB-C direct if the Type-C port supports DisplayPort; otherwise use the H5 HDMI Adapter",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "These series vary too much to judge by brand alone.",
+      "Older models more often use HDMI, while newer ones are more likely to use USB-C with DisplayPort.",
+    ],
+  },
+  {
+    id: "lenovo-yoga-modern",
+    brand: "Lenovo",
+    family: "Lenovo Yoga / Slim / IdeaPad Pro 2020-2026",
+    aliases: ["lenovo yoga", "yoga 7", "yoga 7i", "yoga 9i", "lenovo slim", "ideapad pro"],
+    yearRange: [2020, 2026],
+    connection: "Usually USB-C direct on Yoga / Slim models; IdeaPad configurations vary",
+    cable:
+      "Full-featured USB-C cable if the Type-C port supports DisplayPort; otherwise H5 HDMI Adapter",
+    cableKey: "usb-c-to-c",
+    fitLabel: "Medium-high",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Yoga and Slim models are more likely to support USB-C video than entry-level IdeaPad models.",
+      "If the exact Type-C port only supports data, use HDMI through the H5 adapter.",
+    ],
+  },
+  {
+    id: "lenovo-ideapad-older",
+    brand: "Lenovo",
+    family: "Lenovo IdeaPad 3 / 5 2016-2020",
+    aliases: ["lenovo ideapad", "ideapad 3", "ideapad 5", "ideapad 330", "ideapad 520"],
+    yearRange: [2016, 2020],
+    connection: "Often HDMI + USB-A; USB-C video support is inconsistent",
+    cable: "H5 HDMI Adapter",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Older IdeaPad models are common HDMI fallback cases.",
+      "If USB-C direct does not show an image, use HDMI through H5.",
+    ],
+  },
+  {
+    id: "hp-spectre-elitebook",
+    brand: "HP",
+    family: "Spectre / EliteBook",
+    aliases: ["hp spectre", "elitebook", "惠普 spectre"],
+    yearRange: [2018, 2026],
+    connection: "USB-C / Thunderbolt direct",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "High",
+    notes: [
+      "Most high-end thin-and-light models are well suited to direct display connection.",
+      "Older business laptops may still be HDMI-only.",
+    ],
+  },
+  {
+    id: "hp-omen-victus",
+    brand: "HP",
+    family: "OMEN / Victus gaming laptops",
+    aliases: ["hp omen", "victus", "omen 16", "victus 15", "victus 16"],
+    yearRange: [2020, 2026],
+    connection: "Usually USB-C plus HDMI, but exact video support depends on the model",
+    cable: "Full-featured USB-C cable first; HDMI / H5 if the USB-C port is data-only",
+    cableKey: "usb-c-to-c",
+    fitLabel: "Medium-high",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Gaming laptops often have both HDMI and USB-C, but the USB-C port still needs video support.",
+      "If USB-C does not carry video, the HDMI path is the safer fallback.",
+    ],
+  },
+  {
+    id: "hp-pavilion-envy-older",
+    brand: "HP",
+    family: "HP Pavilion / Envy 2015-2020",
+    aliases: ["hp pavilion", "hp envy", "pavilion 15", "envy x360"],
+    yearRange: [2015, 2020],
+    connection: "Often HDMI + USB-A; some USB-C ports may not support display output",
+    cable: "H5 HDMI Adapter",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Many Pavilion and older Envy configurations include HDMI but not full USB-C video output.",
+      "H5 is the fallback when the laptop has HDMI output but cannot drive the monitor through USB-C alone.",
+    ],
+  },
+  {
+    id: "hp-probook-older",
+    brand: "HP",
+    family: "HP ProBook / older business laptops 2015-2020",
+    aliases: ["hp probook", "probook 430", "probook 440", "probook 450"],
+    yearRange: [2015, 2020],
+    connection: "Often HDMI for video; USB-C support varies by generation",
+    cable: "H5 HDMI Adapter",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Older business laptops often have HDMI even when USB-C video support is limited.",
+      "Use H5 when HDMI is present and USB-C direct connection fails.",
+    ],
+  },
+  {
+    id: "surface-laptop-pro",
+    brand: "Microsoft",
+    family: "Surface Laptop / Surface Pro",
+    aliases: ["surface laptop", "surface pro", "surface book"],
+    yearRange: [2017, 2026],
+    connection: "Surface Connect or USB-C",
+    cable:
+      "USB-C direct on newer Surface models; H5 adapter path for older Surface models without USB-C video",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium-high",
+    confidenceLabel: "Strong",
+    notes: [
+      "For Surface, the key factor is the generation and port layout, not just the brand.",
+      "USB-C versions are easier; older Surface Laptop models may need Mini DisplayPort or Surface adapter output before using H5.",
+    ],
+  },
+  {
+    id: "surface-laptop-1-2",
+    brand: "Microsoft",
+    family: "Surface Laptop 1 / 2",
+    aliases: ["surface laptop 1", "surface laptop 2", "surface laptop go", "surface pro 6"],
+    yearRange: [2017, 2019],
+    connection:
+      "Surface Connect with limited video ports; older models often rely on MiniDP or special adapters",
+    cable: "H5 HDMI Adapter after the appropriate Surface or MiniDP conversion path",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Strong",
+    notes: [
+      "These are common support cases because they are not simple USB-C direct-connect machines.",
+      "If you do not have the right Surface output adapter, H5 alone will not bypass the missing video port.",
+    ],
+  },
+  {
+    id: "asus-zenbook-rog",
+    brand: "ASUS",
+    family: "ZenBook / ROG",
+    aliases: ["asus zenbook", "zenbook", "rog", "华硕 zenbook"],
+    yearRange: [2019, 2026],
+    connection: "USB-C / Thunderbolt or HDMI",
+    cable: "Full-featured USB-C cable, or HDMI adapter cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Creator and gaming models vary a lot, so the full model matters.",
+      "If the USB-C port does not support video, HDMI is the safer choice.",
+    ],
+  },
+  {
+    id: "asus-zenbook-creator",
+    brand: "ASUS",
+    family: "ZenBook / ExpertBook / creator models",
+    aliases: ["asus zenbook pro", "zenbook s", "expertbook", "proart", "vivobook pro"],
+    yearRange: [2019, 2026],
+    connection: "USB-C / Thunderbolt or HDMI depending on model",
+    cable: "Full-featured USB-C cable first; HDMI / H5 if the USB-C port is not video-capable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "Medium-high",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "ASUS creator laptops often work directly when the USB-C port supports DisplayPort Alt Mode.",
+      "If the laptop is HDMI-first, the H5 path is still a valid fallback.",
+    ],
+  },
+  {
+    id: "asus-vivobook-older",
+    brand: "ASUS",
+    family: "ASUS VivoBook 14 / 15 2016-2020",
+    aliases: ["asus vivobook", "vivobook 15", "vivobook 14"],
+    yearRange: [2016, 2020],
+    connection: "Often HDMI + USB-A; USB-C may be data-only on budget models",
+    cable: "H5 HDMI Adapter",
+    cableKey: "h5-hdmi-adapter",
+    fitLabel: "Medium",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Many budget VivoBook models have USB-C ports that are not display-capable.",
+      "H5 is the safer support recommendation when HDMI is present and USB-C direct fails.",
+    ],
+  },
+  {
+    id: "huawei-matebook-magicbook",
+    brand: "Huawei / Honor",
+    family: "MateBook X Pro / MagicBook",
+    aliases: ["matebook x pro", "magicbook", "华为笔记本", "荣耀笔记本"],
+    yearRange: [2018, 2026],
+    connection: "USB-C direct is the main path",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Slim laptops usually work well with direct connection.",
+      "Older or entry-level models should check whether USB-C supports video output.",
+    ],
+  },
+  {
+    id: "acer-swift-modern",
+    brand: "Acer",
+    family: "Acer Swift / Swift Go 2020-2026",
+    aliases: ["acer swift", "swift 3", "swift 5", "swift go"],
+    yearRange: [2020, 2026],
+    connection: "USB-C direct on many thin-and-light models",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Swift models are more likely to support USB-C video than entry-level Aspire machines.",
+      "If the USB-C port is data-only, fall back to HDMI through H5.",
+    ],
+  },
+  {
+    id: "acer-nitro-modern",
+    brand: "Acer",
+    family: "Acer Nitro / Predator 2020-2026",
+    aliases: ["acer nitro", "nitro 5", "nitro 16", "predator"],
+    yearRange: [2020, 2026],
+    connection: "HDMI plus USB-C on many gaming models",
+    cable: "USB-C to USB-C if the port supports video; otherwise HDMI / H5",
+    cableKey: "usb-c-to-c",
+    fitLabel: "Medium-high",
+    confidenceLabel: "Brand-level",
+    notes: [
+      "Gaming models often support external displays, but the exact port capability still matters.",
+      "If the USB-C port does not expose video, HDMI through H5 is the safe fallback.",
+    ],
+  },
+  {
+    id: "samsung-galaxy-book",
+    brand: "Samsung",
+    family: "Galaxy Book",
+    aliases: ["galaxy book", "samsung book", "三星笔记本"],
+    yearRange: [2018, 2026],
+    connection: "USB-C direct is the main path",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Newer Galaxy Book models are better suited to USB-C.",
+      "For older models, it helps to confirm the exact year.",
+    ],
+  },
+  {
+    id: "lg-gram-modern",
+    brand: "LG",
+    family: "LG gram 2019-2026",
+    aliases: ["lg gram", "gram 14", "gram 16", "gram 17"],
+    yearRange: [2019, 2026],
+    connection: "USB-C direct on most recent gram models, with HDMI often present as well",
+    cable: "Full-featured USB-C cable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "LG gram laptops are usually good candidates for direct USB-C display output.",
+      "If the exact model is older or entry-level, HDMI remains the fallback path.",
+    ],
+  },
+  {
+    id: "razer-blade-modern",
+    brand: "Razer",
+    family: "Razer Blade 15 / 16",
+    aliases: ["razer blade", "blade 15", "blade 16"],
+    yearRange: [2020, 2026],
+    connection: "USB-C / Thunderbolt and HDMI are common on Blade models",
+    cable: "Full-featured USB-C cable first; HDMI / H5 if the USB-C port is not video-capable",
+    cableKey: "usb-c-to-c",
+    fitLabel: "High",
+    confidenceLabel: "Strong",
+    notes: [
+      "Most modern Blade laptops are strong direct-connect candidates.",
+      "When in doubt, the HDMI fallback is still the safer support path.",
+    ],
+  },
+];
+
+export function normalizeQuery(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}

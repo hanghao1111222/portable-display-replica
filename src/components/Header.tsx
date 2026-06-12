@@ -13,6 +13,7 @@ export function Header() {
     { to: "/products" as const, label: t.nav.sales },
     { to: "/products" as const, label: t.nav.monitors },
     { to: "/products" as const, label: t.nav.accessories },
+    { to: "/compatibility" as const, label: t.nav.compatibility },
     { to: "/reviews" as const, label: t.nav.reviews },
     { to: "/products" as const, label: t.nav.explore },
     { to: "/products" as const, label: t.nav.help },
@@ -21,7 +22,10 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl border-b border-border/40">
       <div className="mx-auto max-w-7xl px-5 lg:px-10 h-16 flex items-center justify-between gap-6">
-        <Link to="/" className="font-display font-bold text-lg tracking-tight shrink-0 active font-serif shadow-none">
+        <Link
+          to="/"
+          className="font-display font-bold text-lg tracking-tight shrink-0 active font-serif shadow-none"
+        >
           Any<span className="text-primary">king</span>
         </Link>
         <nav className="hidden lg:flex items-center gap-7 text-sm">
@@ -70,11 +74,7 @@ export function Header() {
               </span>
             )}
           </button>
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setOpen(!open)}
-            aria-label="Menu"
-          >
+          <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menu">
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
