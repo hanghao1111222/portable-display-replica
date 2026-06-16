@@ -120,6 +120,47 @@ function RootShell({ children }: { children: React.ReactNode }) {
 })(document, window, 'NextopLiveChat');`,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function () {
+  function revealNextopChat() {
+    var host = document.getElementById('nextop-chat');
+    if (host) {
+      host.style.setProperty('visibility', 'visible', 'important');
+      host.style.setProperty('display', 'block', 'important');
+      host.style.setProperty('opacity', '1', 'important');
+    }
+
+    var frame = document.querySelector('iframe[title="nextop live chat"]');
+    if (frame) {
+      frame.style.setProperty('visibility', 'visible', 'important');
+      frame.style.setProperty('display', 'block', 'important');
+      frame.style.setProperty('opacity', '1', 'important');
+    }
+  }
+
+  function startWatching() {
+    revealNextopChat();
+    var timerOne = window.setTimeout(revealNextopChat, 1000);
+    var timerTwo = window.setTimeout(revealNextopChat, 3000);
+    var observer = new MutationObserver(revealNextopChat);
+    observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true });
+
+    window.addEventListener('beforeunload', function () {
+      window.clearTimeout(timerOne);
+      window.clearTimeout(timerTwo);
+      observer.disconnect();
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    startWatching();
+  } else {
+    window.addEventListener('load', startWatching, { once: true });
+  }
+})();`,
+          }}
+        />
       </head>
       <body>
         {children}
