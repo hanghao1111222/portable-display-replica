@@ -106,6 +106,20 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(d, w, c) {
+    w.NextopLiveChatID = 'LIVECHAT:1692178196559:818246814692110336';
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments);
+    };
+    var s = d.createElement('script');
+    s.async = true;
+    s.src = 'https://livechat.nextop.com/nextop-im-sdk.min.js';
+    if (d.head) d.head.appendChild(s);
+})(document, window, 'NextopLiveChat');`,
+          }}
+        />
       </head>
       <body>
         {children}
