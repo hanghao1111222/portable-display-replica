@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LangContext";
-import { Facebook, Mail, ChevronUp, Youtube, Music2 } from "lucide-react";
+import { Facebook, Mail, ChevronUp, Youtube, Music2, Phone } from "lucide-react";
 
 export function Footer() {
   const { lang } = useLang();
@@ -18,7 +18,7 @@ export function Footer() {
     {
       title: "SUPPORT",
       links: [
-        { label: "CONTACT US", to: "mailto:support@anyking.outletsday.com", external: true },
+        { label: "CONTACT US", to: "mailto:service@anykingscreen.com", external: true },
         { label: "FAQS", to: "/reviews" },
         { label: "SHIPPING", to: "/checkout" },
         { label: "WARRANTY", to: "/products" },
@@ -84,13 +84,22 @@ export function Footer() {
               <h3 className="text-sm font-semibold tracking-[0.18em] text-slate-900">
                 GET IN TOUCH
               </h3>
-              <a
-                href="mailto:support@anyking.outletsday.com"
-                className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-sky-600"
-              >
-                <Mail className="h-5 w-5" />
-                <span>support@anyking.outletsday.com</span>
-              </a>
+              <div className="space-y-4">
+                <a
+                  href="mailto:service@anykingscreen.com"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-sky-600"
+                >
+                  <Mail className="h-5 w-5" />
+                  <span>service@anykingscreen.com</span>
+                </a>
+                <a
+                  href="tel:+18886885025"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-sky-600"
+                >
+                  <Phone className="h-5 w-5" />
+                  <span>+1 (888) 688-5025</span>
+                </a>
+              </div>
             </div>
 
             <div className="space-y-5">
