@@ -28,7 +28,7 @@ export function Footer() {
     {
       title: "INFORMATION",
       links: [
-        { label: "ABOUT US", to: "/" },
+        { label: "ABOUT US", to: "/about" },
         { label: "PRIVACY POLICY", to: "/" },
         { label: "TERMS OF SERVICE", to: "/" },
       ],

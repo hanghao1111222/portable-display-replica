@@ -62,6 +62,65 @@ export const strings = {
       p3: "We obsess over the details you'll feel — the fold that snaps with precision, the flip that moves without resistance, the angles that hold exactly where you need them. That's how we free you to focus on the big picture.",
       p4: "This is portable design with a purpose. To give you the power to rule your day — Any Screen, Anywhere, Anytime.",
     },
+    aboutPage: {
+      heroEyebrow: "About Anyking",
+      heroTitle: "We build portable screens for people who do real work everywhere.",
+      heroBody:
+        "Anyking creates portable monitor solutions that help modern professionals, travelers, students, traders, creators, and remote teams work with more space and less friction.",
+      heroCta: "Explore monitors",
+      heroSecondary: "Check compatibility",
+      introTitle: "Why we exist",
+      introBody:
+        "Most laptops are powerful enough for serious work, but the experience still gets trapped inside one small screen. We started Anyking to solve that gap: make multi-screen productivity simple, portable, and realistic for everyday life.",
+      stats: [
+        { value: "30 sec", label: "Typical setup time" },
+        { value: "2 years", label: "Limited warranty coverage" },
+        { value: "Global", label: "Shipping support footprint" },
+      ],
+      pillars: {
+        title: "What we care about",
+        items: [
+          {
+            title: "Fast setup",
+            body: "Our products are designed to go from bag to workstation quickly, without turning setup into a project.",
+          },
+          {
+            title: "Real compatibility",
+            body: "We focus on the ports people actually use, with direct-connect options and adapter paths for older laptops.",
+          },
+          {
+            title: "Purposeful design",
+            body: "Slim profiles, stable stands, and durable hinges matter because portable gear gets used in the real world.",
+          },
+          {
+            title: "Support that reduces returns",
+            body: "We want customers to get connected correctly the first time, not give up because the cable path was unclear.",
+          },
+        ],
+      },
+      audience: {
+        title: "Built for the way people work now",
+        body: "From airport layovers and client visits to classrooms, coffee shops, trading desks, and home offices, our monitors are made for people who need a bigger workspace without committing to a permanent setup.",
+        chips: [
+          "Remote work",
+          "Business travel",
+          "Students",
+          "Creative work",
+          "Sales teams",
+          "Customer support",
+        ],
+      },
+      support: {
+        title: "A practical support promise",
+        body:
+          "Compatibility is one of the biggest reasons customers hesitate or request returns. That is why we built a laptop compatibility checker and adapter guidance around real laptop models and port combinations. When an older laptop needs an extra cable such as the H5 HDMI adapter, we want that answer to be obvious before frustration starts.",
+      },
+      closing: {
+        title: "Any Screen. Anywhere. Anytime.",
+        body:
+          "That line is not just branding for us. It is the product standard we try to meet in every design, every cable decision, and every support experience.",
+      },
+    },
     reviewsSec: {
       title: "Our customers tell it better than we do!",
       sub: "Real reviews from real customers.",
@@ -250,6 +309,65 @@ export const strings = {
       p2: "優れた仕事は一つの画面の中だけでは生まれません。あなたの志は、一台のディスプレイや決まったデスクに縛られるべきではない——私たちはそう信じています。",
       p3: "精密に噛み合うフォールド、抵抗なく動くフリップ、必要な角度で確実に止まるヒンジ。指先で感じる細部に徹底的にこだわるからこそ、あなたは大きな絵に集中できます。",
       p4: "これは目的を持ったポータブルデザイン。あなたの一日を支配する力を——どんな画面も、どこでも、いつでも。",
+    },
+    aboutPage: {
+      heroEyebrow: "Anykingについて",
+      heroTitle: "本当にどこでも働く人のために、持ち運べる画面体験をつくっています。",
+      heroBody:
+        "Anykingは、現代のビジネスパーソン、出張ユーザー、学生、トレーダー、クリエイター、リモートチームのために、作業領域を広げるポータブルモニターソリューションを提供しています。",
+      heroCta: "モニターを見る",
+      heroSecondary: "互換性を確認",
+      introTitle: "私たちが存在する理由",
+      introBody:
+        "多くのノートPCは十分に高性能なのに、作業体験はまだ小さな一枚の画面に閉じ込められています。Anykingはそのギャップを埋めるために始まりました。マルチスクリーンの生産性を、もっとシンプルに、持ち運びやすく、日常で使えるものにするためです。",
+      stats: [
+        { value: "30秒", label: "一般的なセットアップ時間" },
+        { value: "2年間", label: "限定保証" },
+        { value: "世界対応", label: "出荷サポート範囲" },
+      ],
+      pillars: {
+        title: "私たちが大切にしていること",
+        items: [
+          {
+            title: "素早いセットアップ",
+            body: "バッグから取り出してすぐ作業環境に変わること。準備そのものが負担にならない設計を重視しています。",
+          },
+          {
+            title: "現実的な互換性",
+            body: "実際によく使われるポート構成を重視し、直接接続だけでなく旧型ノート向けの変換経路も考えます。",
+          },
+          {
+            title: "意味のあるデザイン",
+            body: "薄さ、安定したスタンド、丈夫なヒンジは、持ち運び製品だからこそ日常使用で差が出ます。",
+          },
+          {
+            title: "返品を減らすサポート",
+            body: "ケーブルが分かりにくいせいで接続を諦めるのではなく、最初から正しくつながる体験を目指しています。",
+          },
+        ],
+      },
+      audience: {
+        title: "今の働き方に合わせて設計",
+        body: "空港での待ち時間、客先訪問、教室、カフェ、トレーディング環境、自宅オフィスまで。固定の大型セットアップを持てない人でも、より広い作業領域を使えるように設計しています。",
+        chips: [
+          "リモートワーク",
+          "出張",
+          "学生",
+          "クリエイティブ業務",
+          "営業チーム",
+          "サポート業務",
+        ],
+      },
+      support: {
+        title: "実用的なサポートの約束",
+        body:
+          "互換性は、購入前の不安や返品理由になりやすい大きな要因です。そのためAnykingでは、実在するノートPCモデルとポート構成に基づいた互換性チェッカーとアダプター案内を整えています。旧型ノートでH5 HDMIアダプターのような追加ケーブルが必要な場合も、ユーザーが困る前に分かる状態を目指しています。",
+      },
+      closing: {
+        title: "どんな画面も。どこでも。いつでも。",
+        body:
+          "これは単なるブランドコピーではありません。設計、ケーブル選定、サポート体験のすべてで守るべき製品基準だと考えています。",
+      },
     },
     reviewsSec: {
       title: "お客様の声が、何よりの証です。",
