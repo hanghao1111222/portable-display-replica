@@ -1,180 +1,305 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Cable, FileQuestion, Headphones, Laptop, Phone, QrCode } from "lucide-react";
+import {
+  ArrowRight,
+  Cable,
+  FileText,
+  Headphones,
+  Laptop,
+  Mail,
+  Monitor,
+  Phone,
+  Search,
+  Settings,
+  ShieldCheck,
+  Wrench,
+} from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
-import { Button } from "@/components/ui/button";
+import a6Product from "@/assets/product-a6-a.jpg";
+import s10Product from "@/assets/product-s10pro-a.jpg";
+import cableGuide from "@/assets/anyking-cable-guide.png";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
     meta: [
-      { title: "Help Center - Anyking" },
+      { title: "Anyking Help Center" },
       {
         name: "description",
         content:
-          "Find setup help, compatibility guidance, cable connection tips, and direct Anyking support contact details.",
+          "Search Anyking setup guides, compatibility help, cable connection tips, troubleshooting, warranty support, and customer service contact details.",
       },
     ],
   }),
   component: HelpCenterPage,
 });
 
-const quickLinks = [
+const anchors = [
+  { label: "About Anyking", href: "#featured" },
+  { label: "Products", href: "#products" },
+  { label: "Learn & Explore", href: "#articles" },
+  { label: "Can't find answers?", href: "#support" },
+] as const;
+
+const featured = [
   {
     title: "Laptop Compatibility",
-    body: "Check whether your laptop can connect directly or needs an extra adapter cable.",
+    body: "Check if your laptop supports direct USB-C video or needs an H5 adapter cable.",
     to: "/compatibility",
     icon: Laptop,
   },
   {
-    title: "Connection Troubleshooting",
-    body: "Learn what to try when your screen does not light up, flickers, or only mirrors.",
+    title: "Cable & Port Guide",
+    body: "Understand USB-C, HDMI, USB-A power, and when each cable is required.",
     to: "/compatibility",
     icon: Cable,
   },
+] as const;
+
+const products = [
   {
-    title: "Customer Reviews",
-    body: "See how other customers use Anyking portable displays in real setups.",
-    to: "/reviews",
-    icon: FileQuestion,
+    name: "A6 Portable Monitor",
+    image: a6Product,
+    to: "/products/a6",
+  },
+  {
+    name: "S10 Pro Extender",
+    image: s10Product,
+    to: "/products/s10-pro",
+  },
+  {
+    name: "Cable Setup Guide",
+    image: cableGuide,
+    to: "/compatibility",
   },
 ] as const;
 
-const supportOptions = [
+const articleGroups = [
   {
-    label: "Customer service email",
-    value: "service@anykingscreen.com",
-    href: "mailto:service@anykingscreen.com",
+    title: "Setup & Connection",
+    icon: Settings,
+    articles: [
+      "How to connect with one USB-C cable",
+      "How to connect with HDMI and USB power",
+      "How to confirm DisplayPort Alt Mode",
+      "How to connect older laptop models with H5",
+    ],
+  },
+  {
+    title: "Troubleshooting",
+    icon: Wrench,
+    articles: [
+      "No signal or black screen",
+      "Screen flickers after connecting",
+      "Only duplicate mode appears",
+      "Laptop does not recognize the monitor",
+    ],
+  },
+  {
+    title: "Policies & Support",
+    icon: ShieldCheck,
+    articles: [
+      "Warranty support",
+      "Return and refund help",
+      "Shipping questions",
+      "Contact customer service",
+    ],
+  },
+] as const;
+
+const contactCards = [
+  {
+    title: "Let's chat",
+    body: "Use the live chat bubble for fast setup help while you are on the website.",
+    href: "#",
     icon: Headphones,
   },
   {
-    label: "Customer service phone",
-    value: "+1 (888) 688-5025",
+    title: "Call us",
+    body: "Prefer to speak with us? Call Anyking support at +1 (888) 688-5025.",
     href: "tel:+18886885025",
     icon: Phone,
   },
-] as const;
-
-const topics = [
-  "How to connect with USB-C",
-  "How to connect with HDMI",
-  "How to identify DisplayPort Alt Mode",
-  "When an H5 adapter cable is required",
-  "No signal / black screen troubleshooting",
-  "Return and warranty support",
+  {
+    title: "Email us",
+    body: "Send details to service@anykingscreen.com and our team will help with the next step.",
+    href: "mailto:service@anykingscreen.com",
+    icon: Mail,
+  },
 ] as const;
 
 function HelpCenterPage() {
   return (
     <SiteLayout>
-      <section className="border-b border-border/40 bg-[linear-gradient(180deg,#0f1114_0%,#171b22_100%)] text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-18 lg:grid-cols-[1.1fr_0.9fr] lg:px-10 lg:py-24">
-          <div className="space-y-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-primary/90">Anyking Help Center</p>
-            <h1 className="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-              Get setup help fast and send customers to the right answer.
-            </h1>
-            <p className="max-w-2xl text-base leading-8 text-white/72 md:text-lg">
-              Use this help center to check device compatibility, understand cable requirements,
-              and contact Anyking support when a customer needs one more step to get connected.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild className="rounded-full px-6">
-                <Link to="/compatibility">
-                  Check compatibility <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full border-white/20 bg-white/5 px-6 text-white hover:bg-white/12"
-              >
-                <a href="#support-contact">Contact support</a>
-              </Button>
-            </div>
-          </div>
+      <section className="relative overflow-hidden border-b border-slate-200 bg-[#f7f8fb]">
+        <div className="pointer-events-none absolute -left-28 top-20 hidden h-72 w-72 rotate-[-18deg] rounded-[42px] border border-slate-200 bg-white/70 shadow-2xl shadow-slate-200/80 lg:block">
+          <Monitor className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
+        </div>
+        <div className="pointer-events-none absolute -right-24 bottom-16 hidden h-64 w-64 rotate-[22deg] rounded-full border border-slate-200 bg-white/70 shadow-2xl shadow-slate-200/80 lg:block">
+          <Cable className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
+        </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-6 backdrop-blur-sm">
-            <div className="flex items-center gap-3 text-primary">
-              <QrCode className="h-5 w-5" />
-              <p className="text-sm font-semibold uppercase tracking-[0.2em]">Help Center QR</p>
-            </div>
-            <div className="mt-5 overflow-hidden rounded-2xl bg-white p-5">
-              <img
-                src="/help-center-qr.png"
-                alt="QR code linking to the Anyking Help Center"
-                className="mx-auto aspect-square w-full max-w-[260px] object-contain"
+        <div className="mx-auto max-w-7xl px-5 py-20 text-center lg:px-10 lg:py-28">
+          <p className="text-sm font-medium text-slate-500">Anyking Help Center</p>
+          <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
+            Welcome to Anyking Help Center
+          </h1>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-500 md:text-lg">
+            We've got you covered. Type a keyword to find answers or explore our knowledge base.
+          </p>
+
+          <form
+            className="mx-auto mt-10 flex max-w-2xl overflow-hidden rounded-full border border-slate-200 bg-white shadow-lg shadow-slate-200/70"
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <label className="sr-only" htmlFor="help-search">
+              Search help articles
+            </label>
+            <div className="flex flex-1 items-center gap-3 px-6">
+              <Search className="h-5 w-5 text-slate-400" />
+              <input
+                id="help-search"
+                type="search"
+                placeholder="Ask us anything..."
+                className="h-14 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
               />
             </div>
-            <p className="mt-4 text-sm leading-7 text-white/72">
-              QR destination: <span className="text-white">https://www.anykingscreen.com/help-center</span>
-            </p>
-          </div>
+            <button
+              type="submit"
+              className="inline-flex h-14 shrink-0 items-center gap-2 bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-8"
+            >
+              Search
+              <Search className="hidden h-4 w-4 sm:block" />
+            </button>
+          </form>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
-        <div className="grid gap-5 lg:grid-cols-3">
-          {quickLinks.map(({ title, body, to, icon: Icon }) => (
+      <nav className="sticky top-16 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-start gap-3 overflow-x-auto px-5 md:justify-center lg:px-10">
+          {anchors.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="whitespace-nowrap border-b-2 border-transparent px-4 py-5 text-sm font-semibold text-slate-500 transition hover:border-primary hover:text-slate-950"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      <section id="featured" className="mx-auto max-w-7xl px-5 py-14 lg:px-10">
+        <div className="grid gap-5 md:grid-cols-2">
+          {featured.map(({ title, body, to, icon: Icon }) => (
             <Link
               key={title}
               to={to}
-              className="group rounded-3xl border border-border bg-card p-7 transition hover:border-primary/40 hover:shadow-lg"
+              className="group min-h-[170px] overflow-hidden rounded-[8px] border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
             >
-              <Icon className="h-6 w-6 text-primary" />
-              <h2 className="mt-5 text-xl font-semibold">{title}</h2>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">{body}</p>
-              <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary">
-                Open
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+              <div className="flex h-full flex-col justify-between">
+                <div>
+                  <Icon className="h-7 w-7 text-primary" />
+                  <h2 className="mt-5 text-2xl font-bold text-slate-950">{title}</h2>
+                  <p className="mt-3 max-w-xl text-sm leading-7 text-slate-500">{body}</p>
+                </div>
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                  Learn More
+                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                </span>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-border/40 bg-slate-50">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:px-10">
-          <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-primary">Popular topics</p>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              Most customers only need one quick answer.
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">
-              Start with compatibility, cable type, and signal troubleshooting. Those are the
-              fastest ways to reduce avoidable returns and solve connection issues.
-            </p>
+      <section id="products" className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
+          <h2 className="text-center text-3xl font-bold tracking-tight text-slate-950">Products</h2>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            {["Portable Monitors", "Laptop Extenders", "Cable Setup", "Compatibility"].map((item, index) => (
+              <a
+                key={item}
+                href={index === 3 ? "/compatibility" : "#products"}
+                className={`rounded-full border px-5 py-2 text-sm font-semibold ${
+                  index === 0
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-slate-200 bg-white text-slate-500 hover:text-slate-950"
+                }`}
+              >
+                {item}
+              </a>
+            ))}
           </div>
 
-          <div className="grid gap-3">
-            {topics.map((topic) => (
-              <div
-                key={topic}
-                className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-medium text-slate-700 shadow-sm"
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {products.map((product) => (
+              <Link
+                key={product.name}
+                to={product.to}
+                className="group overflow-hidden rounded-[8px] border border-slate-200 bg-white text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
               >
-                {topic}
-              </div>
+                <div className="aspect-[4/3] bg-slate-100">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
+                <div className="px-5 py-5">
+                  <h3 className="font-semibold text-slate-950">{product.name}</h3>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="support-contact" className="mx-auto max-w-7xl px-5 py-16 lg:px-10 lg:py-20">
-        <div className="rounded-[32px] border border-border bg-card p-8 md:p-10">
-          <p className="text-xs uppercase tracking-[0.28em] text-primary">Direct support</p>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight md:text-4xl">
-            Reach Anyking support directly.
-          </h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {supportOptions.map(({ label, value, href, icon: Icon }) => (
+      <section id="articles" className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
+        <h2 className="text-center text-3xl font-bold tracking-tight text-slate-950">Learn & Explore</h2>
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {articleGroups.map(({ title, icon: Icon, articles }) => (
+            <article key={title} className="rounded-[8px] border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <Icon className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-slate-950">{title}</h3>
+              </div>
+              <div className="mt-5 divide-y divide-slate-100">
+                {articles.map((article) => (
+                  <Link
+                    key={article}
+                    to={article.includes("DisplayPort") || article.includes("H5") ? "/compatibility" : "/help-center"}
+                    className="flex items-center justify-between gap-4 py-4 text-sm font-medium text-slate-600 transition hover:text-primary"
+                  >
+                    <span>{article}</span>
+                    <FileText className="h-4 w-4 shrink-0" />
+                  </Link>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="support" className="bg-[#121722] text-white">
+        <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10 lg:py-20">
+          <div className="text-center">
+            <Headphones className="mx-auto h-12 w-12 text-primary" />
+            <h2 className="mt-5 text-3xl font-bold md:text-4xl">Can't find answers?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/70 md:text-base">
+              We are here to help at any time. Choose your preferred method to contact us.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {contactCards.map(({ title, body, href, icon: Icon }) => (
               <a
-                key={label}
+                key={title}
                 href={href}
-                className="rounded-2xl border border-border bg-background px-5 py-5 transition hover:border-primary/40"
+                className="rounded-[8px] border border-white/10 bg-white/[0.06] p-6 transition hover:border-primary/50 hover:bg-white/[0.09]"
               >
-                <div className="flex items-center gap-3">
-                  <Icon className="h-5 w-5 text-primary" />
-                  <p className="text-sm font-medium text-muted-foreground">{label}</p>
-                </div>
-                <p className="mt-3 text-lg font-semibold">{value}</p>
+                <Icon className="h-7 w-7 text-primary" />
+                <h3 className="mt-5 text-xl font-bold">{title}</h3>
+                <p className="mt-3 text-sm leading-7 text-white/70">{body}</p>
               </a>
             ))}
           </div>
