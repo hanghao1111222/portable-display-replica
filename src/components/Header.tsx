@@ -16,7 +16,7 @@ export function Header() {
     { to: "/compatibility" as const, label: t.nav.compatibility },
     { to: "/reviews" as const, label: t.nav.reviews },
     { to: "/products" as const, label: t.nav.explore },
-    { to: "/products" as const, label: t.nav.help },
+    { to: "/help-center" as const, label: t.nav.help },
   ];
 
   return (

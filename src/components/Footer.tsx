@@ -19,6 +19,7 @@ export function Footer() {
       title: "SUPPORT",
       links: [
         { label: "CONTACT US", to: "mailto:service@anykingscreen.com", external: true },
+        { label: "HELP CENTER", to: "/help-center" },
         { label: "FAQS", to: "/reviews" },
         { label: "SHIPPING", to: "/checkout" },
         { label: "WARRANTY", to: "/products" },

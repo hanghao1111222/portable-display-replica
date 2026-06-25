@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HelpCenterRouteImport } from './routes/help-center'
 import { Route as CompatibilityRouteImport } from './routes/compatibility'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AboutRouteImport } from './routes/about'
@@ -32,6 +33,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpCenterRoute = HelpCenterRouteImport.update({
+  id: '/help-center',
+  path: '/help-center',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompatibilityRoute = CompatibilityRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
+  '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reviews': typeof ReviewsRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
+  '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reviews': typeof ReviewsRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
+  '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reviews': typeof ReviewsRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/compatibility'
+    | '/help-center'
     | '/login'
     | '/register'
     | '/reviews'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/compatibility'
+    | '/help-center'
     | '/login'
     | '/register'
     | '/reviews'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/compatibility'
+    | '/help-center'
     | '/login'
     | '/register'
     | '/reviews'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CheckoutRoute: typeof CheckoutRoute
   CompatibilityRoute: typeof CompatibilityRoute
+  HelpCenterRoute: typeof HelpCenterRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ReviewsRoute: typeof ReviewsRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help-center': {
+      id: '/help-center'
+      path: '/help-center'
+      fullPath: '/help-center'
+      preLoaderRoute: typeof HelpCenterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compatibility': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CheckoutRoute: CheckoutRoute,
   CompatibilityRoute: CompatibilityRoute,
+  HelpCenterRoute: HelpCenterRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ReviewsRoute: ReviewsRoute,
