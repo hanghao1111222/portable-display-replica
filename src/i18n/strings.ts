@@ -64,61 +64,80 @@ export const strings = {
     },
     aboutPage: {
       heroEyebrow: "About Anyking",
-      heroTitle: "We build portable screens for people who do real work everywhere.",
+      heroTitle: "Any Screen. Anywhere. Anytime.",
       heroBody:
-        "Anyking creates portable monitor solutions that help modern professionals, travelers, students, traders, creators, and remote teams work with more space and less friction.",
+        "Anyking was born from a simple frustration — being tethered to a single screen when the work demands more.",
       heroCta: "Explore monitors",
       heroSecondary: "Check compatibility",
-      introTitle: "Why we exist",
+      introTitle: "Our story",
       introBody:
-        "Most laptops are powerful enough for serious work, but the experience still gets trapped inside one small screen. We started Anyking to solve that gap: make multi-screen productivity simple, portable, and realistic for everyday life.",
+        "We believe your workspace shouldn't be limited by where you are. Whether you're at your desk, in a coffee shop, on a business trip, or working from a hotel room, you deserve the same seamless multi-screen experience you'd get in a full office setup. That's the problem we set out to solve, and it's the idea behind everything we build.",
       stats: [
-        { value: "30 sec", label: "Typical setup time" },
-        { value: "2 years", label: "Limited warranty coverage" },
-        { value: "Global", label: "Shipping support footprint" },
+        { value: "76", label: "Patents in our manufacturing ecosystem" },
+        { value: "Top 1%", label: "Technical foundation in the category" },
+        { value: "Global", label: "Built for mobile professionals worldwide" },
       ],
+      whatWeDo: {
+        title: "What We Do",
+        body:
+          "Anyking designs portable extended displays that connect to your laptop in seconds. Our screens are built for people who refuse to compromise on productivity just because they're not at their desk. From remote workers and software developers to content creators and financial analysts, we make it easy to carry a second or third screen wherever you go.",
+      },
+      engineering: {
+        title: "Engineering You Can Trust",
+        body:
+          "Behind every Anyking display is a deep commitment to research and development. Our manufacturing ecosystem is backed by 76 patents, 5 registered trademarks, and 3 software copyrights — placing our technical foundation among the top 1% in the portable display industry.",
+      },
       pillars: {
-        title: "What we care about",
+        title: "Our patented technologies include",
         items: [
           {
-            title: "Fast setup",
-            body: "Our products are designed to go from bag to workstation quickly, without turning setup into a project.",
+            title: "Integrated power bank display splitters",
+            body: "Enabling extended screen setups with built-in portable power.",
           },
           {
-            title: "Real compatibility",
-            body: "We focus on the ports people actually use, with direct-connect options and adapter paths for older laptops.",
+            title: "Foldable back-panel display systems",
+            body: "Designed for ultra-portability without sacrificing stability.",
           },
           {
-            title: "Purposeful design",
-            body: "Slim profiles, stable stands, and durable hinges matter because portable gear gets used in the real world.",
+            title: "Multi-screen splitter architecture",
+            body: "Powering seamless dual and triple display configurations.",
           },
           {
-            title: "Support that reduces returns",
-            body: "We want customers to get connected correctly the first time, not give up because the cable path was unclear.",
+            title: "Tri-screen display systems",
+            body: "Advanced portable multi-monitor solutions for serious workflows.",
           },
         ],
       },
-      audience: {
-        title: "Built for the way people work now",
-        body: "From airport layovers and client visits to classrooms, coffee shops, trading desks, and home offices, our monitors are made for people who need a bigger workspace without committing to a permanent setup.",
-        chips: [
-          "Remote work",
-          "Business travel",
-          "Students",
-          "Creative work",
-          "Sales teams",
-          "Customer support",
+      quality: {
+        title: "Built for real-world reliability",
+        items: [
+          "Rigorous durability testing",
+          "Color accuracy validation",
+          "Connectivity reliability checks",
+          "Usage testing in real working scenarios",
         ],
       },
-      support: {
-        title: "A practical support promise",
+      supplyChain: {
+        title: "Our Supply Chain Advantage",
         body:
-          "Compatibility is one of the biggest reasons customers hesitate or request returns. That is why we built a laptop compatibility checker and adapter guidance around real laptop models and port combinations. When an older laptop needs an extra cable such as the H5 HDMI adapter, we want that answer to be obvious before frustration starts.",
+          "Anyking operates through a deep strategic manufacturing partnership that gives us direct access to cutting-edge display technology, dedicated production lines, and strict quality control at every stage. This isn't a typical OEM arrangement — it's a technology-driven collaboration where product design, engineering decisions, and quality standards are jointly developed and continuously refined.",
+      },
+      difference: {
+        title: "Why We're Different",
+        body:
+          "The portable display market is crowded, but most brands are doing the same thing — repackaging generic panels with minimal differentiation. Anyking takes a different approach. We invest in proprietary technology, we hold our own patents, and we treat every customer interaction as a chance to learn and improve.",
+        body2:
+          "We're not the biggest brand in portable displays. Not yet. But we're building something real — products backed by genuine engineering, a support team that actually uses what we sell, and a growing community of professionals who trust Anyking to power their mobile workspace.",
+      },
+      future: {
+        title: "Where We're Going",
+        body:
+          "Anyking is just getting started. Our roadmap includes larger display formats, higher resolutions, wireless connectivity, and deeper integration with the tools and workflows our customers use every day. We're expanding from the US market to serve professionals in Japan, Europe, and beyond.",
       },
       closing: {
         title: "Any Screen. Anywhere. Anytime.",
         body:
-          "That line is not just branding for us. It is the product standard we try to meet in every design, every cable decision, and every support experience.",
+          "Our vision hasn't changed since day one. We're not just selling screens. We're building the future of mobile productivity.",
       },
     },
     reviewsSec: {
@@ -312,61 +331,80 @@ export const strings = {
     },
     aboutPage: {
       heroEyebrow: "Anykingについて",
-      heroTitle: "本当にどこでも働く人のために、持ち運べる画面体験をつくっています。",
+      heroTitle: "どんな画面も。どこでも。いつでも。",
       heroBody:
-        "Anykingは、現代のビジネスパーソン、出張ユーザー、学生、トレーダー、クリエイター、リモートチームのために、作業領域を広げるポータブルモニターソリューションを提供しています。",
+        "Anykingは、仕事にもっと画面が必要なのに一枚の画面に縛られてしまうという、ごくシンプルな不満から生まれました。",
       heroCta: "モニターを見る",
       heroSecondary: "互換性を確認",
-      introTitle: "私たちが存在する理由",
+      introTitle: "私たちのストーリー",
       introBody:
-        "多くのノートPCは十分に高性能なのに、作業体験はまだ小さな一枚の画面に閉じ込められています。Anykingはそのギャップを埋めるために始まりました。マルチスクリーンの生産性を、もっとシンプルに、持ち運びやすく、日常で使えるものにするためです。",
+        "作業環境は、今いる場所で制限されるべきではないと私たちは考えています。デスクでも、カフェでも、出張先でも、ホテルでも、本格的なオフィスのようなマルチスクリーン体験を得るべきです。Anykingはその課題を解決するために生まれ、すべての製品はその発想から作られています。",
       stats: [
-        { value: "30秒", label: "一般的なセットアップ時間" },
-        { value: "2年間", label: "限定保証" },
-        { value: "世界対応", label: "出荷サポート範囲" },
+        { value: "76", label: "製造エコシステム内の特許数" },
+        { value: "上位1%", label: "業界内での技術基盤" },
+        { value: "グローバル", label: "世界のモバイルワーカー向け" },
       ],
+      whatWeDo: {
+        title: "私たちがしていること",
+        body:
+          "Anykingは、ノートPCに数秒で接続できるポータブル拡張ディスプレイを設計しています。デスクから離れても生産性を妥協したくない人のための製品です。リモートワーカー、ソフトウェア開発者、コンテンツクリエイター、金融アナリストまで、どこへでも二画面・三画面の作業環境を持ち運べるようにします。",
+      },
+      engineering: {
+        title: "信頼できるエンジニアリング",
+        body:
+          "Anykingのすべてのディスプレイの背後には、研究開発への深いコミットメントがあります。私たちの製造エコシステムは76件の特許、5件の登録商標、3件のソフトウェア著作権に支えられており、ポータブルディスプレイ業界でも上位1%クラスの技術基盤を築いています。",
+      },
       pillars: {
-        title: "私たちが大切にしていること",
+        title: "主な独自技術",
         items: [
           {
-            title: "素早いセットアップ",
-            body: "バッグから取り出してすぐ作業環境に変わること。準備そのものが負担にならない設計を重視しています。",
+            title: "モバイルバッテリー一体型ディスプレイスプリッター",
+            body: "ポータブル電源を内蔵し、拡張画面構成をよりシンプルにします。",
           },
           {
-            title: "現実的な互換性",
-            body: "実際によく使われるポート構成を重視し、直接接続だけでなく旧型ノート向けの変換経路も考えます。",
+            title: "折りたたみ式バックパネルディスプレイシステム",
+            body: "安定性を損なわず、高い携帯性を実現するための設計です。",
           },
           {
-            title: "意味のあるデザイン",
-            body: "薄さ、安定したスタンド、丈夫なヒンジは、持ち運び製品だからこそ日常使用で差が出ます。",
+            title: "マルチスクリーンスプリッター構造",
+            body: "デュアル・トリプル構成でスムーズな映像出力を支えます。",
           },
           {
-            title: "返品を減らすサポート",
-            body: "ケーブルが分かりにくいせいで接続を諦めるのではなく、最初から正しくつながる体験を目指しています。",
+            title: "トライスクリーンディスプレイシステム",
+            body: "高度なモバイル・マルチモニター体験を実現します。",
           },
         ],
       },
-      audience: {
-        title: "今の働き方に合わせて設計",
-        body: "空港での待ち時間、客先訪問、教室、カフェ、トレーディング環境、自宅オフィスまで。固定の大型セットアップを持てない人でも、より広い作業領域を使えるように設計しています。",
-        chips: [
-          "リモートワーク",
-          "出張",
-          "学生",
-          "クリエイティブ業務",
-          "営業チーム",
-          "サポート業務",
+      quality: {
+        title: "実際の使用に耐える品質",
+        items: [
+          "耐久性テスト",
+          "色精度の検証",
+          "接続信頼性チェック",
+          "実使用シナリオでのテスト",
         ],
       },
-      support: {
-        title: "実用的なサポートの約束",
+      supplyChain: {
+        title: "私たちのサプライチェーン優位性",
         body:
-          "互換性は、購入前の不安や返品理由になりやすい大きな要因です。そのためAnykingでは、実在するノートPCモデルとポート構成に基づいた互換性チェッカーとアダプター案内を整えています。旧型ノートでH5 HDMIアダプターのような追加ケーブルが必要な場合も、ユーザーが困る前に分かる状態を目指しています。",
+          "Anykingは、最先端のディスプレイ技術、専用生産ライン、厳格な品質管理へ直接アクセスできる戦略的な製造パートナーシップのもとで運営されています。これは一般的なOEMではなく、製品設計、エンジニアリング判断、品質基準を共同で磨き続ける技術主導の協業です。",
+      },
+      difference: {
+        title: "私たちが違う理由",
+        body:
+          "ポータブルディスプレイ市場は混み合っていますが、多くのブランドは似たような汎用パネルを再包装しているだけです。Anykingは違います。独自技術へ投資し、自社特許を持ち、すべての顧客接点を学びと改善の機会として扱います。",
+        body2:
+          "私たちはまだ最大手ではありません。けれど本物を作っています。確かなエンジニアリングに支えられた製品、実際に製品を使うサポートチーム、そしてAnykingを信頼してくれるプロフェッショナルのコミュニティを育てています。",
+      },
+      future: {
+        title: "これから向かう先",
+        body:
+          "Anykingはまだ始まったばかりです。今後はより大きな画面サイズ、高解像度、ワイヤレス接続、そして日々のツールやワークフローとのより深い統合を進めていきます。米国市場から、日本、欧州、その先へと広げていきます。",
       },
       closing: {
         title: "どんな画面も。どこでも。いつでも。",
         body:
-          "これは単なるブランドコピーではありません。設計、ケーブル選定、サポート体験のすべてで守るべき製品基準だと考えています。",
+          "私たちのビジョンは初日から変わっていません。私たちは単に画面を売っているのではなく、モバイル生産性の未来をつくっています。",
       },
     },
     reviewsSec: {

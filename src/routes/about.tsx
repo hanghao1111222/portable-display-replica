@@ -1,6 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { ArrowRight, CheckCircle2, Globe2, MonitorSmartphone, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Cpu,
+  Globe2,
+  Layers3,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useLang } from "@/i18n/LangContext";
 import { Button } from "@/components/ui/button";
@@ -19,7 +27,7 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-const icons = [MonitorSmartphone, Globe2, ShieldCheck, CheckCircle2] as const;
+const icons = [Sparkles, Cpu, Layers3, ShieldCheck] as const;
 
 function AboutPage() {
   const { t } = useLang();
@@ -81,11 +89,27 @@ function AboutPage() {
             <h2 className="text-3xl font-bold md:text-5xl">{t.aboutPage.introTitle}</h2>
           </div>
           <div className="space-y-6 text-lg leading-8 text-foreground/80">
-            <p className="text-2xl font-medium text-foreground">{t.brand.p1}</p>
             <p>{t.aboutPage.introBody}</p>
-            <p>{t.brand.p2}</p>
-            <p>{t.brand.p3}</p>
-            <p className="text-foreground">{t.brand.p4}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-8 lg:px-10">
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-lg border border-border/60 bg-foreground px-7 py-8 text-background md:px-10 md:py-10">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary">— Product positioning</p>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.whatWeDo.title}</h2>
+            <p className="mt-5 text-sm leading-7 text-background/76 md:text-base">
+              {t.aboutPage.whatWeDo.body}
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border/60 bg-card/80 px-7 py-8 md:px-10 md:py-10">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary">— Technical foundation</p>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.engineering.title}</h2>
+            <p className="mt-5 text-sm leading-7 text-foreground/72 md:text-base">
+              {t.aboutPage.engineering.body}
+            </p>
           </div>
         </div>
       </section>
@@ -93,7 +117,7 @@ function AboutPage() {
       <section className="mx-auto max-w-7xl px-5 py-8 lg:px-10">
         <div className="rounded-lg border border-border/60 bg-card/70 p-7 md:p-10">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-primary">— Design principles</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-primary">— Patented technology</p>
             <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.pillars.title}</h2>
           </div>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -116,35 +140,56 @@ function AboutPage() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-5 py-18 lg:grid-cols-[1fr_0.9fr] lg:px-10">
         <div className="rounded-lg border border-border/60 bg-foreground px-7 py-8 text-background md:px-10 md:py-10">
-          <p className="text-xs uppercase tracking-[0.3em] text-primary">— Audience</p>
-          <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.audience.title}</h2>
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-background/76 md:text-base">
-            {t.aboutPage.audience.body}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {t.aboutPage.audience.chips.map((chip) => (
-              <span
-                key={chip}
-                className="rounded-full border border-background/20 bg-background/6 px-4 py-2 text-xs font-medium tracking-[0.18em] text-background/84"
+          <p className="text-xs uppercase tracking-[0.3em] text-primary">— Quality standards</p>
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.quality.title}</h2>
+          <div className="mt-6 grid gap-3">
+            {t.aboutPage.quality.items.map((item) => (
+              <div
+                key={item}
+                className="flex items-start gap-3 rounded-lg border border-background/12 bg-background/6 px-4 py-4"
               >
-                {chip}
-              </span>
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <span className="text-sm leading-7 text-background/82 md:text-base">{item}</span>
+              </div>
             ))}
           </div>
         </div>
 
         <div className="rounded-lg border border-border/60 bg-card/80 px-7 py-8 md:px-10 md:py-10">
-          <p className="text-xs uppercase tracking-[0.3em] text-primary">— Support</p>
-          <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.support.title}</h2>
+          <p className="text-xs uppercase tracking-[0.3em] text-primary">— Manufacturing</p>
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.supplyChain.title}</h2>
           <p className="mt-5 text-sm leading-7 text-foreground/72 md:text-base">
-            {t.aboutPage.support.body}
+            {t.aboutPage.supplyChain.body}
           </p>
-          <div className="mt-7">
-            <Button asChild variant="outline" className="rounded-full px-6">
-              <Link to="/compatibility">
-                Open compatibility checker <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-8 lg:px-10">
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-border/60 bg-card/70 p-7 md:p-10">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary">— Brand difference</p>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.difference.title}</h2>
+            <p className="mt-5 text-sm leading-7 text-foreground/72 md:text-base">
+              {t.aboutPage.difference.body}
+            </p>
+            <p className="mt-4 text-sm leading-7 text-foreground/72 md:text-base">
+              {t.aboutPage.difference.body2}
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border/60 bg-card/80 p-7 md:p-10">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary">— Roadmap</p>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">{t.aboutPage.future.title}</h2>
+            <p className="mt-5 text-sm leading-7 text-foreground/72 md:text-base">
+              {t.aboutPage.future.body}
+            </p>
+            <div className="mt-7">
+              <Button asChild variant="outline" className="rounded-full px-6">
+                <Link to="/compatibility">
+                  {t.aboutPage.heroSecondary} <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
