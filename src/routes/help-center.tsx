@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/accordion";
 import a6Product from "@/assets/product-a6-a.jpg";
 import s10Product from "@/assets/product-s10pro-a.jpg";
-import cableGuide from "@/assets/anyking-cable-guide.png";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
@@ -76,11 +75,6 @@ const products = [
     name: "S10 Pro Extender",
     image: s10Product,
     to: "/products/s10-pro",
-  },
-  {
-    name: "Cable Setup Guide",
-    image: cableGuide,
-    to: "/compatibility",
   },
 ] as const;
 
@@ -323,10 +317,10 @@ function HelpCenterPage() {
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
           <h2 className="text-center text-3xl font-bold tracking-tight text-slate-950">Products</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            {["Portable Monitors", "Laptop Extenders", "Cable Setup", "Compatibility"].map((item, index) => (
+            {["Portable Monitors", "Laptop Extenders", "Compatibility"].map((item, index) => (
               <a
                 key={item}
-                href={index === 3 ? "/compatibility" : "#products"}
+                href={index === 2 ? "/compatibility" : "#products"}
                 className={`rounded-full border px-5 py-2 text-sm font-semibold ${
                   index === 0
                     ? "border-primary bg-primary text-primary-foreground"
@@ -338,19 +332,19 @@ function HelpCenterPage() {
             ))}
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
             {products.map((product) => (
               <Link
                 key={product.name}
                 to={product.to}
                 className="group overflow-hidden rounded-[8px] border border-slate-200 bg-white text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
               >
-                <div className="aspect-[4/3] bg-slate-100">
+                <div className="aspect-[16/10] bg-white p-4">
                   <img
                     src={product.image}
                     alt={product.name}
                     loading="lazy"
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    className="h-full w-full object-contain object-center transition duration-500 group-hover:scale-[1.02]"
                   />
                 </div>
                 <div className="px-5 py-5">
