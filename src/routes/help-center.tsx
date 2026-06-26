@@ -5,7 +5,6 @@ import {
   Headphones,
   Laptop,
   Mail,
-  Monitor,
   Phone,
   Search,
   Settings,
@@ -21,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 import a6Product from "@/assets/product-a6-a.jpg";
 import s10Product from "@/assets/product-s10pro-a.jpg";
+import helpCenterHero from "@/assets/help-center-compatibility-hero.jpg";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
@@ -218,59 +218,66 @@ const contactCards = [
 function HelpCenterPage() {
   return (
     <SiteLayout>
-      <section className="relative overflow-hidden border-b border-slate-200 bg-[#f7f8fb]">
-        <div className="pointer-events-none absolute -left-28 top-20 hidden h-72 w-72 rotate-[-18deg] rounded-[42px] border border-slate-200 bg-white/70 shadow-2xl shadow-slate-200/80 lg:block">
-          <Monitor className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
-        </div>
-        <div className="pointer-events-none absolute -right-24 bottom-16 hidden h-64 w-64 rotate-[22deg] rounded-full border border-slate-200 bg-white/70 shadow-2xl shadow-slate-200/80 lg:block">
-          <Cable className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
-        </div>
+      <section className="border-b border-slate-200 bg-[#f7f8fb]">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:px-10 lg:py-20">
+          <div className="text-center lg:text-left">
+            <p className="text-sm font-medium text-slate-500">Anyking Help Center</p>
+            <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-950 md:text-6xl lg:mx-0">
+              How can we help?
+            </h1>
+            <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-500 md:text-lg lg:mx-0">
+              Search setup guides, troubleshooting articles, warranty support, and laptop compatibility answers.
+            </p>
 
-        <div className="mx-auto max-w-7xl px-5 py-20 text-center lg:px-10 lg:py-28">
-          <p className="text-sm font-medium text-slate-500">Anyking Help Center</p>
-          <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
-            How can we help?
-          </h1>
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-500 md:text-lg">
-            Search setup guides, troubleshooting articles, warranty support, and laptop compatibility answers.
-          </p>
-
-          <form
-            className="mx-auto mt-10 flex max-w-2xl overflow-hidden rounded-full border border-slate-200 bg-white shadow-lg shadow-slate-200/70"
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <label className="sr-only" htmlFor="help-search">
-              Search help articles
-            </label>
-            <div className="flex flex-1 items-center gap-3 px-6">
-              <Search className="h-5 w-5 text-slate-400" />
-              <input
-                id="help-search"
-                type="search"
-                placeholder="Search for articles..."
-                className="h-14 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
-              />
-            </div>
-            <button
-              type="submit"
-              className="inline-flex h-14 shrink-0 items-center gap-2 bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-8"
+            <form
+              className="mx-auto mt-10 flex max-w-2xl overflow-hidden rounded-full border border-slate-200 bg-white shadow-lg shadow-slate-200/70 lg:mx-0"
+              onSubmit={(event) => event.preventDefault()}
             >
-              Search
-              <Search className="hidden h-4 w-4 sm:block" />
-            </button>
-          </form>
-
-          <div className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {quickLinks.map(({ label, href, icon: Icon }) => (
-              <a
-                key={label}
-                href={href}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-primary/60 hover:text-slate-950"
+              <label className="sr-only" htmlFor="help-search">
+                Search help articles
+              </label>
+              <div className="flex flex-1 items-center gap-3 px-6">
+                <Search className="h-5 w-5 text-slate-400" />
+                <input
+                  id="help-search"
+                  type="search"
+                  placeholder="Search for articles..."
+                  className="h-14 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
+                />
+              </div>
+              <button
+                type="submit"
+                className="inline-flex h-14 shrink-0 items-center gap-2 bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-8"
               >
-                <Icon className="h-4 w-4 text-primary" />
-                {label}
-              </a>
-            ))}
+                Search
+                <Search className="hidden h-4 w-4 sm:block" />
+              </button>
+            </form>
+
+            <div className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-2 lg:mx-0 lg:grid-cols-4">
+              {quickLinks.map(({ label, href, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-primary/60 hover:text-slate-950"
+                >
+                  <Icon className="h-4 w-4 text-primary" />
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-4 rounded-[32px] bg-gradient-to-br from-primary/10 via-white to-slate-100 blur-2xl" />
+            <figure className="relative overflow-hidden rounded-[24px] border border-slate-200 bg-white p-3 shadow-[0_30px_80px_rgba(15,23,42,0.12)]">
+              <img
+                src={helpCenterHero}
+                alt="Anyking compatibility and setup reference showing multiple devices supported by the portable display"
+                className="h-full w-full rounded-[18px] object-contain object-center"
+                loading="eager"
+              />
+            </figure>
           </div>
         </div>
       </section>
