@@ -218,9 +218,19 @@ const contactCards = [
 function HelpCenterPage() {
   return (
     <SiteLayout>
-      <section className="border-b border-slate-200 bg-[#f7f8fb]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:px-10 lg:py-20">
-          <div className="text-center lg:text-left">
+      <section className="relative min-h-[680px] overflow-hidden border-b border-slate-200 bg-[#f7f8fb] md:min-h-[720px]">
+        <img
+          src={helpCenterHero}
+          alt="Anyking portable display compatibility setup with laptops, game consoles, phones, tablets, and desktop devices"
+          className="absolute inset-0 h-full w-full object-cover object-[52%_18%] md:object-[52%_8%]"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.88)_34%,rgba(255,255,255,0.24)_68%,rgba(255,255,255,0.08)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.94)_44%,rgba(255,255,255,0.52)_72%,rgba(255,255,255,0.92)_100%)] md:hidden" />
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#f7f8fb] to-transparent" />
+
+        <div className="relative mx-auto flex min-h-[680px] max-w-7xl items-start px-5 py-16 md:min-h-[720px] lg:px-10 lg:py-20">
+          <div className="max-w-2xl text-center lg:text-left">
             <p className="text-sm font-medium text-slate-500">Anyking Help Center</p>
             <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-950 md:text-6xl lg:mx-0">
               How can we help?
@@ -230,7 +240,7 @@ function HelpCenterPage() {
             </p>
 
             <form
-              className="mx-auto mt-10 flex max-w-2xl overflow-hidden rounded-full border border-slate-200 bg-white shadow-lg shadow-slate-200/70 lg:mx-0"
+              className="mx-auto mt-4 flex max-w-lg overflow-hidden rounded-full border border-slate-200 bg-white shadow-lg shadow-slate-200/70 lg:mx-0"
               onSubmit={(event) => event.preventDefault()}
             >
               <label className="sr-only" htmlFor="help-search">
@@ -242,43 +252,33 @@ function HelpCenterPage() {
                   id="help-search"
                   type="search"
                   placeholder="Search for articles..."
-                  className="h-14 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
+                  className="h-12 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
                 />
               </div>
               <button
                 type="submit"
-                className="inline-flex h-14 shrink-0 items-center gap-2 bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-8"
+                className="inline-flex h-12 shrink-0 items-center gap-2 bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-8"
               >
                 Search
                 <Search className="hidden h-4 w-4 sm:block" />
               </button>
             </form>
-
-            <div className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-2 lg:mx-0 lg:grid-cols-4">
-              {quickLinks.map(({ label, href, icon: Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-primary/60 hover:text-slate-950"
-                >
-                  <Icon className="h-4 w-4 text-primary" />
-                  {label}
-                </a>
-              ))}
-            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-[32px] bg-gradient-to-br from-primary/10 via-white to-slate-100 blur-2xl" />
-            <figure className="relative overflow-hidden rounded-[24px] border border-slate-200 bg-white p-3 shadow-[0_30px_80px_rgba(15,23,42,0.12)]">
-              <img
-                src={helpCenterHero}
-                alt="Anyking compatibility and setup reference showing multiple devices supported by the portable display"
-                className="h-full w-full rounded-[18px] object-contain object-center"
-                loading="eager"
-              />
-            </figure>
-          </div>
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-3 px-5 py-5 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
+          {quickLinks.map(({ label, href, icon: Icon }) => (
+            <a
+              key={label}
+              href={href}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-primary/60 hover:text-slate-950"
+            >
+              <Icon className="h-4 w-4 text-primary" />
+              {label}
+            </a>
+          ))}
         </div>
       </section>
 
