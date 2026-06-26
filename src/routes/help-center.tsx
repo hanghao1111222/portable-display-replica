@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Cable,
-  FileText,
   Headphones,
   Laptop,
   Mail,
@@ -14,6 +13,12 @@ import {
   Wrench,
 } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import a6Product from "@/assets/product-a6-a.jpg";
 import s10Product from "@/assets/product-s10pro-a.jpg";
 import cableGuide from "@/assets/anyking-cable-guide.png";
@@ -33,10 +38,17 @@ export const Route = createFileRoute("/help-center")({
 });
 
 const anchors = [
-  { label: "About Anyking", href: "#featured" },
+  { label: "Setup Guide", href: "#featured" },
   { label: "Products", href: "#products" },
-  { label: "Learn & Explore", href: "#articles" },
+  { label: "FAQ Articles", href: "#articles" },
   { label: "Can't find answers?", href: "#support" },
+] as const;
+
+const quickLinks = [
+  { label: "Setup Guide", href: "#articles", icon: Settings },
+  { label: "Troubleshooting", href: "#troubleshooting", icon: Wrench },
+  { label: "Warranty & Returns", href: "#warranty-returns", icon: ShieldCheck },
+  { label: "Contact Support", href: "#support", icon: Headphones },
 ] as const;
 
 const featured = [
@@ -72,35 +84,118 @@ const products = [
   },
 ] as const;
 
-const articleGroups = [
+const faqGroups = [
   {
-    title: "Setup & Connection",
-    icon: Settings,
+    id: "getting-started",
+    title: "Getting Started",
+    description: "Unbox, connect, and set up your Anyking portable display.",
     articles: [
-      "How to connect with one USB-C cable",
-      "How to connect with HDMI and USB power",
-      "How to confirm DisplayPort Alt Mode",
-      "How to connect older laptop models with H5",
+      {
+        question: "What should I check before the first setup?",
+        answer:
+          "Confirm the monitor, bracket, video cable, and power cable are in the box. Then check your laptop ports. A full-featured USB-C or Thunderbolt port can usually connect directly. HDMI-only or older USB-A laptops usually need HDMI video plus USB power, and some older models may need the H5 adapter cable.",
+      },
+      {
+        question: "How do I connect with one USB-C cable?",
+        answer:
+          "Use the supplied USB-C cable from a laptop USB-C or Thunderbolt port that supports video output to the Anyking display. If the screen turns on but shows no signal, the port may only support charging/data and you should use HDMI plus USB power instead.",
+      },
+      {
+        question: "How do I connect with HDMI?",
+        answer:
+          "Plug HDMI from the laptop to the Anyking display for video, then connect USB-C power from the laptop, charger, or USB-A power cable. HDMI carries the picture only, so the display still needs a separate power connection.",
+      },
+      {
+        question: "How do I enable extended display on Windows or Mac?",
+        answer:
+          "On Windows, open Display Settings and choose Extend these displays. On Mac, open System Settings, choose Displays, then arrange the screens and turn off mirroring if needed.",
+      },
+      {
+        question: "Which devices are compatible?",
+        answer:
+          "Most modern laptops with Thunderbolt, full-featured USB-C, HDMI, Mini DisplayPort, or DisplayPort can work with Anyking. For model-specific cable advice, use the compatibility checker and search your laptop model.",
+      },
     ],
   },
   {
+    id: "troubleshooting",
     title: "Troubleshooting",
-    icon: Wrench,
+    description: "Fix common signal, display, and power issues quickly.",
     articles: [
-      "No signal or black screen",
-      "Screen flickers after connecting",
-      "Only duplicate mode appears",
-      "Laptop does not recognize the monitor",
+      {
+        question: "Why does the display show no signal or a black screen?",
+        answer:
+          "First reconnect the cable firmly, then verify the laptop output supports video. If you are using USB-C and the screen has power but no image, try HDMI plus USB power. If your laptop is an older model without direct video support, use the H5 adapter cable.",
+      },
+      {
+        question: "What should I do if the screen flickers or flashes?",
+        answer:
+          "Flickering is often caused by unstable power or a low-bandwidth cable. Use the original cable, connect an external charger if needed, lower the refresh rate to 60Hz, and avoid USB hubs during setup.",
+      },
+      {
+        question: "Why are the colors or resolution incorrect?",
+        answer:
+          "Open your laptop display settings and choose the recommended resolution for the Anyking screen. If colors look washed out, switch the color profile back to default and reconnect the display after saving the setting.",
+      },
+      {
+        question: "Why won't the monitor turn on?",
+        answer:
+          "Check whether the power cable is connected to a port that can supply enough power. HDMI alone cannot power the monitor. Try a wall charger, another USB-C cable, or another USB-A power source.",
+      },
+      {
+        question: "Why are the USB ports not working?",
+        answer:
+          "USB hub functions need a data-capable USB connection, not only HDMI. Connect the USB cable between the laptop and display, then reconnect the accessory after the monitor is detected.",
+      },
     ],
   },
   {
-    title: "Policies & Support",
-    icon: ShieldCheck,
+    id: "warranty-returns",
+    title: "Warranty & Returns",
+    description: "Warranty coverage, replacements, and return guidance.",
     articles: [
-      "Warranty support",
-      "Return and refund help",
-      "Shipping questions",
-      "Contact customer service",
+      {
+        question: "How long is the warranty?",
+        answer:
+          "Anyking products include a 12-month warranty for eligible manufacturing defects. Keep your order number and product photos ready so support can verify the case faster.",
+      },
+      {
+        question: "How do I request a replacement?",
+        answer:
+          "Contact support with your order number, laptop model, connection method, and a short video or photo of the issue. If the problem is caused by laptop port compatibility, support may send the correct H5 adapter cable instead of replacing the full product.",
+      },
+      {
+        question: "What is the return policy?",
+        answer:
+          "Return eligibility depends on order channel, purchase date, and product condition. Contact support before returning so the team can confirm whether a cable solution, replacement, or return is the best next step.",
+      },
+      {
+        question: "How long does a replacement take?",
+        answer:
+          "After support confirms the issue and shipping address, replacement timing depends on inventory and local carrier speed. The team will share the next step by email.",
+      },
+    ],
+  },
+  {
+    id: "account-orders",
+    title: "Account & Orders",
+    description: "Order tracking, delivery, and shipping address help.",
+    articles: [
+      {
+        question: "How do I track my order?",
+        answer:
+          "Use the tracking link from your order confirmation email. If you cannot find it, email service@anykingscreen.com with your order number and purchase platform.",
+      },
+      {
+        question: "What if tracking says delivered but I did not receive it?",
+        answer:
+          "Check your mailbox, front desk, parcel locker, and neighbors first. If the package is still missing, contact the carrier and then send support your order number and tracking screenshot.",
+      },
+      {
+        question: "Can I change my shipping address?",
+        answer:
+          "Contact support as soon as possible. Address changes can only be made before the order ships. Once shipped, the carrier may need to handle any redirect request.",
+      },
     ],
   },
 ] as const;
@@ -140,10 +235,10 @@ function HelpCenterPage() {
         <div className="mx-auto max-w-7xl px-5 py-20 text-center lg:px-10 lg:py-28">
           <p className="text-sm font-medium text-slate-500">Anyking Help Center</p>
           <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
-            Welcome to Anyking Help Center
+            How can we help?
           </h1>
           <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-500 md:text-lg">
-            We've got you covered. Type a keyword to find answers or explore our knowledge base.
+            Search setup guides, troubleshooting articles, warranty support, and laptop compatibility answers.
           </p>
 
           <form
@@ -158,7 +253,7 @@ function HelpCenterPage() {
               <input
                 id="help-search"
                 type="search"
-                placeholder="Ask us anything..."
+                placeholder="Search for articles..."
                 className="h-14 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
               />
             </div>
@@ -170,6 +265,19 @@ function HelpCenterPage() {
               <Search className="hidden h-4 w-4 sm:block" />
             </button>
           </form>
+
+          <div className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {quickLinks.map(({ label, href, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-primary/60 hover:text-slate-950"
+              >
+                <Icon className="h-4 w-4 text-primary" />
+                {label}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -255,26 +363,54 @@ function HelpCenterPage() {
       </section>
 
       <section id="articles" className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
-        <h2 className="text-center text-3xl font-bold tracking-tight text-slate-950">Learn & Explore</h2>
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {articleGroups.map(({ title, icon: Icon, articles }) => (
-            <article key={title} className="rounded-[8px] border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="flex items-center gap-3">
-                <Icon className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-bold text-slate-950">{title}</h3>
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">FAQ Articles</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950">Learn & Explore</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500">
+            Follow the most common support paths first. Each answer includes the next step if your laptop needs a
+            different cable or adapter.
+          </p>
+        </div>
+        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+          {faqGroups.map(({ id, title, description, articles }) => (
+            <article id={id} key={title} className="rounded-[8px] border border-slate-200 bg-white p-6 shadow-sm">
+              <div>
+                <h3 className="text-xl font-bold text-slate-950">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">{description}</p>
               </div>
-              <div className="mt-5 divide-y divide-slate-100">
-                {articles.map((article) => (
-                  <Link
-                    key={article}
-                    to={article.includes("DisplayPort") || article.includes("H5") ? "/compatibility" : "/help-center"}
-                    className="flex items-center justify-between gap-4 py-4 text-sm font-medium text-slate-600 transition hover:text-primary"
+              <Accordion type="single" collapsible className="mt-5 divide-y divide-slate-100">
+                {articles.map((article, index) => (
+                  <AccordionItem
+                    key={article.question}
+                    value={`${id}-${index}`}
+                    className="border-b-0"
                   >
-                    <span>{article}</span>
-                    <FileText className="h-4 w-4 shrink-0" />
-                  </Link>
+                    <AccordionTrigger className="py-4 text-left text-sm font-semibold text-slate-800 hover:text-primary hover:no-underline">
+                      {article.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-5 text-sm leading-7 text-slate-500">
+                      <p>{article.answer}</p>
+                      <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-4">
+                        <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                          Was this helpful?
+                        </span>
+                        <button
+                          type="button"
+                          className="rounded-full border border-slate-200 px-4 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-primary hover:text-primary"
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded-full border border-slate-200 px-4 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-primary hover:text-primary"
+                        >
+                          No
+                        </button>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </div>
+              </Accordion>
             </article>
           ))}
         </div>
