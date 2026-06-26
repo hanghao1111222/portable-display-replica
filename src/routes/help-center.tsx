@@ -237,42 +237,149 @@ function HelpCenterPage() {
               className="w-full select-none object-contain"
               loading="eager"
             />
-            <div className="absolute left-1/2 top-[12%] z-10 w-[30%] min-w-[250px] -translate-x-1/2 rounded-[8px] border border-white/20 bg-slate-950/78 p-3 text-white shadow-2xl shadow-slate-950/30 backdrop-blur-md sm:top-[14%] sm:p-4 lg:top-[15%]">
-              <p className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-                Anyking Support
-              </p>
+            <div className="pointer-events-none absolute inset-0 hidden md:block">
+              <div className="pointer-events-auto absolute left-[6.6%] top-[3.5%] h-[52%] w-[31.2%] overflow-hidden rounded-[3px] border border-slate-950/20 bg-slate-950/84 text-white shadow-xl backdrop-blur-[2px]">
+                <div className="h-full bg-[radial-gradient(circle_at_20%_18%,rgba(250,180,40,0.22),transparent_32%),linear-gradient(135deg,rgba(15,23,42,0.95),rgba(15,23,42,0.72))] px-4 py-3">
+                  <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
+                    <span className="h-3 w-1 rounded-full bg-primary" />
+                    Topics
+                  </p>
+                  <div className="mt-5 grid gap-2">
+                    {quickLinks.slice(0, 3).map(({ label, href, icon: Icon }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        className="group flex items-center justify-between rounded-[6px] border border-white/12 bg-white/10 px-3 py-2 text-[11px] font-semibold text-white transition hover:border-primary/70 hover:bg-primary hover:text-primary-foreground"
+                      >
+                        <span className="flex min-w-0 items-center gap-2">
+                          <Icon className="h-3.5 w-3.5 shrink-0 text-primary group-hover:text-primary-foreground" />
+                          <span className="truncate">{label}</span>
+                        </span>
+                        <ArrowRight className="h-3 w-3 shrink-0" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <a
+                  href="#articles"
+                  className="absolute inset-x-0 bottom-0 flex h-[20%] items-center justify-center bg-white text-[11px] font-bold uppercase tracking-[0.08em] text-slate-950 transition hover:text-primary"
+                >
+                  Top Topics
+                </a>
+              </div>
+
+              <div className="pointer-events-auto absolute left-[40.3%] top-[3.5%] h-[51%] w-[28.9%] overflow-hidden rounded-[3px] border border-slate-950/20 bg-slate-950/86 text-white shadow-2xl backdrop-blur-[2px]">
+                <div className="h-full bg-[radial-gradient(circle_at_75%_8%,rgba(250,180,40,0.28),transparent_28%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.68))] px-4 py-3 text-center">
+                  <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-primary">Anyking</p>
+                  <h2 className="mt-2 text-lg font-bold tracking-tight text-white lg:text-xl">
+                    Welcome to Help Center
+                  </h2>
+                  <p className="mx-auto mt-1 max-w-[19rem] text-[10px] leading-4 text-white/72">
+                    Search setup guides, cable help, and warranty support.
+                  </p>
+                  <form
+                    className="mx-auto mt-3 flex max-w-[19rem] overflow-hidden rounded-[5px] bg-white"
+                    onSubmit={(event) => event.preventDefault()}
+                  >
+                    <label className="sr-only" htmlFor="help-search">
+                      Search help articles
+                    </label>
+                    <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
+                      <Search className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                      <input
+                        id="help-search"
+                        type="search"
+                        placeholder="Search articles..."
+                        className="h-8 min-w-0 flex-1 bg-transparent text-[11px] text-slate-800 outline-none placeholder:text-slate-400"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="inline-flex h-8 shrink-0 items-center justify-center bg-primary px-4 text-[11px] font-semibold text-primary-foreground transition hover:bg-primary/90"
+                    >
+                      Search
+                    </button>
+                  </form>
+                  <div className="mt-2 flex items-center justify-center gap-4 text-[10px] font-semibold text-white/85">
+                    <a href="/" className="hover:text-primary">
+                      Official Website
+                    </a>
+                    <a href="#support" className="hover:text-primary">
+                      Contact Us
+                    </a>
+                  </div>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 grid h-[16%] grid-cols-2 bg-white text-[10px] font-bold uppercase tracking-[0.04em] text-slate-500">
+                  <a href="/about" className="flex items-center justify-center transition hover:text-primary">
+                    About Anyking
+                  </a>
+                  <a href="/compatibility" className="flex items-center justify-center transition hover:text-primary">
+                    Check Compatibility
+                  </a>
+                </div>
+              </div>
+
+              <div className="pointer-events-auto absolute left-[71.8%] top-[3.5%] h-[52%] w-[27.7%] overflow-hidden rounded-[3px] border border-slate-950/20 bg-slate-950/84 text-white shadow-xl backdrop-blur-[2px]">
+                <div className="h-full bg-[radial-gradient(circle_at_78%_18%,rgba(250,180,40,0.24),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.9),rgba(15,23,42,0.64))] px-4 py-3">
+                  <div className="flex items-center justify-end gap-3 text-[10px] font-semibold text-white/80">
+                    <a href="#articles" className="hover:text-primary">
+                      FAQ
+                    </a>
+                    <a href="#support" className="hover:text-primary">
+                      Sign In
+                    </a>
+                  </div>
+                  <div className="mt-4 max-w-[15rem]">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Need help?</p>
+                    <h3 className="mt-1.5 text-base font-bold leading-5 text-white lg:text-lg lg:leading-6">
+                      Our team can help you connect.
+                    </h3>
+                    <p className="mt-1.5 text-[10px] leading-4 text-white/72">
+                      Get fast help for cable setup, no signal, H5 adapters, and returns.
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href="#support"
+                  className="absolute inset-x-0 bottom-0 flex h-[18%] items-center bg-white px-4 text-[11px] font-bold uppercase tracking-[0.07em] text-slate-600 transition hover:text-primary"
+                >
+                  Can't find answers?
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-[8px] border border-slate-200 bg-white p-4 shadow-sm md:hidden">
               <form
-                className="mt-2 flex overflow-hidden rounded-full bg-white"
+                className="flex overflow-hidden rounded-full border border-slate-200 bg-white"
                 onSubmit={(event) => event.preventDefault()}
               >
-                <label className="sr-only" htmlFor="help-search">
+                <label className="sr-only" htmlFor="mobile-help-search">
                   Search help articles
                 </label>
-                <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
-                  <Search className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                <div className="flex min-w-0 flex-1 items-center gap-2 px-4">
+                  <Search className="h-4 w-4 shrink-0 text-slate-400" />
                   <input
-                    id="help-search"
+                    id="mobile-help-search"
                     type="search"
-                    placeholder="Search help..."
-                    className="h-8 min-w-0 flex-1 bg-transparent text-[11px] text-slate-800 outline-none placeholder:text-slate-400"
+                    placeholder="Search help articles..."
+                    className="h-11 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="inline-flex h-8 shrink-0 items-center justify-center bg-primary px-3 text-[11px] font-semibold text-primary-foreground transition hover:bg-primary/90"
+                  className="inline-flex h-11 shrink-0 items-center justify-center bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
                 >
                   Search
                 </button>
               </form>
-
-              <div className="mt-2 grid grid-cols-2 gap-1.5">
+              <div className="mt-3 grid grid-cols-2 gap-2">
                 {quickLinks.map(({ label, href, icon: Icon }) => (
                   <a
                     key={label}
                     href={href}
-                    className="inline-flex h-7 items-center justify-center gap-1 rounded-[6px] border border-white/15 bg-white/10 px-2 text-[10px] font-semibold text-white transition hover:border-primary/70 hover:bg-primary hover:text-primary-foreground"
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[6px] border border-slate-200 px-3 text-xs font-semibold text-slate-700 transition hover:border-primary hover:text-primary"
                   >
-                    <Icon className="h-3 w-3 shrink-0 text-primary" />
+                    <Icon className="h-4 w-4 shrink-0 text-primary" />
                     <span className="truncate">{label}</span>
                   </a>
                 ))}
