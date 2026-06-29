@@ -1,3 +1,4 @@
+import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -20,7 +21,6 @@ import {
 } from "@/components/ui/accordion";
 import a6Product from "@/assets/product-a6-a.jpg";
 import s10Product from "@/assets/product-s10pro-a.jpg";
-import helpCenterHero from "@/assets/help-center-screen-hero.jpg";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
@@ -215,191 +215,293 @@ const contactCards = [
   },
 ] as const;
 
+function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function HighlightText({ text, highlight }: { text: string; highlight: string }) {
+  if (!highlight.trim()) {
+    return <>{text}</>;
+  }
+  const regex = new RegExp(`(${escapeRegExp(highlight)})`, "gi");
+  const parts = text.split(regex);
+  return (
+    <>
+      {parts.map((part, index) =>
+        regex.test(part) ? (
+          <mark key={index} className="bg-primary/20 text-primary font-semibold rounded px-0.5">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
 function HelpCenterPage() {
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const el = document.getElementById("articles");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const filteredFaqGroups = React.useMemo(() => {
+    if (!searchQuery.trim()) return faqGroups;
+    const query = searchQuery.toLowerCase();
+
+    return faqGroups
+      .map((group) => {
+        const matchingArticles = group.articles.filter(
+          (article) =>
+            article.question.toLowerCase().includes(query) ||
+            article.answer.toLowerCase().includes(query)
+        );
+        return {
+          ...group,
+          articles: matchingArticles,
+        };
+      })
+      .filter((group) => group.articles.length > 0);
+  }, [searchQuery]);
+
+  React.useEffect(() => {
+    const input = document.getElementById("helpSearch");
+    if (!input) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (document.activeElement !== input) return;
+
+      const spans = document.querySelectorAll(".keys-grid span");
+      if (spans.length === 0) return;
+
+      // Remove active class from any previously highlighted keys
+      spans.forEach((span) => span.classList.remove("active"));
+
+      if (e.key === " ") {
+        const spacebar = document.querySelector(".keys-grid .spacebar");
+        if (spacebar) spacebar.classList.add("active");
+      } else {
+        // Highlight a random letter key index
+        const letterIndices = [
+          // row 2
+          13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+          // row 3
+          27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+          // row 4
+          40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+        ];
+        const randomIndex = letterIndices[Math.floor(Math.random() * letterIndices.length)];
+        if (spans[randomIndex]) {
+          spans[randomIndex].classList.add("active");
+        }
+      }
+    };
+
+    const handleKeyUp = () => {
+      const spans = document.querySelectorAll(".keys-grid span");
+      spans.forEach((span) => span.classList.remove("active"));
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
   return (
     <SiteLayout>
-      <section className="overflow-hidden border-b border-slate-200 bg-[#f7f8fb]">
-        <div className="mx-auto max-w-7xl px-5 pb-12 pt-14 lg:px-10 lg:pb-16 lg:pt-18">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-medium text-slate-500">Anyking Help Center</p>
-            <h1 className="mt-5 text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
-              How can we help?
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-500 md:text-lg">
-              Search setup guides, troubleshooting articles, warranty support, and laptop compatibility answers.
-            </p>
+      {/* ===== 3D Triple-Screen Hero ===== */}
+      <section className="triple-screen-hero-container">
+        {/* Title above the device */}
+        <div className="hero-title-area">
+          <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-400 to-amber-300">Welcome to ANYKING Help Center</h1>
+          <p className="text-muted-foreground">We've got you covered for every connection question.</p>
+        </div>
+
+        {/* 3D Device */}
+        <div className="triple-screen-device">
+          {/* Metal bracket behind screens */}
+          <div className="extender-bracket" />
+
+          {/* Left screen: macOS Display Connection Assistant */}
+          <div className="extender-monitor left-monitor">
+            <div className="monitor-hinge hinge-left" />
+            <div className="screen-bezel side-bezel">
+              <div className="screen-display side-display">
+                <div className="screen-gloss" />
+                <div className="screen-content side-screen-content">
+                  <div className="mac-window">
+                    <div className="mac-titlebar">
+                      <div className="mac-dots">
+                        <span className="mac-dot red" />
+                        <span className="mac-dot yellow" />
+                        <span className="mac-dot green" />
+                      </div>
+                      <span className="mac-title">Connection.app</span>
+                    </div>
+                    <div className="mac-body">
+                      <div className="mac-sidebar">
+                        <div className="sidebar-item active">Overview</div>
+                        <div className="sidebar-item">USB-C Guide</div>
+                        <div className="sidebar-item">HDMI Guide</div>
+                      </div>
+                      <div className="mac-content">
+                        <div>
+                          <h4>No Display Signal?</h4>
+                          <p>
+                            If your screen stays black or shows "No Signal", check your port features.
+                          </p>
+                        </div>
+                        <a href="#articles" className="mac-action-btn">
+                          View guides
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="extender-cable left-cable" />
           </div>
 
-          <div className="relative mx-auto mt-8 max-w-6xl">
-            <img
-              src={helpCenterHero}
-              alt="Anyking triple screen portable monitor setup used as an interactive help center display"
-              className="w-full select-none object-contain"
-              loading="eager"
-            />
-            <div className="pointer-events-none absolute inset-0 hidden md:block">
-              <div className="pointer-events-auto absolute left-[6.6%] top-[3.5%] h-[52%] w-[31.2%] overflow-hidden rounded-[3px] border border-slate-950/20 bg-slate-950/84 text-white shadow-xl backdrop-blur-[2px]">
-                <div className="h-full bg-[radial-gradient(circle_at_20%_18%,rgba(250,180,40,0.22),transparent_32%),linear-gradient(135deg,rgba(15,23,42,0.95),rgba(15,23,42,0.72))] px-4 py-3">
-                  <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
-                    <span className="h-3 w-1 rounded-full bg-primary" />
-                    Topics
-                  </p>
-                  <div className="mt-5 grid gap-2">
-                    {quickLinks.slice(0, 3).map(({ label, href, icon: Icon }) => (
-                      <a
-                        key={label}
-                        href={href}
-                        className="group flex items-center justify-between rounded-[6px] border border-white/12 bg-white/10 px-3 py-2 text-[11px] font-semibold text-white transition hover:border-primary/70 hover:bg-primary hover:text-primary-foreground"
-                      >
-                        <span className="flex min-w-0 items-center gap-2">
-                          <Icon className="h-3.5 w-3.5 shrink-0 text-primary group-hover:text-primary-foreground" />
-                          <span className="truncate">{label}</span>
-                        </span>
-                        <ArrowRight className="h-3 w-3 shrink-0" />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <a
-                  href="#articles"
-                  className="absolute inset-x-0 bottom-0 flex h-[20%] items-center justify-center bg-white text-[11px] font-bold uppercase tracking-[0.08em] text-slate-950 transition hover:text-primary"
-                >
-                  Top Topics
-                </a>
-              </div>
-
-              <div className="pointer-events-auto absolute left-[40.3%] top-[3.5%] h-[51%] w-[28.9%] overflow-hidden rounded-[3px] border border-slate-950/20 bg-slate-950/86 text-white shadow-2xl backdrop-blur-[2px]">
-                <div className="h-full bg-[radial-gradient(circle_at_75%_8%,rgba(250,180,40,0.28),transparent_28%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.68))] px-4 py-3 text-center">
-                  <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-primary">Anyking</p>
-                  <h2 className="mt-2 text-lg font-bold tracking-tight text-white lg:text-xl">
-                    Welcome to Help Center
-                  </h2>
-                  <p className="mx-auto mt-1 max-w-[19rem] text-[10px] leading-4 text-white/72">
-                    Search setup guides, cable help, and warranty support.
-                  </p>
-                  <form
-                    className="mx-auto mt-3 flex max-w-[19rem] overflow-hidden rounded-[5px] bg-white"
-                    onSubmit={(event) => event.preventDefault()}
-                  >
-                    <label className="sr-only" htmlFor="help-search">
-                      Search help articles
-                    </label>
-                    <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
-                      <Search className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+          {/* Center screen: Apple Spotlight-style Search */}
+          <div className="extender-monitor center-monitor">
+            <div className="screen-bezel laptop-screen-bezel">
+              <div className="camera-notch" />
+              <div className="screen-display center-display">
+                <div className="screen-gloss" />
+                <div className="screen-content center-screen-content">
+                  <div className="search-glass-panel search-only-panel">
+                    <form className="help-search-spotlight" onSubmit={handleSearchSubmit}>
+                      <Search className="spotlight-search-icon" />
                       <input
-                        id="help-search"
+                        id="helpSearch"
                         type="search"
-                        placeholder="Search articles..."
-                        className="h-8 min-w-0 flex-1 bg-transparent text-[11px] text-slate-800 outline-none placeholder:text-slate-400"
+                        placeholder="Search connection guides..."
+                        className="help-search-input-spotlight"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                       />
+                      <span className="spotlight-shortcut">↵ Enter</span>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right screen: macOS Compatibility Diagnostics */}
+          <div className="extender-monitor right-monitor">
+            <div className="monitor-hinge hinge-right" />
+            <div className="screen-bezel side-bezel">
+              <div className="screen-display side-display">
+                <div className="screen-gloss" />
+                <div className="screen-content side-screen-content">
+                  <div className="mac-window">
+                    <div className="mac-titlebar">
+                      <div className="mac-dots">
+                        <span className="mac-dot red" />
+                        <span className="mac-dot yellow" />
+                        <span className="mac-dot green" />
+                      </div>
+                      <span className="mac-title">Diagnostics.app</span>
                     </div>
-                    <button
-                      type="submit"
-                      className="inline-flex h-8 shrink-0 items-center justify-center bg-primary px-4 text-[11px] font-semibold text-primary-foreground transition hover:bg-primary/90"
-                    >
-                      Search
-                    </button>
-                  </form>
-                  <div className="mt-2 flex items-center justify-center gap-4 text-[10px] font-semibold text-white/85">
-                    <a href="/" className="hover:text-primary">
-                      Official Website
-                    </a>
-                    <a href="#support" className="hover:text-primary">
-                      Contact Us
-                    </a>
+                    <div className="mac-body">
+                      <div className="mac-sidebar">
+                        <div className="sidebar-item active">Hardware</div>
+                        <div className="sidebar-item">Ports</div>
+                        <div className="sidebar-item">Adapter</div>
+                      </div>
+                      <div className="mac-content">
+                        <div>
+                          <h4>Device Checker</h4>
+                          <p>
+                            Verify if your laptop model supports direct USB-C or requires an H5 adapter.
+                          </p>
+                        </div>
+                        <a href="/compatibility" className="mac-action-btn">
+                          Check model
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 grid h-[16%] grid-cols-2 bg-white text-[10px] font-bold uppercase tracking-[0.04em] text-slate-500">
-                  <a href="/about" className="flex items-center justify-center transition hover:text-primary">
-                    About Anyking
-                  </a>
-                  <a href="/compatibility" className="flex items-center justify-center transition hover:text-primary">
-                    Check Compatibility
-                  </a>
-                </div>
-              </div>
-
-              <div className="pointer-events-auto absolute left-[71.8%] top-[3.5%] h-[52%] w-[27.7%] overflow-hidden rounded-[3px] border border-slate-950/20 bg-slate-950/84 text-white shadow-xl backdrop-blur-[2px]">
-                <div className="h-full bg-[radial-gradient(circle_at_78%_18%,rgba(250,180,40,0.24),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.9),rgba(15,23,42,0.64))] px-4 py-3">
-                  <div className="flex items-center justify-end gap-3 text-[10px] font-semibold text-white/80">
-                    <a href="#articles" className="hover:text-primary">
-                      FAQ
-                    </a>
-                    <a href="#support" className="hover:text-primary">
-                      Sign In
-                    </a>
-                  </div>
-                  <div className="mt-4 max-w-[15rem]">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Need help?</p>
-                    <h3 className="mt-1.5 text-base font-bold leading-5 text-white lg:text-lg lg:leading-6">
-                      Our team can help you connect.
-                    </h3>
-                    <p className="mt-1.5 text-[10px] leading-4 text-white/72">
-                      Get fast help for cable setup, no signal, H5 adapters, and returns.
-                    </p>
-                  </div>
-                </div>
-                <a
-                  href="#support"
-                  className="absolute inset-x-0 bottom-0 flex h-[18%] items-center bg-white px-4 text-[11px] font-bold uppercase tracking-[0.07em] text-slate-600 transition hover:text-primary"
-                >
-                  Can't find answers?
-                </a>
               </div>
             </div>
+            <div className="extender-cable right-cable" />
+          </div>
 
-            <div className="mt-5 rounded-[8px] border border-slate-200 bg-white p-4 shadow-sm md:hidden">
-              <form
-                className="flex overflow-hidden rounded-full border border-slate-200 bg-white"
-                onSubmit={(event) => event.preventDefault()}
-              >
-                <label className="sr-only" htmlFor="mobile-help-search">
-                  Search help articles
-                </label>
-                <div className="flex min-w-0 flex-1 items-center gap-2 px-4">
-                  <Search className="h-4 w-4 shrink-0 text-slate-400" />
-                  <input
-                    id="mobile-help-search"
-                    type="search"
-                    placeholder="Search help articles..."
-                    className="h-11 min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="inline-flex h-11 shrink-0 items-center justify-center bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-                >
-                  Search
-                </button>
-              </form>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                {quickLinks.map(({ label, href, icon: Icon }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[6px] border border-slate-200 px-3 text-xs font-semibold text-slate-700 transition hover:border-primary hover:text-primary"
-                  >
-                    <Icon className="h-4 w-4 shrink-0 text-primary" />
-                    <span className="truncate">{label}</span>
-                  </a>
-                ))}
+          {/* Laptop base (keyboard deck) */}
+          <div className="laptop-base">
+            <div className="keyboard-area">
+              <div className="keys-grid">
+                <div className="key-row row-1"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div className="key-row row-2"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div className="key-row row-3"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div className="key-row row-4"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div className="key-row row-5"><span></span><span></span><span></span><span className="spacebar"></span><span></span><span></span><span></span></div>
               </div>
             </div>
+            <div className="trackpad"></div>
           </div>
         </div>
+
+        {/* Ambient shadow */}
+        <div className="device-shadow-reflection" />
+
+        {/* Nav links below device */}
+        <nav className="hero-nav-links">
+          <a href="/">About ANYKING</a>
+          <span className="nav-divider"></span>
+          <a href="/products">Products</a>
+          <span className="nav-divider"></span>
+          <a href="#articles">Learn &amp; Explore</a>
+          <span className="nav-divider"></span>
+          <a href="#support">Can't find answers?</a>
+        </nav>
       </section>
 
-      <nav className="sticky top-16 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-start gap-3 overflow-x-auto px-5 md:justify-center lg:px-10">
-          {anchors.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap border-b-2 border-transparent px-4 py-5 text-sm font-semibold text-slate-500 transition hover:border-primary hover:text-slate-950"
-            >
-              {item.label}
-            </a>
-          ))}
+      {/* Sticky anchor nav */}
+      <nav className="sticky top-16 z-30 border-b border-border/40 bg-background/85 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 lg:px-10 h-14">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-2">
+            {anchors.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="whitespace-nowrap border-b-2 border-transparent px-3 py-4 text-xs font-semibold text-muted-foreground transition hover:border-primary hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+          {/* Quick search input in sticky nav */}
+          <div className="relative hidden sm:block w-64">
+            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search FAQs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-full border border-border/50 bg-white/5 py-1.5 pl-9 pr-8 text-xs text-foreground placeholder-muted-foreground/60 focus:border-primary focus:bg-white/10 focus:outline-none transition"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2.5 top-2.5 h-4 w-4 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground text-xs"
+              >
+                ✕
+              </button>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -409,13 +511,13 @@ function HelpCenterPage() {
             <Link
               key={title}
               to={to}
-              className="group min-h-[170px] overflow-hidden rounded-[8px] border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
+              className="group min-h-[170px] overflow-hidden rounded-xl border border-border/40 bg-card/60 p-7 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-card/85 hover:border-border/80 hover:shadow-xl backdrop-blur-sm"
             >
               <div className="flex h-full flex-col justify-between">
                 <div>
                   <Icon className="h-7 w-7 text-primary" />
-                  <h2 className="mt-5 text-2xl font-bold text-slate-950">{title}</h2>
-                  <p className="mt-3 max-w-xl text-sm leading-7 text-slate-500">{body}</p>
+                  <h2 className="mt-5 text-2xl font-bold text-foreground">{title}</h2>
+                  <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">{body}</p>
                 </div>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                   Learn More
@@ -427,18 +529,18 @@ function HelpCenterPage() {
         </div>
       </section>
 
-      <section id="products" className="border-y border-slate-200 bg-slate-50">
+      <section id="products" className="border-y border-border/30 bg-secondary/15 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
-          <h2 className="text-center text-3xl font-bold tracking-tight text-slate-950">Products</h2>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">Products</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {["Portable Monitors", "Laptop Extenders", "Compatibility"].map((item, index) => (
               <a
                 key={item}
                 href={index === 2 ? "/compatibility" : "#products"}
-                className={`rounded-full border px-5 py-2 text-sm font-semibold ${
+                className={`rounded-full border px-5 py-2 text-sm font-semibold transition ${
                   index === 0
                     ? "border-primary bg-primary text-primary-foreground"
-                    : "border-slate-200 bg-white text-slate-500 hover:text-slate-950"
+                    : "border-border/50 bg-card/85 text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {item}
@@ -451,9 +553,9 @@ function HelpCenterPage() {
               <Link
                 key={product.name}
                 to={product.to}
-                className="group overflow-hidden rounded-[8px] border border-slate-200 bg-white text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl"
+                className="group overflow-hidden rounded-xl border border-border/40 bg-card/60 text-center shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-card/85 hover:border-border/80 hover:shadow-xl backdrop-blur-sm"
               >
-                <div className="aspect-[16/10] bg-white p-4">
+                <div className="aspect-[16/10] p-4 bg-white/5">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -462,7 +564,7 @@ function HelpCenterPage() {
                   />
                 </div>
                 <div className="px-5 py-5">
-                  <h3 className="font-semibold text-slate-950">{product.name}</h3>
+                  <h3 className="font-semibold text-foreground">{product.name}</h3>
                 </div>
               </Link>
             ))}
@@ -473,58 +575,83 @@ function HelpCenterPage() {
       <section id="articles" className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">FAQ Articles</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950">Learn & Explore</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground">Learn & Explore</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
             Follow the most common support paths first. Each answer includes the next step if your laptop needs a
             different cable or adapter.
           </p>
+          {searchQuery && (
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs text-primary font-medium">
+              Showing search results for "{searchQuery}"
+              <button onClick={() => setSearchQuery("")} className="hover:text-white transition ml-1">✕</button>
+            </div>
+          )}
         </div>
+
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
-          {faqGroups.map(({ id, title, description, articles }) => (
-            <article id={id} key={title} className="rounded-[8px] border border-slate-200 bg-white p-6 shadow-sm">
-              <div>
-                <h3 className="text-xl font-bold text-slate-950">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500">{description}</p>
-              </div>
-              <Accordion type="single" collapsible className="mt-5 divide-y divide-slate-100">
-                {articles.map((article, index) => (
-                  <AccordionItem
-                    key={article.question}
-                    value={`${id}-${index}`}
-                    className="border-b-0"
-                  >
-                    <AccordionTrigger className="py-4 text-left text-sm font-semibold text-slate-800 hover:text-primary hover:no-underline">
-                      {article.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-5 text-sm leading-7 text-slate-500">
-                      <p>{article.answer}</p>
-                      <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-4">
-                        <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                          Was this helpful?
-                        </span>
-                        <button
-                          type="button"
-                          className="rounded-full border border-slate-200 px-4 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-primary hover:text-primary"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          type="button"
-                          className="rounded-full border border-slate-200 px-4 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-primary hover:text-primary"
-                        >
-                          No
-                        </button>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </article>
-          ))}
+          {filteredFaqGroups.length > 0 ? (
+            filteredFaqGroups.map(({ id, title, description, articles }) => (
+              <article id={id} key={title} className="rounded-xl border border-border/40 bg-card/65 p-6 shadow-sm backdrop-blur-sm">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+                </div>
+                <Accordion type="single" collapsible className="mt-5 divide-y divide-border/20">
+                  {articles.map((article, index) => (
+                    <AccordionItem
+                      key={article.question}
+                      value={`${id}-${index}`}
+                      className="border-b-0"
+                    >
+                      <AccordionTrigger className="py-4 text-left text-sm font-semibold text-foreground/90 hover:text-primary hover:no-underline">
+                        <HighlightText text={article.question} highlight={searchQuery} />
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-5 text-sm leading-7 text-muted-foreground">
+                        <p>
+                          <HighlightText text={article.answer} highlight={searchQuery} />
+                        </p>
+                        <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-border/20 pt-4">
+                          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground/60">
+                            Was this helpful?
+                          </span>
+                          <button
+                            type="button"
+                            className="rounded-full border border-border/50 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary hover:bg-primary/10 hover:text-primary"
+                          >
+                            Yes
+                          </button>
+                          <button
+                            type="button"
+                            className="rounded-full border border-border/50 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary hover:bg-primary/10 hover:text-primary"
+                          >
+                            No
+                          </button>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </article>
+            ))
+          ) : (
+            <div className="col-span-full rounded-xl border border-border/40 bg-card/60 p-12 text-center backdrop-blur-md">
+              <Search className="mx-auto h-12 w-12 text-muted-foreground/60" />
+              <h3 className="mt-4 text-lg font-bold text-foreground">No matches found</h3>
+              <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
+                We couldn't find any articles matching "{searchQuery}". Try using different keywords or scroll down to get direct support.
+              </p>
+              <button
+                onClick={() => setSearchQuery("")}
+                className="mt-6 rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition"
+              >
+                Clear search query
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      <section id="support" className="bg-[#121722] text-white">
+      <section id="support" className="bg-secondary/15 border-t border-border/30 text-white">
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10 lg:py-20">
           <div className="text-center">
             <Headphones className="mx-auto h-12 w-12 text-primary" />
@@ -534,18 +661,35 @@ function HelpCenterPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {contactCards.map(({ title, body, href, icon: Icon }) => (
               <a
                 key={title}
                 href={href}
-                className="rounded-[8px] border border-white/10 bg-white/[0.06] p-6 transition hover:border-primary/50 hover:bg-white/[0.09]"
+                className="rounded-xl border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:border-primary/50 hover:bg-white/[0.08] flex flex-col justify-between"
               >
-                <Icon className="h-7 w-7 text-primary" />
-                <h3 className="mt-5 text-xl font-bold">{title}</h3>
-                <p className="mt-3 text-sm leading-7 text-white/70">{body}</p>
+                <div>
+                  <Icon className="h-7 w-7 text-primary" />
+                  <h3 className="mt-5 text-xl font-bold text-white">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-white/60">{body}</p>
+                </div>
               </a>
             ))}
+
+            {/* QR Code Quick Support Card */}
+            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-6 flex flex-col items-center justify-between text-center">
+              <div className="w-full flex flex-col items-center">
+                <img
+                  src="/help-center-qr.png"
+                  alt="Support QR Code"
+                  className="w-24 h-24 bg-white p-1 rounded-lg shadow-lg"
+                />
+                <h3 className="mt-4 text-lg font-bold text-white">Scan for Support</h3>
+                <p className="mt-2 text-xs leading-5 text-white/60">
+                  Scan to load mobile connection guides and chat directly on WhatsApp/WeChat.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
