@@ -19,8 +19,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import a6Product from "@/assets/product-a6-a.jpg";
-import s10Product from "@/assets/product-s10pro-a.jpg";
+import { helpCenterArticles } from "@/data/helpCenterArticles";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
@@ -65,18 +64,11 @@ const featured = [
   },
 ] as const;
 
-const products = [
-  {
-    name: "A6 Portable Monitor",
-    image: a6Product,
-    to: "/products/a6",
-  },
-  {
-    name: "S10 Pro Extender",
-    image: s10Product,
-    to: "/products/s10-pro",
-  },
-] as const;
+const products = helpCenterArticles.map((article) => ({
+  name: article.shortName,
+  image: article.image,
+  slug: article.slug,
+})) as const;
 
 const faqGroups = [
   {
@@ -461,16 +453,6 @@ function HelpCenterPage() {
         {/* Ambient shadow */}
         <div className="device-shadow-reflection" />
 
-        {/* Nav links below device */}
-        <nav className="hero-nav-links">
-          <a href="/">About ANYKING</a>
-          <span className="nav-divider"></span>
-          <a href="/products">Products</a>
-          <span className="nav-divider"></span>
-          <a href="#articles">Learn &amp; Explore</a>
-          <span className="nav-divider"></span>
-          <a href="#support">Can't find answers?</a>
-        </nav>
       </section>
 
       {/* Sticky anchor nav */}
@@ -556,7 +538,8 @@ function HelpCenterPage() {
             {products.map((product) => (
               <Link
                 key={product.name}
-                to={product.to}
+                to="/help-articles/$article"
+                params={{ article: product.slug }}
                 className="group overflow-hidden rounded-xl border border-border/40 bg-card/60 text-center shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-card/85 hover:border-border/80 hover:shadow-xl backdrop-blur-sm"
               >
                 <div className="aspect-[16/10] p-4 bg-white/5">
@@ -665,7 +648,7 @@ function HelpCenterPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
             {contactCards.map(({ title, body, href, icon: Icon }) => (
               <a
                 key={title}
@@ -679,21 +662,6 @@ function HelpCenterPage() {
                 </div>
               </a>
             ))}
-
-            {/* QR Code Quick Support Card */}
-            <div className="flex flex-col items-center justify-between rounded-xl border border-border/60 bg-card/85 p-6 text-center shadow-sm">
-              <div className="w-full flex flex-col items-center">
-                <img
-                  src="/help-center-qr.png"
-                  alt="Support QR Code"
-                  className="w-24 h-24 bg-white p-1 rounded-lg shadow-lg"
-                />
-                <h3 className="mt-4 text-lg font-bold text-foreground">Scan for Support</h3>
-                <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                  Scan to load mobile connection guides and chat directly on WhatsApp/WeChat.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
