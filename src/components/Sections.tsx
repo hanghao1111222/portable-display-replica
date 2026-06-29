@@ -59,7 +59,7 @@ export function ReviewsSection() {
   };
 
   return (
-    <section className="border-y border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(246,245,241,0.92))] py-24 text-foreground">
+    <section className="border-y border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,248,251,0.94))] py-24 text-foreground">
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <div className="text-center max-w-4xl mx-auto space-y-6">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
@@ -330,7 +330,7 @@ export function VideoShowcase() {
   const { t } = useLang();
 
   return (
-    <section className="mx-auto max-w-7xl space-y-32 border-t border-border/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.8),rgba(245,244,240,0.85))] px-5 py-24 lg:px-10">
+    <section className="mx-auto max-w-7xl space-y-32 border-t border-border/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(245,247,250,0.9))] px-5 py-24 lg:px-10">
       {/* Header */}
       <div className="flex flex-col items-center text-center space-y-4 mb-8">
         <span className="text-xs uppercase tracking-[0.3em] text-primary">

@@ -22,7 +22,7 @@ function ReviewsPage() {
   const { t } = useLang();
   return (
     <SiteLayout>
-      <section className="border-b border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,246,242,0.94))] text-foreground">
+      <section className="border-b border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.995),rgba(246,248,251,0.96))] text-foreground">
         <div className="mx-auto max-w-7xl px-5 lg:px-10 pt-20 pb-16 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             {t.reviewsSec.title}
