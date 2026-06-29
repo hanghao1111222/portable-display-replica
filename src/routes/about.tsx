@@ -67,15 +67,15 @@ function AboutPage() {
             height={1024}
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,10,16,0.92)_0%,rgba(8,10,16,0.78)_38%,rgba(8,10,16,0.25)_75%,rgba(8,10,16,0)_100%)]" />
+          <div className="about-hero-overlay absolute inset-0" />
         </div>
         <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-5 py-28 lg:px-10 lg:py-40">
-          <motion.div {...fadeUp} className="max-w-2xl space-y-7 text-white">
+          <motion.div {...fadeUp} className="about-hero-copy max-w-2xl space-y-7">
             <p className={`${eyebrow} text-primary`}>— About Anyking</p>
             <h1 className="text-4xl font-bold leading-[1.05] md:text-6xl lg:text-7xl">
               Any Screen.<br />Anywhere.<br />Anytime.
             </h1>
-            <p className="max-w-xl text-base leading-8 text-white/75 md:text-lg">
+            <p className="max-w-xl text-base leading-8 md:text-lg">
               Work demands more screens — but you shouldn't be tied to a desk to get them.
               Anyking builds portable extended displays for the people who move, ship, and
               create on their own terms.
@@ -89,7 +89,7 @@ function AboutPage() {
               <Button
                 asChild
                 variant="outline"
-                className="rounded-full border-white/30 bg-white/5 px-6 text-white hover:bg-white/15"
+                className="about-outline-button rounded-full px-6"
               >
                 <Link to="/compatibility">Check compatibility</Link>
               </Button>
@@ -417,25 +417,25 @@ function AboutPage() {
             loading="lazy"
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,16,0.85)_0%,rgba(8,10,16,0.78)_55%,rgba(8,10,16,0.92)_100%)]" />
+          <div className="about-vision-overlay absolute inset-0" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-5 py-24 text-white lg:px-10 lg:py-32">
+        <div className="about-vision-copy relative mx-auto max-w-7xl px-5 py-24 lg:px-10 lg:py-32">
           <motion.div {...fadeUp} className="max-w-3xl space-y-6">
             <p className={`${eyebrow} text-primary`}>— 07 / Future Vision</p>
             <h2 className="text-3xl font-bold leading-tight md:text-5xl">
               Bigger surfaces. Wireless signal. Borderless work.
             </h2>
-            <p className="text-base leading-8 text-white/75 md:text-lg">
+            <p className="text-base leading-8 md:text-lg">
               We're investing in larger portable formats, higher resolutions, wireless
               connectivity, and deeper integration with the tools mobile professionals
               already use — and taking Anyking far beyond the US market.
             </p>
-            <div className="flex flex-wrap gap-2 pt-2 text-xs uppercase tracking-[0.2em] text-white/65">
+            <div className="about-vision-tags flex flex-wrap gap-2 pt-2 text-xs uppercase tracking-[0.2em]">
               {["Larger formats", "Higher resolution", "Wireless", "Workflow integration", "Global"].map(
                 (t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-white/20 bg-white/5 px-3 py-1.5"
+                    className="rounded-full px-3 py-1.5"
                   >
                     {t}
                   </span>
@@ -455,7 +455,7 @@ function AboutPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="rounded-full border-white/30 bg-white/5 px-6 text-white hover:bg-white/15"
+                  className="about-outline-button rounded-full px-6"
                 >
                   <Link to="/compatibility">Check compatibility</Link>
                 </Button>

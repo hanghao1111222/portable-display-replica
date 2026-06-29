@@ -59,7 +59,7 @@ export function ReviewsSection() {
   };
 
   return (
-    <section className="bg-foreground text-background py-24">
+    <section className="border-y border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(246,245,241,0.92))] py-24 text-foreground">
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <div className="text-center max-w-4xl mx-auto space-y-6">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
@@ -72,9 +72,9 @@ export function ReviewsSection() {
             </span>
             <TrustStars rating={reviewStats.average} size={28} />
           </div>
-          <div className="flex items-center justify-center gap-2 text-sm md:text-base text-background/70">
+          <div className="flex items-center justify-center gap-2 text-sm md:text-base text-muted-foreground">
             <span>based on</span>
-            <span className="underline underline-offset-4 font-medium text-background">
+            <span className="font-medium text-foreground underline underline-offset-4">
               {reviewStats.totalLabel}
             </span>
             <span>reviews</span>
@@ -86,14 +86,14 @@ export function ReviewsSection() {
           <button
             onClick={() => scrollBy(-1)}
             aria-label="Previous reviews"
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 w-12 h-12 rounded-full bg-background text-foreground items-center justify-center shadow-lg hover:scale-105 transition"
+            className="hidden md:flex absolute left-0 top-1/2 z-10 h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background text-foreground shadow-lg transition hover:scale-105"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scrollBy(1)}
             aria-label="Next reviews"
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 w-12 h-12 rounded-full bg-background text-foreground items-center justify-center shadow-lg hover:scale-105 transition"
+            className="hidden md:flex absolute right-0 top-1/2 z-10 h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background text-foreground shadow-lg transition hover:scale-105"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -110,14 +110,14 @@ export function ReviewsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.4, delay: (i % 4) * 0.06 }}
-                className="snap-start shrink-0 w-[300px] md:w-[360px] bg-background/[0.04] border border-background/10 rounded-2xl p-7 flex flex-col"
+                className="snap-start flex w-[300px] shrink-0 flex-col rounded-2xl border border-border/60 bg-card/95 p-7 shadow-sm md:w-[360px]"
               >
                 <TrustStars rating={r.stars} size={22} />
                 <h3 className="mt-5 text-xl font-bold">{r.product}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-background/80 line-clamp-6">
+                <p className="mt-4 line-clamp-6 text-sm leading-relaxed text-muted-foreground">
                   {r.body}
                 </p>
-                <div className="mt-auto pt-6 text-sm text-background/70">— {r.name}</div>
+                <div className="mt-auto pt-6 text-sm text-muted-foreground">— {r.name}</div>
               </motion.article>
             ))}
           </div>
@@ -126,7 +126,7 @@ export function ReviewsSection() {
         <div className="text-center mt-10">
           <Link
             to="/reviews"
-            className="inline-block px-7 py-3.5 rounded-full bg-background text-foreground font-medium hover:opacity-90 transition"
+            className="inline-block rounded-full bg-foreground px-7 py-3.5 font-medium text-background transition hover:bg-primary hover:text-primary-foreground"
           >
             Check our {reviewStats.totalLabel} reviews
           </Link>
@@ -225,7 +225,7 @@ function ShowcaseRow({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`relative group rounded-3xl overflow-hidden shadow-2xl bg-neutral-900 aspect-video cursor-pointer border border-white/10 ${
+        className={`relative group aspect-video cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 shadow-2xl ${
           reverse ? "lg:order-2" : ""
         }`}
         onMouseEnter={handleMouseEnter}
@@ -297,7 +297,7 @@ function ShowcaseRow({
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         className="space-y-6"
       >
-        <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white">
+        <h3 className="text-3xl font-bold leading-tight text-foreground md:text-4xl">
           {title}
         </h3>
         <p className="text-muted-foreground text-lg leading-relaxed">{body}</p>
@@ -316,7 +316,7 @@ function ShowcaseRow({
         <div className="pt-4">
           <Link
             to={targetLink}
-            className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition shadow-md"
+            className="inline-flex items-center justify-center rounded-full bg-foreground px-7 py-3.5 font-medium text-background shadow-md transition hover:bg-primary hover:text-primary-foreground"
           >
             {cta} →
           </Link>
@@ -330,7 +330,7 @@ export function VideoShowcase() {
   const { t } = useLang();
 
   return (
-    <section className="mx-auto max-w-7xl px-5 lg:px-10 py-24 border-t border-white/5 bg-neutral-950/20 space-y-32">
+    <section className="mx-auto max-w-7xl space-y-32 border-t border-border/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.8),rgba(245,244,240,0.85))] px-5 py-24 lg:px-10">
       {/* Header */}
       <div className="flex flex-col items-center text-center space-y-4 mb-8">
         <span className="text-xs uppercase tracking-[0.3em] text-primary">

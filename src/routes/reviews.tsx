@@ -22,7 +22,7 @@ function ReviewsPage() {
   const { t } = useLang();
   return (
     <SiteLayout>
-      <section className="bg-foreground text-background">
+      <section className="border-b border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,246,242,0.94))] text-foreground">
         <div className="mx-auto max-w-7xl px-5 lg:px-10 pt-20 pb-16 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             {t.reviewsSec.title}
@@ -34,9 +34,9 @@ function ReviewsPage() {
             </span>
             <TrustStars rating={reviewStats.average} size={28} />
           </div>
-          <div className="flex items-center justify-center gap-2 mt-3 text-sm md:text-base text-background/70">
+          <div className="mt-3 flex items-center justify-center gap-2 text-sm text-muted-foreground md:text-base">
             <span>based on</span>
-            <span className="underline underline-offset-4 font-medium text-background">
+            <span className="font-medium text-foreground underline underline-offset-4">
               {reviewStats.totalLabel}
             </span>
             <span>reviews</span>
@@ -53,7 +53,7 @@ function ReviewsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: (i % 6) * 0.05 }}
-            className="bg-card border border-border rounded-2xl p-7 flex flex-col"
+            className="flex flex-col rounded-2xl border border-border/60 bg-card p-7 shadow-sm"
           >
             <TrustStars rating={r.stars} size={22} />
             <h3 className="mt-5 text-lg font-semibold">{r.title}</h3>

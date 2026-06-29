@@ -13,6 +13,7 @@ import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/CartDrawer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { siteTheme, siteThemeClassName } from "@/config/site-theme";
 
 import appCss from "../styles.css?url";
 
@@ -103,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={siteThemeClassName}>
       <head>
         <HeadContent />
         <script
@@ -162,7 +163,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
           }}
         />
       </head>
-      <body>
+      <body className={siteThemeClassName}>
         {children}
         <Scripts />
       </body>
@@ -179,7 +180,7 @@ function RootComponent() {
         <CartProvider>
           <Outlet />
           <CartDrawer />
-          <Toaster theme="dark" position="bottom-right" />
+          <Toaster theme={siteTheme} position="bottom-right" />
           <Analytics />
           <SpeedInsights />
         </CartProvider>

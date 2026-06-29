@@ -587,7 +587,7 @@ function HelpCenterPage() {
           {searchQuery && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs text-primary font-medium">
               Showing search results for "{searchQuery}"
-              <button onClick={() => setSearchQuery("")} className="hover:text-white transition ml-1">✕</button>
+              <button onClick={() => setSearchQuery("")} className="ml-1 transition hover:text-primary/80">✕</button>
             </div>
           )}
         </div>
@@ -655,12 +655,12 @@ function HelpCenterPage() {
         </div>
       </section>
 
-      <section id="support" className="bg-secondary/15 border-t border-border/30 text-white">
+      <section id="support" className="border-t border-border/30 bg-secondary/20">
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10 lg:py-20">
           <div className="text-center">
             <Headphones className="mx-auto h-12 w-12 text-primary" />
-            <h2 className="mt-5 text-3xl font-bold md:text-4xl">Can't find answers?</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/70 md:text-base">
+            <h2 className="mt-5 text-3xl font-bold text-foreground md:text-4xl">Can't find answers?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
               We are here to help at any time. Choose your preferred method to contact us.
             </p>
           </div>
@@ -670,26 +670,26 @@ function HelpCenterPage() {
               <a
                 key={title}
                 href={href}
-                className="rounded-xl border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:border-primary/50 hover:bg-white/[0.08] flex flex-col justify-between"
+                className="flex flex-col justify-between rounded-xl border border-border/60 bg-card/85 p-6 shadow-sm transition duration-300 hover:border-primary/50 hover:bg-card"
               >
                 <div>
                   <Icon className="h-7 w-7 text-primary" />
-                  <h3 className="mt-5 text-xl font-bold text-white">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-white/60">{body}</p>
+                  <h3 className="mt-5 text-xl font-bold text-foreground">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{body}</p>
                 </div>
               </a>
             ))}
 
             {/* QR Code Quick Support Card */}
-            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-6 flex flex-col items-center justify-between text-center">
+            <div className="flex flex-col items-center justify-between rounded-xl border border-border/60 bg-card/85 p-6 text-center shadow-sm">
               <div className="w-full flex flex-col items-center">
                 <img
                   src="/help-center-qr.png"
                   alt="Support QR Code"
                   className="w-24 h-24 bg-white p-1 rounded-lg shadow-lg"
                 />
-                <h3 className="mt-4 text-lg font-bold text-white">Scan for Support</h3>
-                <p className="mt-2 text-xs leading-5 text-white/60">
+                <h3 className="mt-4 text-lg font-bold text-foreground">Scan for Support</h3>
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">
                   Scan to load mobile connection guides and chat directly on WhatsApp/WeChat.
                 </p>
               </div>
