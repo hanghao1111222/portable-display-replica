@@ -9,16 +9,47 @@ type HelpArticleSection = {
   }>;
 };
 
+type HelpArticleLink = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+type HelpArticleSpec = {
+  label: string;
+  value: string;
+};
+
 export type HelpCenterArticle = {
   slug: string;
   name: string;
   shortName: string;
   image: string;
+  asin: string;
+  amazonUrl: string;
   heroTitle: string;
   heroBody: string;
+  overview: {
+    listingTitle: string;
+    designSummary: string;
+    highlights: string[];
+    productLinks: HelpArticleLink[];
+  };
+  specifications: HelpArticleSpec[];
   compatibility: string[];
   connectionMethods: string[];
+  setup: {
+    tutorialTitle: string;
+    tutorialBody: string;
+    accessories: string[];
+    compatibilityNotes: string[];
+  };
   reminders: string[];
+  downloads: {
+    manual: HelpArticleLink;
+    firmware: HelpArticleLink;
+    note: string;
+  };
   support: {
     email: string;
     phone: string;
@@ -34,9 +65,48 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     name: "AnyKing A6 Portable Monitor",
     shortName: "A6 Portable Monitor",
     image: a6Product,
+    asin: "B0GJS4XGDJ",
+    amazonUrl: "https://www.amazon.com/dp/B0GJS4XGDJ",
     heroTitle: "A6 setup, compatibility, and troubleshooting",
     heroBody:
       "Everything customers need before buying or setting up the AnyKing A6, including compatible laptop types, connection methods, no-signal fixes, display settings, and warranty support.",
+    overview: {
+      listingTitle:
+        "Laptop Screen Extender, 14-inch FHD 1080P Portable Monitor for Laptop with 100% sRGB, Plug-and-Play External Display for 13-17.3 inch laptops.",
+      designSummary:
+        "The A6 is a single 14-inch portable laptop monitor built for dual-screen work. Its slim travel-ready body combines a carbon-fiber-inspired finish, matte anti-glare panel, integrated kickstand, and ambient ring-light styling for modern desk setups.",
+      highlights: [
+        "14-inch FHD 1080P IPS display with 100% sRGB, 300 nits brightness, and 60 Hz refresh rate.",
+        "Designed for 13-17.3 inch laptops and positioned as a plug-and-play second screen for Windows and macOS.",
+        "Single USB-C workflow when the laptop port supports video output, with HDMI plus separate power as fallback.",
+        "Travel-friendly form factor focused on coding, analysis, business travel, and home office multitasking.",
+      ],
+      productLinks: [
+        { label: "Product purchase page", href: "https://www.amazon.com/dp/B0GJS4XGDJ", external: true },
+        { label: "Product detail page", href: "/products/a6" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "A6" },
+      { label: "ASIN", value: "B0GJS4XGDJ" },
+      { label: "Screen size", value: '14"' },
+      { label: "Resolution", value: "FHD 1080P, 1920 x 1080" },
+      { label: "Display technology", value: "IPS, LED" },
+      { label: "Aspect ratio", value: "16:9" },
+      { label: "Refresh rate", value: "60 Hz" },
+      { label: "Contrast ratio", value: "1000:1" },
+      { label: "Screen finish", value: "Matte / anti-glare" },
+      { label: "Viewing angle", value: "180 degrees" },
+      { label: "Color gamut", value: "100% sRGB" },
+      { label: "Picture enhancement", value: "FHD display, blue light filter, anti-glare screen" },
+      { label: "Dimensions", value: '13.38" W x 7.87" H x 0.35" D' },
+      { label: "Compatible laptop size", value: '13" to 17.3"' },
+      { label: "Connectivity", value: "USB-C for plug-and-play, HDMI plus power for fallback setups" },
+      { label: "Color", value: "Black" },
+      { label: "Warranty", value: "1 Year Manufacturer" },
+      { label: "Manufacturer", value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
+    ],
     compatibility: [
       "Works with laptops that have a full-function USB-C port with video output.",
       "Also works with laptops that use HDMI for video plus USB-A or USB-C for power.",
@@ -48,11 +118,39 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       "HDMI method: use HDMI for video and a USB-A or USB-C cable for power.",
       "For best stability, connect directly to the laptop instead of using a hub, dock, or splitter.",
     ],
+    setup: {
+      tutorialTitle: "Plug-and-play A6 setup",
+      tutorialBody:
+        "A6 is designed as a quick second-screen setup for productivity. If your USB-C port supports video output, a single cable can handle signal and power. If not, switch to HDMI for video and add a separate USB power connection.",
+      accessories: [
+        "A6 portable monitor body",
+        "USB-C connection cable",
+        "HDMI connection workflow for fallback laptop setups",
+        "Integrated kickstand for desk use and travel deployment",
+      ],
+      compatibilityNotes: [
+        "Best fit is for laptops from 13 to 17.3 inches.",
+        "Windows and macOS are the primary supported workflows.",
+        "No driver is expected for the standard A6 plug-and-play setup.",
+      ],
+    },
     reminders: [
       "Confirm the USB-C port supports DisplayPort Alt Mode before using a single-cable setup.",
       "If the screen flickers or turns off, test with direct connection and extra power first.",
       "Use Extend mode for the best multitasking experience.",
     ],
+    downloads: {
+      manual: {
+        label: "Request user manual",
+        href: "mailto:service@anykingscreen.com?subject=A6%20User%20Manual%20Request",
+      },
+      firmware: {
+        label: "Request firmware support",
+        href: "mailto:service@anykingscreen.com?subject=A6%20Firmware%20Support",
+      },
+      note:
+        "Manual and firmware support are handled by the support team so customers always receive the latest file and the correct setup instructions for their laptop model.",
+    },
     support: {
       email: "service@anykingscreen.com",
       phone: "+1 (888) 688-5025",
@@ -171,25 +269,92 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     name: "AnyKing S10 Pro Extender",
     shortName: "S10 Pro Extender",
     image: s10Product,
+    asin: "B0GJSXHDCG",
+    amazonUrl: "https://www.amazon.com/dp/B0GJSXHDCG",
     heroTitle: "S10 Pro setup, third-screen fixes, and support",
     heroBody:
-      "A guided help article for the AnyKing S10 Pro covering port requirements, three connection methods, third-screen detection issues, brightness and flicker fixes, and warranty support.",
+      "A guided help article for the AnyKing S10 Pro covering port requirements, connection methods, third-screen detection issues, brightness and flicker fixes, and warranty support.",
+    overview: {
+      listingTitle:
+        "Laptop Screen Extender, Triple Screen Laptop Monitor Extender for 13-17.3 inch laptops, 14-inch 1080P FHD IPS portable monitor with 100% sRGB, plug-and-play extension for travel, coding, and work.",
+      designSummary:
+        "The S10 Pro is a triple-screen laptop extender with two attached 14-inch side displays. It uses a travel-friendly folding structure, adjustable kickstand, eye-care matte IPS panels, and supports extend, mirror, and portrait workflows.",
+      highlights: [
+        "Dual 14-inch FHD 1080P IPS side panels for a full triple-screen workstation.",
+        "100% sRGB, 300 nits brightness, matte finish, and low blue light eye-care design.",
+        "Fits laptops from 13 to 17.3 inches and targets business travel, coding, presentations, and multitasking.",
+        "Base M1, M2, M3, and M4 MacBooks support only one external display unless an H5 adapter workflow is added separately.",
+      ],
+      productLinks: [
+        { label: "Product purchase page", href: "https://www.amazon.com/dp/B0GJSXHDCG", external: true },
+        { label: "Product detail page", href: "/products/s10-pro" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "S10 Pro" },
+      { label: "ASIN", value: "B0GJSXHDCG" },
+      { label: "Screen size", value: '14" x 2 side displays' },
+      { label: "Resolution", value: "FHD 1080P, 1920 x 1080" },
+      { label: "Display technology", value: "IPS, LED" },
+      { label: "Aspect ratio", value: "16:9" },
+      { label: "Refresh rate", value: "60 Hz" },
+      { label: "Contrast ratio", value: "1000:1" },
+      { label: "Screen finish", value: "Matte / anti-glare" },
+      { label: "Picture enhancement", value: "Eye care, color enhancement" },
+      { label: "Dimensions", value: '13.2" W x 8" H x 1.05" D' },
+      { label: "Compatible laptop size", value: '13" to 17.3"' },
+      { label: "Connection paths", value: "USB-C workflow plus HDMI-assisted compatibility options" },
+      { label: "HDMI ports", value: "1 HDMI output" },
+      { label: "Response time", value: "0.1 ms" },
+      { label: "Color", value: "Yellow variant" },
+      { label: "Warranty", value: "1 Year Manufacturer" },
+      { label: "Manufacturer", value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
+    ],
     compatibility: [
       "Works with laptops that have two full-function USB-C ports.",
       "Also works with one full-function USB-C port plus one HDMI port.",
-      "Can work with one power-only USB-C port, one USB-A port, and one HDMI port by using the included H5 cable and driver.",
+      "For some macOS and older laptop edge cases, an H5 adapter workflow may be required for dual external-screen expansion.",
       "Phones and tablets are not recommended because only one screen can work and power is often unstable.",
     ],
     connectionMethods: [
-      "Dual USB-C method: connect two full-function USB-C cables directly to the laptop.",
-      "USB-C + HDMI method: use USB-C for power and one display signal, then HDMI for the second screen signal.",
-      "USB-A + HDMI + H5 method: USB-A provides power, HDMI drives one screen, and the H5 cable with driver activates the extra display signal.",
+      "Dual USB-C method: connect two full-function USB-C signal paths directly to the laptop when supported.",
+      "USB-C + HDMI method: use USB-C for one screen and power, then HDMI for the extra display signal path.",
+      "If the laptop cannot output two display signals natively, move to the H5 adapter workflow and confirm the exact cable package with support first.",
     ],
+    setup: {
+      tutorialTitle: "Triple-screen setup workflow",
+      tutorialBody:
+        "S10 Pro is designed as a flexible portable workstation for 13-17.3 inch laptops. The cleanest setup is direct connection without docks. macOS users with base M1, M2, M3, or M4 models should verify external-display limits before buying because an H5 adapter may be required for full dual-side-screen expansion.",
+      accessories: [
+        "S10 Pro triple-screen main body with two side displays",
+        "Adjustable kickstand structure",
+        "USB-C signal and power workflow",
+        "HDMI-assisted fallback workflow for broader compatibility",
+      ],
+      compatibilityNotes: [
+        "Windows, ChromeOS, and most Intel or Pro/Max Mac workflows are the main plug-and-play targets.",
+        "Avoid hubs during first setup so power and signal troubleshooting stays simple.",
+        "If your laptop exposes only one usable display-output path, contact support before ordering extra cables so the right adapter path is confirmed.",
+      ],
+    },
     reminders: [
       "When one USB-C port does not support video, keep the working USB-C cable and add HDMI.",
-      "If you need the third screen without a video-capable second USB-C port, connect the H5 cable and install its driver.",
+      "If you need dual side screens on a limited-output laptop, confirm the H5 adapter path with support before buying extra accessories.",
       "Avoid hubs or low-quality adapters during initial setup.",
     ],
+    downloads: {
+      manual: {
+        label: "Request user manual",
+        href: "mailto:service@anykingscreen.com?subject=S10%20Pro%20User%20Manual%20Request",
+      },
+      firmware: {
+        label: "Request firmware support",
+        href: "mailto:service@anykingscreen.com?subject=S10%20Pro%20Firmware%20Support",
+      },
+      note:
+        "Because compatibility differs by laptop port layout and chip generation, the support team sends the latest manual and the correct firmware or adapter guidance case by case.",
+    },
     support: {
       email: "service@anykingscreen.com",
       phone: "+1 (888) 688-5025",
@@ -202,12 +367,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "What laptop models are compatible with the AnyKing S10 Pro?",
             answer:
-              "The S10 Pro works with most Windows laptops, MacBooks, and Chromebooks under three port configurations: two full-function USB-C ports, one full-function USB-C plus one HDMI port, or one power-only USB-C plus one USB-A and one HDMI port when using the included H5 cable and driver.",
+              "The S10 Pro works with most Windows laptops, MacBooks, and Chromebooks when the laptop can provide enough display-output paths. The most stable cases are two full-function USB-C outputs or one video-capable USB-C plus one HDMI output.",
           },
           {
             question: "How do I know if my USB-C port supports video output?",
             answer:
-              "Your USB-C port must support DisplayPort Alt Mode to send video to the S10 Pro. If the port supports charging or data only, use HDMI or the H5-based method instead depending on your laptop ports.",
+              "Your USB-C port must support DisplayPort Alt Mode to send video to the S10 Pro. If the port supports charging or data only, use HDMI for the second path or confirm an adapter workflow with support.",
           },
           {
             question: "Does the S10 Pro work with phones or tablets?",
@@ -222,12 +387,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "How do I set up the AnyKing S10 Pro?",
             answer:
-              "There are three connection methods: use two full-function USB-C cables, use one full-function USB-C plus one HDMI cable, or use USB-A for power together with HDMI and the included H5 cable for the extra display signal when the laptop lacks a second video-capable USB-C port.",
+              "Start with the simplest direct connection workflow your laptop supports. If your laptop can output two display signals, use dual USB-C or USB-C plus HDMI. If it cannot, contact support to confirm the H5-based expansion path before buying extra parts.",
           },
           {
             question: 'Why is my laptop not detecting the third screen or showing "No Signal"?',
             answer:
-              "First, reconnect all cables and ports firmly. If you are using two USB-C cables, one port may not support video, so keep the working USB-C cable and add HDMI. If you are using USB-A power plus HDMI, you still need the included H5 cable and DisplayLink driver to activate the third screen.",
+              "First, reconnect all cables and ports firmly. If you are using two USB-C cables, one port may not support video, so keep the working USB-C cable and add HDMI. If the laptop still cannot output the second extra display, confirm whether your model needs the H5 adapter workflow.",
           },
         ],
       },
