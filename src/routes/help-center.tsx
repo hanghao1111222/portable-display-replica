@@ -380,6 +380,10 @@ function HelpCenterPage() {
                 <div className="screen-gloss" />
                 <div className="screen-content center-screen-content">
                   <div className="search-glass-panel search-only-panel">
+                    <div className="search-copy">
+                      <p className="search-copy-kicker">Help Center</p>
+                      <h2>Search connection guides</h2>
+                    </div>
                     <form className="help-search-spotlight" onSubmit={handleSearchSubmit}>
                       <Search className="spotlight-search-icon" />
                       <input
