@@ -27,7 +27,7 @@ function ProductsPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-5 lg:px-10 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl">
           {products.map((p, i) => (
             <ProductCard key={p.slug} product={p} index={i} />
           ))}

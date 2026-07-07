@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Cable,
+  ChevronRight,
   Headphones,
   Laptop,
   Mail,
@@ -20,6 +21,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { helpCenterArticles } from "@/data/helpCenterArticles";
+import mobileCompatibilityCard from "@/assets/mobile-compatibility-card.jpg";
+import mobileSetupCard from "@/assets/mobile-setup-card.jpg";
+import mobileBuyingGuideBanner from "@/assets/s10pro-aplus-ecosystem.jpg";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
@@ -69,6 +73,30 @@ const products = helpCenterArticles.map((article) => ({
   image: article.image,
   slug: article.slug,
 })) as const;
+
+const mobileProductGroups = [
+  {
+    title: "Portable Monitor Guides",
+    items: products,
+  },
+  {
+    title: "Connection Help",
+    items: [
+      {
+        name: "Laptop Compatibility",
+        image: products[0]?.image,
+        slug: "compatibility",
+        href: "/compatibility",
+      },
+      {
+        name: "Cable & Port Guide",
+        image: products[1]?.image ?? products[0]?.image,
+        slug: "cable-guide",
+        href: "/compatibility",
+      },
+    ],
+  },
+] as const;
 
 const faqGroups = [
   {
@@ -186,12 +214,22 @@ const faqGroups = [
   },
 ] as const;
 
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={props.className}
+  >
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
 const contactCards = [
   {
-    title: "Let's chat",
-    body: "Use the live chat bubble for fast setup help while you are on the website.",
-    href: "#",
-    icon: Headphones,
+    title: "WhatsApp",
+    body: "+1 (657) 395-7180. Message us directly on WhatsApp.",
+    href: "https://wa.me/16573957180",
+    icon: WhatsAppIcon,
   },
   {
     title: "Call us",
@@ -207,20 +245,199 @@ const contactCards = [
   },
 ] as const;
 
+type HelpSearchResult = {
+  title: string;
+  description: string;
+  href: string;
+  type: "FAQ" | "A6 Guide" | "S10 Pro Guide" | "Compatibility" | "Support";
+  keywords: string;
+  body: string;
+};
+
+type RankedHelpSearchResult = HelpSearchResult & {
+  score: number;
+};
+
 function escapeRegExp(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function getSearchTerms(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function normalizeSearchText(value: string) {
+  return value.toLowerCase();
+}
+
+function getArticleResultType(shortName: string): HelpSearchResult["type"] {
+  return shortName.toLowerCase().includes("a6") ? "A6 Guide" : "S10 Pro Guide";
+}
+
+function buildHelpSearchIndex(): HelpSearchResult[] {
+  const faqEntries = faqGroups.flatMap((group) =>
+    group.articles.map((article) => ({
+      title: article.question,
+      description: article.answer,
+      href: "/help-center#articles",
+      type: "FAQ" as const,
+      keywords: `${group.title} ${group.description}`,
+      body: `${article.question} ${article.answer}`,
+    }))
+  );
+
+  const productEntries = helpCenterArticles.flatMap((article) => {
+    const type = getArticleResultType(article.shortName);
+    const baseKeywords = `${article.name} ${article.shortName} ${article.asin}`;
+
+    return [
+      {
+        title: `${article.shortName}: design and setup overview`,
+        description: article.overview.designSummary,
+        href: `/help-articles/${article.slug}#design-look`,
+        type,
+        keywords: `${baseKeywords} product overview design look setup`,
+        body: `${article.heroTitle} ${article.heroBody} ${article.overview.designSummary}`,
+      },
+      {
+        title: `${article.shortName}: key highlights`,
+        description: article.overview.highlights.join(" "),
+        href: `/help-articles/${article.slug}#key-highlights`,
+        type,
+        keywords: `${baseKeywords} highlights MacBook USB-C HDMI H5 adapter no signal flicker`,
+        body: article.overview.highlights.join(" "),
+      },
+      {
+        title: `${article.shortName}: specifications`,
+        description: article.specifications.map((spec) => `${spec.label}: ${spec.value}`).join(" "),
+        href: `/help-articles/${article.slug}#specs`,
+        type,
+        keywords: `${baseKeywords} specs specification screen size resolution refresh rate warranty`,
+        body: article.specifications.map((spec) => `${spec.label} ${spec.value}`).join(" "),
+      },
+      {
+        title: `${article.shortName}: accessories and compatibility`,
+        description: [...article.compatibility, ...article.setup.compatibilityNotes].join(" "),
+        href: `/help-articles/${article.slug}#compatibility-accessories`,
+        type,
+        keywords: `${baseKeywords} compatibility accessories MacBook Apple silicon USB-C HDMI H5 adapter`,
+        body: [
+          ...article.compatibility,
+          ...article.connectionMethods,
+          article.setup.tutorialBody,
+          ...article.setup.accessories,
+          ...article.setup.compatibilityNotes,
+          ...article.reminders,
+        ].join(" "),
+      },
+      {
+        title: `${article.shortName}: downloads and support`,
+        description: article.downloads.note,
+        href: `/help-articles/${article.slug}#user-manual`,
+        type,
+        keywords: `${baseKeywords} manual firmware download support warranty`,
+        body: `${article.downloads.manual.label} ${article.downloads.firmware.label} ${article.downloads.note} ${article.support.email} ${article.support.phone}`,
+      },
+      ...article.sections.flatMap((section, sectionIndex) =>
+        section.items.map((item) => ({
+          title: `${article.shortName}: ${item.question}`,
+          description: item.answer,
+          href: `/help-articles/${article.slug}#faq-${sectionIndex + 1}`,
+          type,
+          keywords: `${baseKeywords} ${section.title}`,
+          body: `${item.question} ${item.answer}`,
+        }))
+      ),
+    ];
+  });
+
+  return [
+    ...faqEntries,
+    ...productEntries,
+    {
+      title: "Compatibility checker",
+      description: "Check whether your laptop supports direct USB-C video, HDMI, or an H5 adapter workflow.",
+      href: "/compatibility",
+      type: "Compatibility",
+      keywords: "compatibility laptop model MacBook Windows Chromebook USB-C HDMI H5 adapter port checker",
+      body: "Laptop compatibility checker for Anyking portable monitors and triple screen extenders.",
+    },
+    {
+      title: "Contact Anyking support",
+      description: "Get direct help by live chat, phone, or email when setup troubleshooting does not solve the issue.",
+      href: "/help-center#support",
+      type: "Support",
+      keywords: "support contact service email phone warranty replacement return chat help",
+      body: contactCards.map((card) => `${card.title} ${card.body} ${card.href}`).join(" "),
+    },
+  ];
+}
+
+const helpSearchIndex = buildHelpSearchIndex();
+
+function scoreSearchResult(result: HelpSearchResult, terms: string[]) {
+  const title = normalizeSearchText(result.title);
+  const description = normalizeSearchText(result.description);
+  const keywords = normalizeSearchText(result.keywords);
+  const body = normalizeSearchText(result.body);
+  const haystack = `${title} ${description} ${keywords} ${body}`;
+
+  if (!terms.every((term) => haystack.includes(term))) {
+    return 0;
+  }
+
+  return terms.reduce((score, term) => {
+    let nextScore = score;
+    if (title.includes(term)) nextScore += 12;
+    if (keywords.includes(term)) nextScore += 8;
+    if (description.includes(term)) nextScore += 5;
+    if (body.includes(term)) nextScore += 2;
+    return nextScore;
+  }, 0);
+}
+
+function getHelpSearchResults(query: string) {
+  const terms = getSearchTerms(query);
+  if (terms.length === 0) return [];
+
+  return helpSearchIndex
+    .map((result) => ({ ...result, score: scoreSearchResult(result, terms) }))
+    .filter((result) => result.score > 0)
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .slice(0, 5);
+}
+
+function openSmartSupport() {
+  const chatHost = document.getElementById("nextop-chat");
+  const chatFrame = document.querySelector<HTMLIFrameElement>('iframe[title="nextop live chat"]');
+  const clickable = chatHost?.querySelector<HTMLElement>(
+    'button, [role="button"], a, iframe, [class*="bubble"], [class*="launcher"], [class*="chat"]'
+  );
+
+  clickable?.click();
+  chatHost?.click();
+  chatFrame?.click();
+
+  if (!chatHost && !chatFrame) {
+    document.getElementById("support")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 function HighlightText({ text, highlight }: { text: string; highlight: string }) {
-  if (!highlight.trim()) {
+  const terms = getSearchTerms(highlight);
+  if (terms.length === 0) {
     return <>{text}</>;
   }
-  const regex = new RegExp(`(${escapeRegExp(highlight)})`, "gi");
+  const regex = new RegExp(`(${terms.map(escapeRegExp).join("|")})`, "gi");
   const parts = text.split(regex);
   return (
     <>
       {parts.map((part, index) =>
-        regex.test(part) ? (
+        terms.includes(part.toLowerCase()) ? (
           <mark key={index} className="bg-primary/20 text-primary font-semibold rounded px-0.5">
             {part}
           </mark>
@@ -232,27 +449,201 @@ function HighlightText({ text, highlight }: { text: string; highlight: string })
   );
 }
 
+function HelpSearchResultsPanel({
+  query,
+  results,
+  activeIndex,
+  onSelect,
+  onAskSupport,
+  compact = false,
+}: {
+  query: string;
+  results: RankedHelpSearchResult[];
+  activeIndex: number;
+  onSelect: (result: RankedHelpSearchResult) => void;
+  onAskSupport: () => void;
+  compact?: boolean;
+}) {
+  if (!query.trim()) return null;
+
+  return (
+    <div className={`help-search-results ${compact ? "help-search-results-compact" : ""}`} role="listbox">
+      {results.length > 0 ? (
+        results.map((result, index) => (
+          <button
+            key={`${result.href}-${result.title}`}
+            type="button"
+            role="option"
+            aria-selected={activeIndex === index}
+            className={`help-search-result ${activeIndex === index ? "is-active" : ""}`}
+            onMouseDown={(event) => {
+              event.preventDefault();
+              onSelect(result);
+            }}
+          >
+            <span className="help-search-result-type">{result.type}</span>
+            <span className="help-search-result-title">
+              <HighlightText text={result.title} highlight={query} />
+            </span>
+            <span className="help-search-result-description">
+              <HighlightText text={result.description} highlight={query} />
+            </span>
+          </button>
+        ))
+      ) : (
+        <div className="help-search-empty">
+          <span>No exact matches</span>
+          <p>Try keywords like USB-C, HDMI, no signal, MacBook, H5 adapter.</p>
+          <button type="button" onMouseDown={(event) => event.preventDefault()} onClick={onAskSupport}>
+            Ask smart support
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function HelpCenterPage() {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [activeSearchSurface, setActiveSearchSurface] = React.useState<"hero" | "sticky" | null>(null);
+  const [activeSearchIndex, setActiveSearchIndex] = React.useState(0);
+  const [activeMobileTab, setActiveMobileTab] = React.useState("about");
+
+  const scrollToMobileSection = React.useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 110; // header height (64px) + sticky mobile tabs bar (~46px)
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = el.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      if (!isMobile) return;
+
+      const sections = [
+        { id: "mobile-about", name: "about" },
+        { id: "mobile-products", name: "products" },
+        { id: "mobile-learn", name: "learn" },
+      ];
+
+      const scrollPos = window.scrollY + 130; // buffer offset to highlight tab slightly earlier
+
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveMobileTab(section.name);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const searchResults = React.useMemo(() => getHelpSearchResults(searchQuery), [searchQuery]);
+  const selectedSearchResult = searchResults[activeSearchIndex] ?? searchResults[0];
+
+  const openResult = React.useCallback((result: RankedHelpSearchResult) => {
+    setActiveSearchSurface(null);
+
+    if (result.href.startsWith("/help-center#")) {
+      const hash = result.href.split("#")[1];
+      const mobileHashMap: Record<string, string> = {
+        featured: "mobile-about",
+        products: "mobile-products",
+        articles: "mobile-learn",
+        support: "mobile-support",
+      };
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const targetId = hash && isMobile ? mobileHashMap[hash] ?? hash : hash;
+      const el = targetId ? document.getElementById(targetId) : null;
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      return;
+    }
+
+    window.location.href = result.href;
+  }, []);
+
+  const handleAskSmartSupport = React.useCallback(() => {
+    setActiveSearchSurface(null);
+    openSmartSupport();
+  }, []);
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (selectedSearchResult) {
+      openResult(selectedSearchResult);
+      return;
+    }
+
     const el = document.getElementById("articles");
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
+  const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveSearchIndex((current) =>
+        searchResults.length === 0 ? 0 : (current + 1) % searchResults.length
+      );
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveSearchIndex((current) =>
+        searchResults.length === 0 ? 0 : (current - 1 + searchResults.length) % searchResults.length
+      );
+      return;
+    }
+
+    if (event.key === "Enter" && selectedSearchResult) {
+      event.preventDefault();
+      openResult(selectedSearchResult);
+      return;
+    }
+
+    if (event.key === "Escape") {
+      setActiveSearchSurface(null);
+    }
+  };
+
+  const updateSearchQuery = (value: string, surface: "hero" | "sticky") => {
+    setSearchQuery(value);
+    setActiveSearchIndex(0);
+    setActiveSearchSurface(value.trim() ? surface : null);
+  };
+
   const filteredFaqGroups = React.useMemo(() => {
     if (!searchQuery.trim()) return faqGroups;
-    const query = searchQuery.toLowerCase();
+    const terms = getSearchTerms(searchQuery);
 
     return faqGroups
       .map((group) => {
         const matchingArticles = group.articles.filter(
-          (article) =>
-            article.question.toLowerCase().includes(query) ||
-            article.answer.toLowerCase().includes(query)
+          (article) => {
+            const content = normalizeSearchText(`${article.question} ${article.answer} ${group.title}`);
+            return terms.every((term) => content.includes(term));
+          }
         );
         return {
           ...group,
@@ -260,6 +651,10 @@ function HelpCenterPage() {
         };
       })
       .filter((group) => group.articles.length > 0);
+  }, [searchQuery]);
+
+  React.useEffect(() => {
+    setActiveSearchIndex(0);
   }, [searchQuery]);
 
   React.useEffect(() => {
@@ -310,8 +705,254 @@ function HelpCenterPage() {
 
   return (
     <SiteLayout>
+      <div className="help-mobile-only bg-[#f7f8fb] text-slate-950">
+        <section className="px-5 pb-7 pt-8 text-center">
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-primary" />
+          <h1 className="text-[1.65rem] font-extrabold leading-tight tracking-tight">
+            Welcome to ANYKING
+            <br />
+            Help Center
+          </h1>
+          <p className="mx-auto mt-3 max-w-[18rem] text-xs leading-5 text-slate-500">
+            We've got you covered. Type a keyword to find setup guides, product help, or compatibility answers.
+          </p>
+          <form className="relative mx-auto mt-5 max-w-sm" onSubmit={handleSearchSubmit}>
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="search"
+              placeholder="Ask us anything..."
+              value={searchQuery}
+              onChange={(e) => updateSearchQuery(e.target.value, "hero")}
+              onFocus={() => setActiveSearchSurface(searchQuery.trim() ? "hero" : null)}
+              onKeyDown={handleSearchKeyDown}
+              className="h-11 w-full rounded-full border border-slate-200 bg-white pl-11 pr-12 text-sm text-slate-900 shadow-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+            />
+            {searchQuery ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveSearchSurface(null);
+                }}
+                className="absolute right-3.5 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600 text-[10px]"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-white shadow-sm"
+                aria-label="Search help"
+              >
+                <Search className="h-4 w-4" />
+              </button>
+            )}
+            {activeSearchSurface === "hero" && (
+              <HelpSearchResultsPanel
+                query={searchQuery}
+                results={searchResults}
+                activeIndex={activeSearchIndex}
+                onSelect={openResult}
+                onAskSupport={handleAskSmartSupport}
+                compact
+              />
+            )}
+          </form>
+        </section>
+
+        <nav className="sticky top-16 z-30 border-y border-slate-200 bg-white/95 px-5 backdrop-blur">
+          <div className="flex items-center gap-7 overflow-x-auto py-3 text-xs font-bold scrollbar-none">
+            <a
+              className={`shrink-0 pb-1.5 transition-colors ${
+                activeMobileTab === "about"
+                  ? "border-b-2 border-primary text-slate-950"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              href="#mobile-about"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToMobileSection("mobile-about");
+              }}
+            >
+              About ANYKING
+            </a>
+            <a
+              className={`shrink-0 pb-1.5 transition-colors ${
+                activeMobileTab === "products"
+                  ? "border-b-2 border-primary text-slate-950"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              href="#mobile-products"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToMobileSection("mobile-products");
+              }}
+            >
+              Products
+            </a>
+            <a
+              className={`shrink-0 pb-1.5 transition-colors ${
+                activeMobileTab === "learn"
+                  ? "border-b-2 border-primary text-slate-950"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              href="#mobile-learn"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToMobileSection("mobile-learn");
+              }}
+            >
+              Learn & Explore
+            </a>
+          </div>
+        </nav>
+
+        <section id="mobile-about" className="px-4 py-7">
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              to="/compatibility"
+              className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 h-full"
+            >
+              <div className="aspect-[1.12] bg-gradient-to-br from-orange-50 to-white p-3 flex items-center justify-center">
+                <img src={mobileCompatibilityCard} alt="Laptop compatibility guide" className="h-full w-full object-contain" />
+              </div>
+              <div className="flex-1 flex flex-col justify-between px-3 pb-4 pt-2.5">
+                <h2 className="text-sm font-extrabold leading-tight text-slate-900">Compatibility</h2>
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                  Learn More <ArrowRight className="h-3 w-3" />
+                </span>
+              </div>
+            </Link>
+            <a
+              href="#mobile-learn"
+              className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 h-full"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToMobileSection("mobile-learn");
+              }}
+            >
+              <div className="aspect-[1.12] bg-gradient-to-br from-red-50 to-white p-3 flex items-center justify-center">
+                <img src={mobileSetupCard} alt="Setup and support guide" className="h-full w-full object-contain" />
+              </div>
+              <div className="flex-1 flex flex-col justify-between px-3 pb-4 pt-2.5">
+                <h2 className="text-sm font-extrabold leading-tight text-slate-900">Setup & Support</h2>
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                  Learn More <ArrowRight className="h-3 w-3" />
+                </span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section id="mobile-products" className="bg-white px-4 py-9">
+          <h2 className="text-center text-2xl font-extrabold tracking-tight">Products</h2>
+          <div className="mt-6 space-y-3">
+            {mobileProductGroups.map((group, groupIndex) => (
+              <details
+                key={group.title}
+                open={groupIndex === 0}
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-[#f7f8fb]"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-4 text-sm font-extrabold">
+                  {group.title}
+                  <span className="details-chevron text-slate-400">⌄</span>
+                </summary>
+                <div className="divide-y divide-white">
+                  {group.items.map((product) =>
+                    "href" in product ? (
+                      <a
+                        key={product.slug}
+                        href={product.href}
+                        className="flex items-center gap-4 bg-slate-50 px-4 py-3 hover:bg-slate-100 transition-colors"
+                      >
+                        <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50">
+                          <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                        </span>
+                        <span className="text-sm font-semibold text-slate-700">{product.name}</span>
+                        <ChevronRight className="ml-auto h-4 w-4 text-slate-400 shrink-0" />
+                      </a>
+                    ) : (
+                      <Link
+                        key={product.slug}
+                        to="/help-articles/$article"
+                        params={{ article: product.slug }}
+                        className="flex items-center gap-4 bg-slate-50 px-4 py-3 hover:bg-slate-100 transition-colors"
+                      >
+                        <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50">
+                          <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                        </span>
+                        <span className="text-sm font-semibold text-slate-700">{product.name}</span>
+                        <ChevronRight className="ml-auto h-4 w-4 text-slate-400 shrink-0" />
+                      </Link>
+                    )
+                  )}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section id="mobile-learn" className="px-4 py-10">
+          <h2 className="text-center text-2xl font-extrabold tracking-tight">Learn & Explore</h2>
+          <a
+            href="#mobile-products"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToMobileSection("mobile-products");
+            }}
+            className="mt-6 block overflow-hidden rounded-2xl bg-slate-950 shadow-lg cursor-pointer"
+          >
+            <div className="relative min-h-[170px] p-5 text-white flex items-center">
+              <div className="absolute inset-0">
+                <img src={mobileBuyingGuideBanner} alt="Choose the right Anyking display" className="h-full w-full object-cover object-center" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent" />
+              </div>
+              <div className="relative z-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Buying Guide</p>
+                <h3 className="mt-2 max-w-[13rem] text-xl font-black leading-tight">
+                  Choose the Right ANYKING Display
+                </h3>
+                <span className="mt-3 inline-flex items-center gap-2 text-xs font-bold">
+                  Start Guide <ArrowRight className="h-3.5 w-3.5" />
+                </span>
+              </div>
+            </div>
+          </a>
+        </section>
+
+        <section id="mobile-support" className="bg-white px-4 py-10">
+          <div className="text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+              <Headphones className="h-7 w-7 text-primary" />
+            </div>
+            <h2 className="mt-4 text-2xl font-extrabold">Can't find answers?</h2>
+            <p className="mx-auto mt-3 max-w-xs text-xs leading-5 text-slate-500">
+              We are here to help at any time. Choose your preferred method to contact us.
+            </p>
+          </div>
+          <div className="mt-6 space-y-3">
+            {contactCards.map(({ title, body, href, icon: Icon }) => (
+              <a
+                key={title}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+              >
+                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                <span>
+                  <span className="block text-sm font-extrabold">{title}</span>
+                  <span className="mt-1 block text-xs leading-5 text-slate-500">{body}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+
       {/* ===== 3D Triple-Screen Hero ===== */}
-      <section className="triple-screen-hero-container">
+      <section className="triple-screen-hero-container help-desktop-only">
         {/* Title above the device */}
         <div className="hero-title-area">
           <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-400 to-amber-300">Welcome to ANYKING Help Center</h1>
@@ -384,10 +1025,21 @@ function HelpCenterPage() {
                         placeholder="Search connection guides..."
                         className="help-search-input-spotlight"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => updateSearchQuery(e.target.value, "hero")}
+                        onFocus={() => setActiveSearchSurface(searchQuery.trim() ? "hero" : null)}
+                        onKeyDown={handleSearchKeyDown}
                       />
                       <span className="spotlight-shortcut">↵ Enter</span>
                     </form>
+                    {activeSearchSurface === "hero" && (
+                      <HelpSearchResultsPanel
+                        query={searchQuery}
+                        results={searchResults}
+                        activeIndex={activeSearchIndex}
+                        onSelect={openResult}
+                        onAskSupport={handleAskSmartSupport}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -456,7 +1108,7 @@ function HelpCenterPage() {
       </section>
 
       {/* Sticky anchor nav */}
-      <nav className="sticky top-16 z-30 border-b border-border/40 bg-background/85 backdrop-blur-xl">
+      <nav className="help-desktop-only sticky top-16 z-30 border-b border-border/40 bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 lg:px-10 h-14">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-2">
             {anchors.map((item) => (
@@ -470,28 +1122,44 @@ function HelpCenterPage() {
             ))}
           </div>
           {/* Quick search input in sticky nav */}
-          <div className="relative hidden sm:block w-64">
+          <form className="relative hidden sm:block w-72" onSubmit={handleSearchSubmit}>
             <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
             <input
-              type="text"
-              placeholder="Search FAQs..."
+              type="search"
+              placeholder="Search help..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => updateSearchQuery(e.target.value, "sticky")}
+              onFocus={() => setActiveSearchSurface(searchQuery.trim() ? "sticky" : null)}
+              onKeyDown={handleSearchKeyDown}
               className="w-full rounded-full border border-border/50 bg-white/5 py-1.5 pl-9 pr-8 text-xs text-foreground placeholder-muted-foreground/60 focus:border-primary focus:bg-white/10 focus:outline-none transition"
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery("")}
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveSearchSurface(null);
+                }}
                 className="absolute right-2.5 top-2.5 h-4 w-4 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground text-xs"
               >
                 ✕
               </button>
             )}
-          </div>
+            {activeSearchSurface === "sticky" && (
+              <HelpSearchResultsPanel
+                query={searchQuery}
+                results={searchResults}
+                activeIndex={activeSearchIndex}
+                onSelect={openResult}
+                onAskSupport={handleAskSmartSupport}
+                compact
+              />
+            )}
+          </form>
         </div>
       </nav>
 
-      <section id="featured" className="mx-auto max-w-7xl px-5 py-14 lg:px-10">
+      <section id="featured" className="help-desktop-only mx-auto max-w-7xl px-5 py-14 lg:px-10">
         <div className="grid gap-5 md:grid-cols-2">
           {featured.map(({ title, body, to, icon: Icon }) => (
             <Link
@@ -515,7 +1183,7 @@ function HelpCenterPage() {
         </div>
       </section>
 
-      <section id="products" className="border-y border-border/30 bg-secondary/15 backdrop-blur-sm">
+      <section id="products" className="help-desktop-only border-y border-border/30 bg-secondary/15 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
           <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">Products</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -559,7 +1227,7 @@ function HelpCenterPage() {
         </div>
       </section>
 
-      <section id="articles" className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
+      <section id="articles" className="help-desktop-only mx-auto max-w-7xl px-5 py-16 lg:px-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">FAQ Articles</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground">Learn & Explore</h2>
@@ -570,7 +1238,15 @@ function HelpCenterPage() {
           {searchQuery && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs text-primary font-medium">
               Showing search results for "{searchQuery}"
-              <button onClick={() => setSearchQuery("")} className="ml-1 transition hover:text-primary/80">✕</button>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveSearchSurface(null);
+                }}
+                className="ml-1 transition hover:text-primary/80"
+              >
+                ✕
+              </button>
             </div>
           )}
         </div>
@@ -622,23 +1298,34 @@ function HelpCenterPage() {
             ))
           ) : (
             <div className="col-span-full rounded-xl border border-border/40 bg-card/60 p-12 text-center backdrop-blur-md">
-              <Search className="mx-auto h-12 w-12 text-muted-foreground/60" />
-              <h3 className="mt-4 text-lg font-bold text-foreground">No matches found</h3>
+              <Headphones className="mx-auto h-12 w-12 text-primary" />
+              <h3 className="mt-4 text-lg font-bold text-foreground">Ask our smart support</h3>
               <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                We couldn't find any articles matching "{searchQuery}". Try using different keywords or scroll down to get direct support.
+                We couldn't find an article for "{searchQuery}". Open the smart customer service chat and share your laptop model, product model, and connection method.
               </p>
-              <button
-                onClick={() => setSearchQuery("")}
-                className="mt-6 rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition"
-              >
-                Clear search query
-              </button>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <button
+                  onClick={handleAskSmartSupport}
+                  className="rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground transition hover:bg-primary/90"
+                >
+                  Ask smart support
+                </button>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveSearchSurface(null);
+                  }}
+                  className="rounded-full border border-border/60 bg-card px-5 py-2 text-xs font-semibold text-muted-foreground transition hover:border-primary/50 hover:text-primary"
+                >
+                  Clear search query
+                </button>
+              </div>
             </div>
           )}
         </div>
       </section>
 
-      <section id="support" className="border-t border-border/30 bg-secondary/20">
+      <section id="support" className="help-desktop-only border-t border-border/30 bg-secondary/20">
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10 lg:py-20">
           <div className="text-center">
             <Headphones className="mx-auto h-12 w-12 text-primary" />
@@ -653,6 +1340,8 @@ function HelpCenterPage() {
               <a
                 key={title}
                 href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                 className="flex flex-col justify-between rounded-xl border border-border/60 bg-card/85 p-6 shadow-sm transition duration-300 hover:border-primary/50 hover:bg-card"
               >
                 <div>

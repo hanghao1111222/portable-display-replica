@@ -48,10 +48,11 @@ function ProductDetail() {
   const [active, setActive] = useState(0);
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
-  const amazonUrl =
-    "https://www.amazon.com/Anyking-Extender-Portable-External-Business/dp/B0GJS4XGDJ/";
+  const amazonUrl = product.amazonUrl;
   const walmartUrl =
-    "https://www.walmart.com/ip/14-Triple-Laptop-Screen-Extender-Lightweight-Portable-Dual-Monitor-Extender-Speaker-FHD-1080P-Travel-Display-Plug-Play-HDMI-USB-A-Type-C-Laptops-Work/19393261363";
+    product.slug === "a6"
+      ? "https://www.walmart.com/ip/14-Triple-Laptop-Screen-Extender-Lightweight-Portable-Dual-Monitor-Extender-Speaker-FHD-1080P-Travel-Display-Plug-Play-HDMI-USB-A-Type-C-Laptops-Work/19393261363"
+      : undefined;
 
   const related = products.filter((p) => p.slug !== product.slug).slice(0, 4);
   const discount = Math.round((1 - product.price / product.compareAt) * 100);
@@ -181,23 +182,27 @@ function ProductDetail() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <a
-                href={amazonUrl}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
-              >
-                Buy on Amazon
-              </a>
-              <a
-                href={walmartUrl}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition text-center"
-              >
-                Buy at Walmart
-              </a>
+            <div className={`grid grid-cols-1 ${walmartUrl ? "sm:grid-cols-2" : ""} gap-3`}>
+              {amazonUrl && (
+                <a
+                  href={amazonUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
+                >
+                  Buy on Amazon
+                </a>
+              )}
+              {walmartUrl && (
+                <a
+                  href={walmartUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition text-center"
+                >
+                  Buy at Walmart
+                </a>
+              )}
             </div>
           </div>
 

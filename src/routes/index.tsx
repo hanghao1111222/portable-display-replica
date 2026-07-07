@@ -36,7 +36,7 @@ function Index() {
             {t.grid.view} →
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {products.map((p, i) => (
             <ProductCard key={p.slug} product={p} index={i} />
           ))}

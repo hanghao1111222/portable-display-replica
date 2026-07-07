@@ -1,5 +1,7 @@
 import a6Product from "@/assets/product-a6-a.jpg";
 import s10Product from "@/assets/product-s10pro-a.jpg";
+import p7Product from "@/assets/product-p7-156-main.jpg";
+import s15PlusPlaceholder from "@/assets/product-s15-plus-placeholder.svg";
 
 type HelpArticleSection = {
   title: string;
@@ -20,6 +22,13 @@ type HelpArticleSpec = {
   value: string;
 };
 
+type HelpArticleVideo = {
+  title: string;
+  body: string;
+  youtubeId?: string;
+  src?: string;
+};
+
 export type HelpCenterArticle = {
   slug: string;
   name: string;
@@ -29,6 +38,7 @@ export type HelpCenterArticle = {
   amazonUrl: string;
   heroTitle: string;
   heroBody: string;
+  connectionVideo?: HelpArticleVideo;
   overview: {
     listingTitle: string;
     designSummary: string;
@@ -70,6 +80,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     heroTitle: "A6 setup, compatibility, and troubleshooting",
     heroBody:
       "Everything customers need before buying or setting up the AnyKing A6, including compatible laptop types, connection methods, no-signal fixes, display settings, and warranty support.",
+    connectionVideo: {
+      title: "A6 connection tutorial",
+      body:
+        "Watch this setup video first to understand the recommended A6 connection workflow before checking cable requirements or troubleshooting no-signal issues.",
+      youtubeId: "theaUO0U5xQ",
+    },
     overview: {
       listingTitle:
         "Laptop Screen Extender, 14-inch FHD 1080P Portable Monitor for Laptop with 100% sRGB, Plug-and-Play External Display for 13-17.3 inch laptops.",
@@ -274,6 +290,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     heroTitle: "S10 Pro setup, third-screen fixes, and support",
     heroBody:
       "A guided help article for the AnyKing S10 Pro covering port requirements, connection methods, third-screen detection issues, brightness and flicker fixes, and warranty support.",
+    connectionVideo: {
+      title: "S10 Pro connection tutorial",
+      body:
+        "Watch this setup video first to see the recommended cable workflow before checking specs or troubleshooting steps.",
+      youtubeId: "00AuHJqtL6o",
+    },
     overview: {
       listingTitle:
         "Laptop Screen Extender, Triple Screen Laptop Monitor Extender for 13-17.3 inch laptops, 14-inch 1080P FHD IPS portable monitor with 100% sRGB, plug-and-play extension for travel, coding, and work.",
@@ -283,7 +305,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Dual 14-inch FHD 1080P IPS side panels for a full triple-screen workstation.",
         "100% sRGB, 300 nits brightness, matte finish, and low blue light eye-care design.",
         "Fits laptops from 13 to 17.3 inches and targets business travel, coding, presentations, and multitasking.",
-        "Base M1, M2, M3, and M4 MacBooks support only one external display unless an H5 adapter workflow is added separately.",
+        "Some base Apple silicon MacBooks, especially many M1 and M2 models, may be limited to one native external display, so full expansion can require an H5 adapter workflow depending on the exact model.",
       ],
       productLinks: [
         { label: "Product purchase page", href: "https://www.amazon.com/dp/B0GJSXHDCG", external: true },
@@ -325,7 +347,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     setup: {
       tutorialTitle: "Triple-screen setup workflow",
       tutorialBody:
-        "S10 Pro is designed as a flexible portable workstation for 13-17.3 inch laptops. The cleanest setup is direct connection without docks. macOS users with base M1, M2, M3, or M4 models should verify external-display limits before buying because an H5 adapter may be required for full dual-side-screen expansion.",
+        "S10 Pro is designed as a flexible portable workstation for 13-17.3 inch laptops. The cleanest setup is direct connection without docks. macOS users with base Apple silicon models should verify their exact external-display limits before buying because some models may require an H5 adapter for full dual-side-screen expansion.",
       accessories: [
         "S10 Pro triple-screen main body with two side displays",
         "Adjustable kickstand structure",
@@ -457,6 +479,270 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "What is the warranty period?",
             answer: "The AnyKing S10 Pro includes a 1-year warranty.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "p7-156-extender",
+    name: 'AnyKing P7 15.6" Extender',
+    shortName: 'P7 15.6" Extender',
+    image: p7Product,
+    asin: "B0H25VMK6H",
+    amazonUrl: "https://www.amazon.com/dp/B0H25VMK6H",
+    heroTitle: "P7 setup, compatibility, and dual-screen workflow",
+    heroBody:
+      "Everything customers need before buying or setting up the AnyKing P7 15.6-inch laptop screen extender, including laptop fit, display specs, connection methods, modes, and support.",
+    connectionVideo: {
+      title: "P7 connection tutorial",
+      body:
+        "Watch this setup video first to understand the recommended P7 cable workflow before checking compatibility details or troubleshooting display signal issues.",
+      youtubeId: "RR-CwA9Xq6M",
+    },
+    overview: {
+      listingTitle:
+        'Laptop Screen Extender, 15.6-inch FHD 1080P IPS Triple Screen Laptop Monitor Extender for 13-17.3 inch laptops, 100% sRGB portable dual monitor extender for meetings, spreadsheets, coding, travel, and work.',
+      designSummary:
+        'The P7 is a larger 15.6-inch dual-side laptop screen extender for users who want more workspace than a standard 14-inch setup. It combines two FHD IPS side panels, a folding rear support structure, adjustable side screens, and a travel bag-friendly body for desk, office, and mobile workflows.',
+      highlights: [
+        'Dual 15.6-inch FHD 1080P IPS side panels create a spacious triple-screen workstation.',
+        '100% sRGB, 300 nits brightness, 1000:1 contrast, 16:9 aspect ratio, and low blue light support for clearer daily work.',
+        'Fits 13-17.3 inch laptops, with a rear grip range designed for roughly 11.8-15 inch laptop screen widths.',
+        'Supports mirror, extend, and portrait workflows for spreadsheets, meetings, coding, gaming, presentations, and multitasking.',
+      ],
+      productLinks: [
+        { label: "Product purchase page", href: "https://www.amazon.com/dp/B0H25VMK6H", external: true },
+        { label: "Product detail page", href: "/products/p7-156-extender" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "P7" },
+      { label: "ASIN", value: "B0H25VMK6H" },
+      { label: "Screen size", value: '15.6" x 2 side displays' },
+      { label: "Resolution", value: "FHD 1080P, 1920 x 1080" },
+      { label: "Display technology", value: "IPS, LED" },
+      { label: "Aspect ratio", value: "16:9" },
+      { label: "Refresh rate", value: "60 Hz" },
+      { label: "Brightness", value: "300 nits" },
+      { label: "Contrast ratio", value: "1000:1" },
+      { label: "Color gamut", value: "100% sRGB" },
+      { label: "Color depth", value: "16.7 million colors" },
+      { label: "Screen finish", value: "Matte / low blue light" },
+      { label: "Compatible laptop size", value: '13" to 17.3"' },
+      { label: "Laptop grip range", value: '11.8" to 15"' },
+      { label: "Viewing adjustment", value: "180-degree adjustable side screens, 90-degree tilt stand" },
+      { label: "Weight", value: "3.9 lbs" },
+      { label: "Connection paths", value: "USB-C workflow plus HDMI-assisted compatibility options" },
+      { label: "Color", value: "Black" },
+      { label: "Warranty", value: "1 Year Manufacturer" },
+    ],
+    compatibility: [
+      "Works with laptops that can provide two display-output paths through USB-C and/or HDMI.",
+      "Best fit is for 13-17.3 inch laptops with enough rear screen width for the extender grip.",
+      "USB-C ports should support video output / DisplayPort Alt Mode for a single-cable screen path.",
+      "For laptops with limited display outputs, use HDMI-assisted setup or contact support before ordering extra adapters.",
+    ],
+    connectionMethods: [
+      "Dual USB-C method: connect both side displays through video-capable USB-C ports when your laptop supports it.",
+      "USB-C + HDMI method: use USB-C for one screen and HDMI for the other display signal path.",
+      "Mirror mode duplicates your laptop screen, Extend mode creates more workspace, and Portrait mode can be used for vertical documents or dashboards.",
+      "During first setup, connect directly to the laptop instead of using a hub, dock, or splitter.",
+    ],
+    setup: {
+      tutorialTitle: "P7 triple-screen setup workflow",
+      tutorialBody:
+        'Open the rear grip, attach the P7 to the laptop screen, unfold the two 15.6-inch side panels, then connect the supported USB-C and/or HDMI signal paths. Start in Extend mode for the best productivity experience.',
+      accessories: [
+        "P7 triple-screen main body with two 15.6-inch side displays",
+        "Rear grip and adjustable support stand",
+        "USB-C signal and power workflow",
+        "HDMI-assisted workflow for broader laptop compatibility",
+        "Travel bag for carrying the larger screen extender",
+      ],
+      compatibilityNotes: [
+        "Windows, macOS, ChromeOS, Linux, and select consoles or Android devices may work depending on available display-output ports.",
+        "Base Apple silicon MacBooks can have external-display limits, so confirm the exact MacBook model before purchase.",
+        "If the display flickers or shows no signal, test direct cable connection and add external power before using adapters.",
+      ],
+    },
+    reminders: [
+      "Confirm your laptop has enough display-output paths before purchase.",
+      "For the cleanest first setup, avoid hubs and low-quality adapters.",
+      "Use Extend mode to get the full productivity benefit of the dual side screens.",
+    ],
+    downloads: {
+      manual: {
+        label: "Request user manual",
+        href: "mailto:service@anykingscreen.com?subject=P7%2015.6%20User%20Manual%20Request",
+      },
+      firmware: {
+        label: "Request firmware support",
+        href: "mailto:service@anykingscreen.com?subject=P7%2015.6%20Firmware%20Support",
+      },
+      note:
+        "Because setup depends on laptop ports and operating system display limits, the support team can send the latest manual and adapter guidance for your exact device.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "1-year warranty",
+    },
+    sections: [
+      {
+        title: "Compatibility & Before You Buy",
+        items: [
+          {
+            question: "What laptop models are compatible with the AnyKing P7?",
+            answer:
+              "The P7 is designed for 13-17.3 inch laptops that can output two display signals through USB-C and/or HDMI. The most stable setup is direct connection through video-capable USB-C ports or USB-C plus HDMI.",
+          },
+          {
+            question: "Will the P7 work with my MacBook?",
+            answer:
+              "Many MacBooks can use the P7, but base Apple silicon models may have native external-display limits. Please confirm your exact MacBook model and chip generation before purchase if you need both side screens active.",
+          },
+          {
+            question: "Can I use the P7 with consoles, phones, or tablets?",
+            answer:
+              "Some devices can work when they provide a compatible HDMI or full-function USB-C video output, but laptops are the primary recommended workflow. Mobile devices may require extra power and may not support both screens.",
+          },
+        ],
+      },
+      {
+        title: "Connection & Setup",
+        items: [
+          {
+            question: "How do I set up the AnyKing P7?",
+            answer:
+              "Attach the rear grip to your laptop, unfold the two side screens, connect the supported USB-C and/or HDMI paths, then choose Extend, Mirror, or Portrait mode in your display settings.",
+          },
+          {
+            question: 'Why does one screen show "No Signal"?',
+            answer:
+              "The most common cause is that one cable path is providing power only or the laptop cannot output a second display signal. Try a video-capable USB-C port, add HDMI for the second path, and avoid hubs during troubleshooting.",
+          },
+        ],
+      },
+      {
+        title: "Power, Display, and Daily Use",
+        items: [
+          {
+            question: "Why is the screen flickering or turning off?",
+            answer:
+              "Flicker is usually caused by insufficient power, an unstable cable, or a weak adapter. Connect directly, add external power, lower brightness for testing, and confirm the cable supports video.",
+          },
+          {
+            question: "Which display mode should I use?",
+            answer:
+              "Extend mode is best for multitasking. Mirror mode is useful for presentations, and Portrait mode is helpful for long documents, chat, dashboards, or coding side panels.",
+          },
+          {
+            question: "Is the P7 too large for travel?",
+            answer:
+              "The P7 is larger than the 14-inch models because it uses dual 15.6-inch side screens, but it is still designed as a foldable portable extender and includes a travel bag workflow.",
+          },
+        ],
+      },
+      {
+        title: "Warranty & Support",
+        items: [
+          {
+            question: "What should I send support if I need help?",
+            answer:
+              "Please send your order number, laptop model, operating system, connection method, and a short video or photo of the issue so support can identify whether it is a cable, power, port, or adapter problem.",
+          },
+          {
+            question: "What is the warranty period?",
+            answer: "The AnyKing P7 includes a 1-year warranty.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "s15-plus-extender",
+    name: "AnyKing S15 Plus",
+    shortName: "S15 Plus",
+    image: s15PlusPlaceholder,
+    asin: "TBD",
+    amazonUrl: "#",
+    heroTitle: "S15 Plus setup video and coming-soon guide",
+    heroBody:
+      "A placeholder help article for the AnyKing S15 Plus. The connection tutorial is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
+    connectionVideo: {
+      title: "S15 Plus connection tutorial",
+      body:
+        "Watch this setup video first. Full S15 Plus product details are reserved and will be completed after the final product information is added.",
+      youtubeId: "H87DfRJeQXE",
+    },
+    overview: {
+      listingTitle: "S15 Plus product information will be added soon.",
+      designSummary:
+        "S15 Plus is reserved in the Help Center so customers can access the connection tutorial first. Detailed product copy, images, specifications, and compatibility guidance will be completed later.",
+      highlights: [
+        "Connection tutorial is available now.",
+        "Product specifications are pending final confirmation.",
+        "Compatibility notes and accessories will be updated after product details are provided.",
+      ],
+      productLinks: [
+        { label: "Contact support for S15 Plus", href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Support" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "S15 Plus" },
+      { label: "ASIN", value: "TBD" },
+      { label: "Status", value: "Product details pending" },
+    ],
+    compatibility: [
+      "Compatibility guidance will be added after final S15 Plus product information is confirmed.",
+      "For now, watch the setup tutorial and contact support with your laptop model if you need help.",
+    ],
+    connectionMethods: [
+      "Watch the connection tutorial at the top of this article first.",
+      "Detailed cable workflows will be updated when final S15 Plus documentation is available.",
+    ],
+    setup: {
+      tutorialTitle: "S15 Plus setup workflow",
+      tutorialBody:
+        "S15 Plus setup details are reserved for the final documentation. The video above is the primary setup reference for now.",
+      accessories: [
+        "Accessory list pending final product information.",
+      ],
+      compatibilityNotes: [
+        "Compatibility notes pending final product information.",
+      ],
+    },
+    reminders: [
+      "This is a reserved article. Product specifications and purchase links will be completed later.",
+    ],
+    downloads: {
+      manual: {
+        label: "Request S15 Plus manual",
+        href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Manual%20Request",
+      },
+      firmware: {
+        label: "Request S15 Plus firmware support",
+        href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Firmware%20Support",
+      },
+      note:
+        "S15 Plus downloads will be added after final documentation is ready.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "Warranty details pending",
+    },
+    sections: [
+      {
+        title: "Coming Soon",
+        items: [
+          {
+            question: "When will S15 Plus product details be added?",
+            answer:
+              "This article is currently reserved for S15 Plus. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
           },
         ],
       },

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState, type ChangeEvent } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { useLang, formatPrice } from "@/i18n/LangContext";
 import {
   ArrowRight,
@@ -11,6 +12,7 @@ import {
   ShieldCheck,
   ShoppingBag,
 } from "lucide-react";
+import { toast } from "sonner";
 
 type PaymentMethod = "card" | "paypal";
 
@@ -36,6 +38,7 @@ export const Route = createFileRoute("/checkout")({
 
 function CheckoutPage() {
   const { cartItems, cartSubtotal, clearCart } = useCart();
+  const { currentUser, createOrder } = useAuth();
   const { lang } = useLang();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -138,10 +141,14 @@ function CheckoutPage() {
       return;
     }
 
+    const order = createOrder(cartItems, cartSubtotal);
     clearCart();
-    setOrderNumber(`AK-${Math.floor(100000 + Math.random() * 900000)}`);
+    setOrderNumber(order?.id ?? `AK-${Math.floor(100000 + Math.random() * 900000)}`);
     setOrderPlaced(true);
     setMessage("");
+    if (order) {
+      toast.success("Order saved to your account.");
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -193,12 +200,21 @@ function CheckoutPage() {
               >
                 {label.continueShopping}
               </Link>
-              <Link
-                to="/"
-                className="inline-flex items-center justify-center rounded-full border border-gray-200 px-6 py-3 font-medium text-gray-900 transition hover:bg-gray-50"
-              >
-                {lang === "ja" ? "ホームへ戻る" : "Back to home"}
-              </Link>
+              {currentUser ? (
+                <a
+                  href="/account?tab=orders"
+                  className="inline-flex items-center justify-center rounded-full border border-gray-200 px-6 py-3 font-medium text-gray-900 transition hover:bg-gray-50"
+                >
+                  {lang === "ja" ? "注文履歴を見る" : "View order history"}
+                </a>
+              ) : (
+                <Link
+                  to="/"
+                  className="inline-flex items-center justify-center rounded-full border border-gray-200 px-6 py-3 font-medium text-gray-900 transition hover:bg-gray-50"
+                >
+                  {lang === "ja" ? "ホームへ戻る" : "Back to home"}
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -491,6 +507,17 @@ function CheckoutPage() {
                       ? "このデモ環境では、注文確定後にカートを空にして完了画面へ進みます。"
                       : "In this demo, placing the order clears the cart and shows a confirmation screen."}
                   </p>
+                </div>
+
+                <div className="mt-4 rounded-2xl bg-sky-50 p-4 text-sm text-sky-900">
+                  {currentUser ? (
+                    <>
+                      Signed in as <span className="font-semibold">{currentUser.name}</span>. This
+                      order will be saved to your account history.
+                    </>
+                  ) : (
+                    "Sign in or create an account before checkout if you want this order saved to your profile."
+                  )}
                 </div>
 
                 <button

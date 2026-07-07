@@ -9,12 +9,11 @@ export const strings = {
     },
     nav: {
       sales: "Sales",
-      monitors: "Portable Monitors",
-      accessories: "Accessories",
+      about: "About Us",
       compatibility: "Compatibility",
       reviews: "Reviews",
       explore: "Explore",
-      help: "Help",
+      help: "Help Center",
       login: "Login",
     },
     hero: {
@@ -202,6 +201,7 @@ export const strings = {
       tabs: {
         a6: "A6 Dual Screen",
         s10pro: "S10 Pro Triple Screen",
+        p7: 'P7 15.6" Triple Screen',
       },
       a6: {
         title: "Double your screen space, anywhere",
@@ -222,6 +222,16 @@ export const strings = {
           "Supports all Mac and Windows laptops via USB-C",
         ],
         cta: "Learn S10 Pro specs",
+      },
+      p7: {
+        title: 'Go bigger with dual 15.6" side screens',
+        body: "See the P7 turn a compatible laptop into a larger triple-screen workstation for meetings, spreadsheets, coding, travel, and daily multitasking.",
+        bullets: [
+          'Dual 15.6" FHD IPS side panels',
+          "Mirror, extend, and portrait workflows",
+          "Designed for 13-17.3 inch laptops",
+        ],
+        cta: "Learn P7 specs",
       },
     },
     footer: {
@@ -273,12 +283,11 @@ export const strings = {
     },
     nav: {
       sales: "セール",
-      monitors: "ポータブルモニター",
-      accessories: "アクセサリー",
+      about: "会社情報",
       compatibility: "互換性チェック",
       reviews: "レビュー",
       explore: "詳しく見る",
-      help: "サポート",
+      help: "ヘルプセンター",
       login: "ログイン",
     },
     hero: {
@@ -459,6 +468,7 @@ export const strings = {
       tabs: {
         a6: "A6 デュアルスクリーン",
         s10pro: "S10 Pro トリプルスクリーン",
+        p7: 'P7 15.6インチ トリプルスクリーン',
       },
       a6: {
         title: "画面スペースを2倍に。どこでも自在に。",
@@ -479,6 +489,16 @@ export const strings = {
           "USB-C接続ですべてのMacおよびWindowsノートPCに対応",
         ],
         cta: "S10 Pro スペック詳細を見る",
+      },
+      p7: {
+        title: "15.6インチの大型デュアルサイドスクリーン",
+        body: "P7が対応ノートPCを、会議、表計算、コーディング、出張、日常のマルチタスクに使える広い3画面ワークステーションへ変える様子をご覧ください。",
+        bullets: [
+          "15.6インチFHD IPSサイドパネル2枚",
+          "ミラー、拡張、縦表示ワークフローに対応",
+          "13〜17.3インチのノートPC向け設計",
+        ],
+        cta: "P7 スペック詳細を見る",
       },
     },
     footer: {

@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { LangProvider } from "@/i18n/LangContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "sonner";
 import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/CartDrawer";
@@ -177,13 +178,15 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LangProvider>
-        <CartProvider>
-          <Outlet />
-          <CartDrawer />
-          <Toaster theme={siteTheme} position="bottom-right" />
-          <Analytics />
-          <SpeedInsights />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Outlet />
+            <CartDrawer />
+            <Toaster theme={siteTheme} position="bottom-right" />
+            <Analytics />
+            <SpeedInsights />
+          </CartProvider>
+        </AuthProvider>
       </LangProvider>
     </QueryClientProvider>
   );

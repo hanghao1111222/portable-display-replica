@@ -15,11 +15,13 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpCenterRouteImport } from './routes/help-center'
 import { Route as CompatibilityRouteImport } from './routes/compatibility'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as HelpArticlesArticleRouteImport } from './routes/help-articles.$article'
+import { Route as AdminWarrantiesRouteImport } from './routes/admin.warranties'
 
 const ReviewsRoute = ReviewsRouteImport.update({
   id: '/reviews',
@@ -51,6 +53,11 @@ const CheckoutRoute = CheckoutRouteImport.update({
   path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -76,16 +83,23 @@ const HelpArticlesArticleRoute = HelpArticlesArticleRouteImport.update({
   path: '/help-articles/$article',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminWarrantiesRoute = AdminWarrantiesRouteImport.update({
+  id: '/admin/warranties',
+  path: '/admin/warranties',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
   '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reviews': typeof ReviewsRoute
+  '/admin/warranties': typeof AdminWarrantiesRoute
   '/help-articles/$article': typeof HelpArticlesArticleRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -93,12 +107,14 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
   '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reviews': typeof ReviewsRoute
+  '/admin/warranties': typeof AdminWarrantiesRoute
   '/help-articles/$article': typeof HelpArticlesArticleRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products': typeof ProductsIndexRoute
@@ -107,12 +123,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
   '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reviews': typeof ReviewsRoute
+  '/admin/warranties': typeof AdminWarrantiesRoute
   '/help-articles/$article': typeof HelpArticlesArticleRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -122,12 +140,14 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/checkout'
     | '/compatibility'
     | '/help-center'
     | '/login'
     | '/register'
     | '/reviews'
+    | '/admin/warranties'
     | '/help-articles/$article'
     | '/products/$slug'
     | '/products/'
@@ -135,12 +155,14 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/checkout'
     | '/compatibility'
     | '/help-center'
     | '/login'
     | '/register'
     | '/reviews'
+    | '/admin/warranties'
     | '/help-articles/$article'
     | '/products/$slug'
     | '/products'
@@ -148,12 +170,14 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/checkout'
     | '/compatibility'
     | '/help-center'
     | '/login'
     | '/register'
     | '/reviews'
+    | '/admin/warranties'
     | '/help-articles/$article'
     | '/products/$slug'
     | '/products/'
@@ -162,12 +186,14 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   CheckoutRoute: typeof CheckoutRoute
   CompatibilityRoute: typeof CompatibilityRoute
   HelpCenterRoute: typeof HelpCenterRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ReviewsRoute: typeof ReviewsRoute
+  AdminWarrantiesRoute: typeof AdminWarrantiesRoute
   HelpArticlesArticleRoute: typeof HelpArticlesArticleRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -217,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -252,18 +285,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpArticlesArticleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/warranties': {
+      id: '/admin/warranties'
+      path: '/admin/warranties'
+      fullPath: '/admin/warranties'
+      preLoaderRoute: typeof AdminWarrantiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   CheckoutRoute: CheckoutRoute,
   CompatibilityRoute: CompatibilityRoute,
   HelpCenterRoute: HelpCenterRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ReviewsRoute: ReviewsRoute,
+  AdminWarrantiesRoute: AdminWarrantiesRoute,
   HelpArticlesArticleRoute: HelpArticlesArticleRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   ProductsIndexRoute: ProductsIndexRoute,

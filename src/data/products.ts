@@ -1,5 +1,13 @@
 import s10proA from "@/assets/product-s10pro-a.jpg";
 import a6A from "@/assets/product-a6-a.jpg";
+import p7Main from "@/assets/product-p7-156-main.jpg";
+import p7Productivity from "@/assets/product-p7-156-productivity.jpg";
+import p7Fit from "@/assets/product-p7-156-fit.jpg";
+import p7Display from "@/assets/product-p7-156-display.jpg";
+import p7Modes from "@/assets/product-p7-156-modes.jpg";
+import p7Compatibility from "@/assets/product-p7-156-compatibility.jpg";
+import p7Portable from "@/assets/product-p7-156-portable.jpg";
+import p7Scenes from "@/assets/product-p7-156-scenes.jpg";
 import s10proA11 from "@/assets/product-s10pro-1.1.jpg";
 import s10proA700x900 from "@/assets/product-s10pro-700x900-1.1.jpg";
 import s10g1 from "@/assets/s10pro-gallery-1-multitasking.jpg";
@@ -144,6 +152,30 @@ const a6Specs = [
   { label: { en: "ASIN", ja: "ASIN" }, value: "B0GJS4XGDJ" },
 ];
 
+const p7Specs = [
+  { label: { en: "Brand", ja: "ブランド" }, value: "Anyking" },
+  { label: { en: "Model", ja: "モデル" }, value: "P7" },
+  { label: { en: "Screen size", ja: "画面サイズ" }, value: '15.6" × 2' },
+  { label: { en: "Display type", ja: "ディスプレイタイプ" }, value: "LED" },
+  { label: { en: "Display technology", ja: "ディスプレイ技術" }, value: "IPS" },
+  { label: { en: "Resolution", ja: "解像度" }, value: "FHD 1080p (1920 × 1080)" },
+  { label: { en: "Aspect ratio", ja: "アスペクト比" }, value: "16:9" },
+  { label: { en: "Refresh rate", ja: "リフレッシュレート" }, value: "60 Hz" },
+  { label: { en: "Contrast ratio", ja: "コントラスト比" }, value: "1000:1" },
+  { label: { en: "Brightness", ja: "明るさ" }, value: "300 nits" },
+  { label: { en: "Screen finish", ja: "画面仕上げ" }, value: "Matte" },
+  { label: { en: "Picture enhancement", ja: "画質補正" }, value: "Low blue light, 100% sRGB, 16.7 million colors" },
+  { label: { en: "Connectivity", ja: "接続方式" }, value: "USB Type-C, mini HDMI" },
+  { label: { en: "Ports", ja: "ポート" }, value: "USB-C and HDMI-assisted workflows" },
+  { label: { en: "Compatible laptop size", ja: "対応ノートPCサイズ" }, value: '13" to 17.3" laptops' },
+  { label: { en: "Laptop grip range", ja: "固定範囲" }, value: '11.8" to 15"' },
+  { label: { en: "Viewing adjustment", ja: "角度調整" }, value: "180° adjustable screens, 90° tilt stand" },
+  { label: { en: "Weight", ja: "重量" }, value: "3.9 lbs" },
+  { label: { en: "Color", ja: "カラー" }, value: "Black" },
+  { label: { en: "Warranty", ja: "保証" }, value: "1 Year Manufacturer" },
+  { label: { en: "ASIN", ja: "ASIN" }, value: "B0H25VMK6H" },
+];
+
 export const products: Product[] = [
   {
     slug: "s10-pro",
@@ -246,6 +278,81 @@ export const products: Product[] = [
         body: {
           en: 'Color‑accurate 14" IPS panels with anti‑glare coating, ready for design, video and gameplay.',
           ja: '色精度の高い14インチIPSパネルにアンチグレア加工を施し、デザイン、動画、ゲームに最適。',
+        },
+      },
+    ],
+  },
+  {
+    slug: "p7-156-extender",
+    name: 'Anyking P7 15.6" Extender',
+    amazonUrl: "https://www.amazon.com/dp/B0H25VMK6H",
+    tagline: {
+      en: "Bigger dual screens for a true mobile command center.",
+      ja: "より大きなデュアルスクリーンで、本格的なモバイル作業環境を。",
+    },
+    description: {
+      en: 'Dual 15.6" FHD IPS side displays expand a 13-17.3 inch laptop into a spacious triple-screen workstation. Built for spreadsheets, meetings, coding, travel work, and less window switching.',
+      ja: '15.6インチFHD IPSデュアルサイドディスプレイで、13〜17.3インチのノートPCを広々とした3画面ワークステーションへ拡張。表計算、会議、コーディング、出張作業に最適です。',
+    },
+    price: 229.98,
+    compareAt: 299.99,
+    rating: 4.78,
+    reviews: 126,
+    images: [
+      p7Main,
+      p7Productivity,
+      p7Fit,
+      p7Display,
+      p7Portable,
+      p7Modes,
+      p7Compatibility,
+      p7Scenes,
+    ],
+    gallery: [p7Main, p7Display, p7Productivity, p7Portable, p7Fit, p7Modes, p7Compatibility, p7Scenes],
+    aplus: {
+      banners: [p7Display, p7Productivity, p7Portable, p7Fit, p7Modes, p7Compatibility, p7Scenes],
+      deploy: {
+        image: p7Main,
+        title: { en: "Deploy a bigger triple-screen workspace", ja: "より大きな3画面ワークスペースを展開" },
+        body: {
+          en: 'The P7 adds two 15.6" side panels to compatible laptops, giving you more room for dashboards, documents, meetings, and creative tools without constantly switching windows.',
+          ja: 'P7は対応ノートPCに15.6インチのサイドパネル2枚を追加し、ダッシュボード、資料、会議、制作ツールを同時に扱える広い作業領域を実現します。',
+        },
+      },
+    },
+    badge: { en: "New 15.6-inch", ja: "新15.6インチ" },
+    specs: p7Specs,
+    features: [
+      {
+        image: p7Productivity,
+        title: { en: "Boost productivity with dual screens", ja: "デュアルスクリーンで生産性を向上" },
+        body: {
+          en: "View more and switch less while handling meetings, spreadsheets, emails, and documents at the same time.",
+          ja: "会議、表計算、メール、資料を同時に扱い、画面切り替えを減らして作業効率を高めます。",
+        },
+      },
+      {
+        image: p7Display,
+        title: { en: '15.6" FHD IPS clarity', ja: "15.6インチFHD IPSの鮮明表示" },
+        body: {
+          en: "FHD 1080p resolution, 300 nits brightness, 100% sRGB color, 1000:1 contrast, and a 16:9 IPS panel create a clearer workspace.",
+          ja: "FHD 1080p、300ニット、100% sRGB、1000:1コントラスト、16:9 IPSパネルで作業画面を鮮明に表示します。",
+        },
+      },
+      {
+        image: p7Portable,
+        title: { en: "Portable for travel and work anywhere", ja: "旅行にも日常作業にも持ち運びやすい" },
+        body: {
+          en: 'A slim 0.16" profile, 3.9 lb body, rear support structure, and travel bag make the larger 15.6-inch setup easier to carry between office, home, and trips.',
+          ja: '薄さ0.16インチ、3.9lbの本体、背面サポート構造、持ち運びバッグにより、15.6インチの大型セットアップもオフィス、自宅、出張先へ運びやすくなります。',
+        },
+      },
+      {
+        image: p7Compatibility,
+        title: { en: "Easy setup and wide compatibility", ja: "簡単セットアップと幅広い互換性" },
+        body: {
+          en: "Built for major systems and consoles, with mirror, extend, and portrait workflows for work, gaming, and presentations.",
+          ja: "主要なシステムやゲーム機に対応し、ミラー、拡張、縦表示モードで仕事、ゲーム、プレゼンに活用できます。",
         },
       },
     ],

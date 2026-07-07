@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useLang } from "@/i18n/LangContext";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -10,13 +12,32 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const { t } = useLang();
   const navigate = useNavigate();
+  const { login, currentUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate({ to: "/account" });
+    }
+  }, [currentUser, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !password) return;
-    navigate({ to: "/" });
+    setError("");
+    setIsSubmitting(true);
+    
+    const success = await login(email, password);
+    setIsSubmitting(false);
+
+    if (success) {
+      navigate({ to: "/account" });
+    } else {
+      setError("Invalid email or password.");
+    }
   };
 
   return (
@@ -26,6 +47,11 @@ function LoginPage() {
         <p className="mt-2 text-sm text-muted-foreground">{t.auth.loginSub}</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          {error && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {error}
+            </div>
+          )}
           <div className="space-y-1.5">
             <label className="text-sm font-medium" htmlFor="login-email">Email</label>
             <input

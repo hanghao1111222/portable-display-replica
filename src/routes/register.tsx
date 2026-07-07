@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useLang } from "@/i18n/LangContext";
+import { useAuth } from "@/context/AuthContext";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
@@ -10,14 +11,32 @@ export const Route = createFileRoute("/register")({
 function RegisterPage() {
   const { t } = useLang();
   const navigate = useNavigate();
+  const { register, currentUser } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate({ to: "/account" });
+    }
+  }, [currentUser, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name || !email || !password) return;
-    navigate({ to: "/login" });
+    setError("");
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    const success = await register(name, email, password);
+    setIsSubmitting(false);
+
+    if (success) {
+      navigate({ to: "/account" });
+    }
   };
 
   return (
@@ -27,6 +46,11 @@ function RegisterPage() {
         <p className="mt-2 text-sm text-muted-foreground">{t.auth.registerSub}</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          {error && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {error}
+            </div>
+          )}
           <div className="space-y-1.5">
             <label className="text-sm font-medium" htmlFor="register-name">{t.auth.name}</label>
             <input

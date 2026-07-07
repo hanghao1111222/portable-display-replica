@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LangContext";
 import hero1 from "@/assets/hero-1.jpg";
-import hero2 from "@/assets/hero-2.jpg";
+import hero2 from "@/assets/hero-2-multi-agent.png";
 
 export function HeroCarousel() {
   const { t } = useLang();

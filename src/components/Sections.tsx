@@ -359,6 +359,16 @@ export function VideoShowcase() {
         targetLink="/products/s10-pro"
         reverse={true}
       />
+
+      {/* P7 Showcase */}
+      <ShowcaseRow
+        videoSrc="/videos/p7-156-showcase.mp4"
+        title={t.videoShowcase.p7.title}
+        body={t.videoShowcase.p7.body}
+        bullets={t.videoShowcase.p7.bullets}
+        cta={t.videoShowcase.p7.cta}
+        targetLink="/products/p7-156-extender"
+      />
     </section>
   );
 }

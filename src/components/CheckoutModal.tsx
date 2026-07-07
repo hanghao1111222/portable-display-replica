@@ -1,12 +1,17 @@
 import { useMemo } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { useLang, formatPrice } from "@/i18n/LangContext";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, ExternalLink, Lock, Package, ShieldCheck, X } from "lucide-react";
+import { toast } from "sonner";
 
 export function CheckoutModal() {
-  const { isCheckoutOpen, setCheckoutOpen, cartItems, cartSubtotal } = useCart();
+  const { isCheckoutOpen, setCheckoutOpen, cartItems, cartSubtotal, clearCart } = useCart();
+  const { currentUser, createOrder } = useAuth();
   const { lang } = useLang();
+  const navigate = useNavigate();
 
   const amazonUrl = useMemo(
     () => cartItems.find((item) => item.product.amazonUrl)?.product.amazonUrl,
@@ -15,7 +20,15 @@ export function CheckoutModal() {
 
   const openAmazon = () => {
     if (!amazonUrl || typeof window === "undefined") return;
+    const order = createOrder(cartItems, cartSubtotal);
     window.open(amazonUrl, "_blank", "noopener,noreferrer");
+
+    if (order) {
+      clearCart();
+      setCheckoutOpen(false);
+      toast.success("Order saved to your account.");
+      navigate({ to: "/account", search: { tab: "orders" } });
+    }
   };
 
   return (
@@ -127,6 +140,21 @@ export function CheckoutModal() {
                       Product detail pages and checkout will open the Amazon listing first, so the
                       purchase path stays consistent with your existing site.
                     </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-border bg-background p-4 text-sm text-muted-foreground leading-relaxed">
+                    {currentUser ? (
+                      <>
+                        Signed in as{" "}
+                        <span className="font-semibold text-foreground">{currentUser.name}</span>.
+                        This purchase will be recorded in your account order history.
+                      </>
+                    ) : (
+                      <>
+                        Sign in or create an account to view order records later. You can still
+                        continue to Amazon as a guest.
+                      </>
+                    )}
                   </div>
 
                   <div className="space-y-3">
