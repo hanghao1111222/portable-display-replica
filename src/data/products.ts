@@ -52,6 +52,7 @@ export type Product = {
   slug: string;
   name: string;
   amazonUrl?: string;
+  shopifyVariantId?: string;
   tagline: { en: string; ja: string };
   description: { en: string; ja: string };
   price: number;
@@ -181,6 +182,7 @@ export const products: Product[] = [
     slug: "s10-pro",
     name: "Anyking S10 Pro",
     amazonUrl: "https://www.amazon.com/dp/B0GJSXHDCG",
+    shopifyVariantId: "45001234567890",
     tagline: {
       en: "Triple‑screen workstation, anywhere.",
       ja: "どこでもトリプルスクリーンのワークステーション。",
@@ -286,6 +288,7 @@ export const products: Product[] = [
     slug: "p7-156-extender",
     name: 'Anyking P7 15.6" Extender',
     amazonUrl: "https://www.amazon.com/dp/B0H25VMK6H",
+    shopifyVariantId: "45001234567891",
     tagline: {
       en: "Bigger dual screens for a true mobile command center.",
       ja: "より大きなデュアルスクリーンで、本格的なモバイル作業環境を。",
@@ -361,6 +364,7 @@ export const products: Product[] = [
     slug: "a6",
     name: "Anyking A6",
     amazonUrl: "https://www.amazon.com/dp/B0GJS4XGDJ",
+    shopifyVariantId: "45001234567892",
     tagline: {
       en: "One extra screen. Zero compromise.",
       ja: "もう一画面、妥協なし。",

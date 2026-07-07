@@ -6,6 +6,8 @@ import { useLang, formatPrice } from "@/i18n/LangContext";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, ExternalLink, Lock, Package, ShieldCheck, X } from "lucide-react";
 import { toast } from "sonner";
+import { shopifyConfig } from "@/config/shopify";
+import { redirectToShopifyCheckout } from "@/lib/shopify";
 
 export function CheckoutModal() {
   const { isCheckoutOpen, setCheckoutOpen, cartItems, cartSubtotal, clearCart } = useCart();
@@ -18,16 +20,20 @@ export function CheckoutModal() {
     [cartItems],
   );
 
-  const openAmazon = () => {
-    if (!amazonUrl || typeof window === "undefined") return;
-    const order = createOrder(cartItems, cartSubtotal);
-    window.open(amazonUrl, "_blank", "noopener,noreferrer");
+  const openCheckout = () => {
+    if (shopifyConfig.useShopifyCheckout) {
+      redirectToShopifyCheckout(cartItems, createOrder, clearCart, setCheckoutOpen);
+    } else {
+      if (!amazonUrl || typeof window === "undefined") return;
+      const order = createOrder(cartItems, cartSubtotal);
+      window.open(amazonUrl, "_blank", "noopener,noreferrer");
 
-    if (order) {
-      clearCart();
-      setCheckoutOpen(false);
-      toast.success("Order saved to your account.");
-      navigate({ to: "/account", search: { tab: "orders" } });
+      if (order) {
+        clearCart();
+        setCheckoutOpen(false);
+        toast.success("Order saved to your account.");
+        navigate({ to: "/account", search: { tab: "orders" } });
+      }
     }
   };
 
@@ -71,10 +77,15 @@ export function CheckoutModal() {
                       <Lock className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-semibold">Purchase completes on Amazon</p>
+                      <p className="font-semibold">
+                        {shopifyConfig.useShopifyCheckout
+                          ? "Purchase completes on Shopify"
+                          : "Purchase completes on Amazon"}
+                      </p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        We will open the product page in a new tab so you can finish the order
-                        on Amazon, just like your reference flow.
+                        {shopifyConfig.useShopifyCheckout
+                          ? "We will redirect you to Shopify to securely complete your payment."
+                          : "We will open the product page in a new tab so you can finish the order on Amazon, just like your reference flow."}
                       </p>
                     </div>
                   </div>
@@ -101,7 +112,7 @@ export function CheckoutModal() {
                               Qty {item.quantity} · {formatPrice(item.product.price, lang)}
                             </p>
                           </div>
-                          {item.product.amazonUrl && (
+                          {!shopifyConfig.useShopifyCheckout && item.product.amazonUrl && (
                             <a
                               href={item.product.amazonUrl}
                               target="_blank"
@@ -134,11 +145,14 @@ export function CheckoutModal() {
                   <div className="rounded-2xl border border-border bg-background p-4 space-y-3">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                      Amazon checkout flow
+                      {shopifyConfig.useShopifyCheckout
+                        ? "Shopify Secure Checkout"
+                        : "Amazon checkout flow"}
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Product detail pages and checkout will open the Amazon listing first, so the
-                      purchase path stays consistent with your existing site.
+                      {shopifyConfig.useShopifyCheckout
+                        ? "Your transaction is processed securely through Shopify's PCI-compliant payment gateway."
+                        : "Product detail pages and checkout will open the Amazon listing first, so the purchase path stays consistent with your existing site."}
                     </p>
                   </div>
 
@@ -151,19 +165,22 @@ export function CheckoutModal() {
                       </>
                     ) : (
                       <>
-                        Sign in or create an account to view order records later. You can still
-                        continue to Amazon as a guest.
+                        {shopifyConfig.useShopifyCheckout
+                          ? "Sign in or create an account to view order records later. You can still continue to Shopify checkout."
+                          : "Sign in or create an account to view order records later. You can still continue to Amazon as a guest."}
                       </>
                     )}
                   </div>
 
                   <div className="space-y-3">
                     <button
-                      disabled={!amazonUrl}
-                      onClick={openAmazon}
+                      disabled={shopifyConfig.useShopifyCheckout ? cartItems.length === 0 : !amazonUrl}
+                      onClick={openCheckout}
                       className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Continue to Amazon
+                      {shopifyConfig.useShopifyCheckout
+                        ? "Continue to Shopify Checkout"
+                        : "Continue to Amazon"}
                       <ArrowRight className="w-4 h-4" />
                     </button>
                     <button

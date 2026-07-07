@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useMemo, useState, useEffect, type ChangeEvent } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
@@ -13,6 +13,8 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { toast } from "sonner";
+import { shopifyConfig } from "@/config/shopify";
+import { redirectToShopifyCheckout } from "@/lib/shopify";
 
 type PaymentMethod = "card" | "paypal";
 
@@ -40,6 +42,17 @@ function CheckoutPage() {
   const { cartItems, cartSubtotal, clearCart } = useCart();
   const { currentUser, createOrder } = useAuth();
   const { lang } = useLang();
+
+  // Automatically redirect to Shopify if enabled
+  useEffect(() => {
+    if (shopifyConfig.useShopifyCheckout && cartItems.length > 0) {
+      const timer = setTimeout(() => {
+        redirectToShopifyCheckout(cartItems, createOrder, clearCart);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [cartItems, createOrder, clearCart]);
+
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState("");
@@ -156,6 +169,30 @@ function CheckoutPage() {
     `w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none transition focus:ring-2 focus:ring-sky-500 ${
       errors[field] ? "border-red-500 ring-1 ring-red-500" : "border-gray-200"
     }`;
+
+  if (shopifyConfig.useShopifyCheckout && !orderPlaced && cartItems.length > 0) {
+    return (
+      <SiteLayout>
+        <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4 py-24">
+          <div className="max-w-md w-full bg-background rounded-3xl border border-border p-8 text-center shadow-xl space-y-6">
+            <div className="relative mx-auto h-20 w-20 flex items-center justify-center rounded-full bg-primary/10">
+              <Lock className="h-10 w-10 text-primary animate-pulse" />
+              <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+            </div>
+            <div className="space-y-2">
+              <h1 className="text-xl font-bold text-foreground">Secure Checkout</h1>
+              <p className="text-sm text-muted-foreground">
+                Connecting you to Shopify secure payment gateway...
+              </p>
+            </div>
+            <div className="text-xs text-muted-foreground">
+              Please do not refresh the page or click back.
+            </div>
+          </div>
+        </div>
+      </SiteLayout>
+    );
+  }
 
   if (cartItems.length === 0 && !orderPlaced) {
     return (
