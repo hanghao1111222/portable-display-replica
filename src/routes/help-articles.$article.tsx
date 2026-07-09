@@ -560,6 +560,8 @@ function HelpCenterArticlePage() {
               <h3 className="mt-8 text-xl font-bold">4.1 User manual</h3>
               <a
                 href={article.downloads.manual.href}
+                target={article.downloads.manual.external ? "_blank" : undefined}
+                rel={article.downloads.manual.external ? "noopener noreferrer" : undefined}
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground underline underline-offset-4 transition hover:text-primary"
               >
                 {article.downloads.manual.label}
@@ -570,6 +572,8 @@ function HelpCenterArticlePage() {
               <h3 className="text-xl font-bold">4.2 Firmware</h3>
               <a
                 href={article.downloads.firmware.href}
+                target={article.downloads.firmware.external ? "_blank" : undefined}
+                rel={article.downloads.firmware.external ? "noopener noreferrer" : undefined}
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground underline underline-offset-4 transition hover:text-primary"
               >
                 {article.downloads.firmware.label}

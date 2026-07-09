@@ -157,15 +157,16 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     ],
     downloads: {
       manual: {
-        label: "Request user manual",
-        href: "mailto:service@anykingscreen.com?subject=A6%20User%20Manual%20Request",
+        label: "Download A6 User Manual",
+        href: "/manuals/A6_User_Manual.pdf",
+        external: true,
       },
       firmware: {
         label: "Request firmware support",
         href: "mailto:service@anykingscreen.com?subject=A6%20Firmware%20Support",
       },
       note:
-        "Manual and firmware support are handled by the support team so customers always receive the latest file and the correct setup instructions for their laptop model.",
+        "The A6 User Manual is now available for direct download. For firmware support, please contact our service team.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -367,15 +368,16 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     ],
     downloads: {
       manual: {
-        label: "Request user manual",
-        href: "mailto:service@anykingscreen.com?subject=S10%20Pro%20User%20Manual%20Request",
+        label: "Download S10 Pro User Manual",
+        href: "/manuals/S10_Pro_User_Manual.pdf",
+        external: true,
       },
       firmware: {
         label: "Request firmware support",
         href: "mailto:service@anykingscreen.com?subject=S10%20Pro%20Firmware%20Support",
       },
       note:
-        "Because compatibility differs by laptop port layout and chip generation, the support team sends the latest manual and the correct firmware or adapter guidance case by case.",
+        "The S10 Pro User Manual is now available for direct download. For firmware or adapter guidance, please contact our support team.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -574,15 +576,16 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     ],
     downloads: {
       manual: {
-        label: "Request user manual",
-        href: "mailto:service@anykingscreen.com?subject=P7%2015.6%20User%20Manual%20Request",
+        label: "Download P7 Pro User Manual",
+        href: "/manuals/P7_Pro_User_Manual.pdf",
+        external: true,
       },
       firmware: {
         label: "Request firmware support",
         href: "mailto:service@anykingscreen.com?subject=P7%2015.6%20Firmware%20Support",
       },
       note:
-        "Because setup depends on laptop ports and operating system display limits, the support team can send the latest manual and adapter guidance for your exact device.",
+        "The P7 Pro User Manual is now available for direct download. For the older P7 model, you can download the [P7 standard manual](/manuals/P7_User_Manual.pdf). For firmware support, please contact us.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -720,15 +723,16 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     ],
     downloads: {
       manual: {
-        label: "Request S15 Plus manual",
-        href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Manual%20Request",
+        label: "Download S15 Plus User Manual",
+        href: "/manuals/S15_Plus_User_Manual.pdf",
+        external: true,
       },
       firmware: {
         label: "Request S15 Plus firmware support",
         href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Firmware%20Support",
       },
       note:
-        "S15 Plus downloads will be added after final documentation is ready.",
+        "The S15 Plus User Manual is now available for direct download. Detailed specifications will be updated when final product information is ready.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -743,6 +747,403 @@ export const helpCenterArticles: HelpCenterArticle[] = [
             question: "When will S15 Plus product details be added?",
             answer:
               "This article is currently reserved for S15 Plus. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "f4-extender",
+    name: "AnyKing F4 Extender",
+    shortName: "F4 Extender",
+    image: s15PlusPlaceholder,
+    asin: "TBD",
+    amazonUrl: "#",
+    heroTitle: "F4 setup and coming-soon guide",
+    heroBody:
+      "A placeholder help article for the AnyKing F4. The user manual is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
+    overview: {
+      listingTitle: "F4 product information will be added soon.",
+      designSummary:
+        "The F4 is a magnetic, multi-function, plug-and-play dual-screen laptop monitor. Detailed product copy, images, and compatibility guidance will be completed later.",
+      highlights: [
+        "F4 User Manual is available for download.",
+        "Product specifications are pending final confirmation.",
+        "Compatibility notes and accessories will be updated after product details are provided.",
+      ],
+      productLinks: [
+        { label: "Contact support for F4", href: "mailto:service@anykingscreen.com?subject=F4%20Support" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "F4" },
+      { label: "ASIN", value: "TBD" },
+      { label: "Status", value: "Product details pending" },
+    ],
+    compatibility: [
+      "Compatibility guidance will be added after final F4 product information is confirmed.",
+      "For now, download the manual and contact support with your laptop model if you need help.",
+    ],
+    connectionMethods: [
+      "Detailed cable workflows will be updated when final F4 documentation is available.",
+      "Please refer to the F4 User Manual for setup instructions.",
+    ],
+    setup: {
+      tutorialTitle: "F4 setup workflow",
+      tutorialBody:
+        "F4 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
+      accessories: [
+        "Accessory list pending final product information.",
+      ],
+      compatibilityNotes: [
+        "Compatibility notes pending final product information.",
+      ],
+    },
+    reminders: [
+      "This is a reserved article. Product specifications and purchase links will be completed later.",
+    ],
+    downloads: {
+      manual: {
+        label: "Download F4 User Manual",
+        href: "/manuals/F4_User_Manual.pdf",
+        external: true,
+      },
+      firmware: {
+        label: "Request F4 firmware support",
+        href: "mailto:service@anykingscreen.com?subject=F4%20Firmware%20Support",
+      },
+      note: "The F4 User Manual is now available for direct download. For firmware or setup questions, contact support.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "Warranty details pending",
+    },
+    sections: [
+      {
+        title: "Coming Soon",
+        items: [
+          {
+            question: "When will F4 product details be added?",
+            answer:
+              "This article is currently reserved for the AnyKing F4. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "m5-extender",
+    name: "AnyKing M5",
+    shortName: "M5 Extender",
+    image: s15PlusPlaceholder,
+    asin: "TBD",
+    amazonUrl: "#",
+    heroTitle: "M5 setup and coming-soon guide",
+    heroBody:
+      "A placeholder help article for the AnyKing M5. The user manual is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
+    overview: {
+      listingTitle: "M5 product information will be added soon.",
+      designSummary:
+        "The M5 is a portable laptop monitor. Detailed product copy, images, and compatibility guidance will be completed later.",
+      highlights: [
+        "M5 User Manual is available for download.",
+        "Product specifications are pending final confirmation.",
+        "Compatibility notes and accessories will be updated after product details are provided.",
+      ],
+      productLinks: [
+        { label: "Contact support for M5", href: "mailto:service@anykingscreen.com?subject=M5%20Support" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "M5" },
+      { label: "ASIN", value: "TBD" },
+      { label: "Status", value: "Product details pending" },
+    ],
+    compatibility: [
+      "Compatibility guidance will be added after final M5 product information is confirmed.",
+    ],
+    connectionMethods: [
+      "Please refer to the M5 User Manual for setup instructions.",
+    ],
+    setup: {
+      tutorialTitle: "M5 setup workflow",
+      tutorialBody:
+        "M5 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
+      accessories: [
+        "Accessory list pending final product information.",
+      ],
+      compatibilityNotes: [
+        "Compatibility notes pending final product information.",
+      ],
+    },
+    reminders: [
+      "This is a reserved article. Product specifications and purchase links will be completed later.",
+    ],
+    downloads: {
+      manual: {
+        label: "Download M5 User Manual",
+        href: "/manuals/M5_User_Manual.pdf",
+        external: true,
+      },
+      firmware: {
+        label: "Request M5 firmware support",
+        href: "mailto:service@anykingscreen.com?subject=M5%20Firmware%20Support",
+      },
+      note: "The M5 User Manual is now available for direct download. For firmware or setup questions, contact support.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "Warranty details pending",
+    },
+    sections: [
+      {
+        title: "Coming Soon",
+        items: [
+          {
+            question: "When will M5 product details be added?",
+            answer:
+              "This article is currently reserved for the AnyKing M5. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "s12-extender",
+    name: "AnyKing S12",
+    shortName: "S12 Extender",
+    image: s15PlusPlaceholder,
+    asin: "TBD",
+    amazonUrl: "#",
+    heroTitle: "S12 setup and coming-soon guide",
+    heroBody:
+      "A placeholder help article for the AnyKing S12. The user manual is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
+    overview: {
+      listingTitle: "S12 product information will be added soon.",
+      designSummary:
+        "The S12 is a portable laptop screen extender. Detailed product copy, images, and compatibility guidance will be completed later.",
+      highlights: [
+        "S12 User Manual is available for download.",
+        "Product specifications are pending final confirmation.",
+        "Compatibility notes and accessories will be updated after product details are provided.",
+      ],
+      productLinks: [
+        { label: "Contact support for S12", href: "mailto:service@anykingscreen.com?subject=S12%20Support" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "S12" },
+      { label: "ASIN", value: "TBD" },
+      { label: "Status", value: "Product details pending" },
+    ],
+    compatibility: [
+      "Compatibility guidance will be added after final S12 product information is confirmed.",
+    ],
+    connectionMethods: [
+      "Please refer to the S12 User Manual for setup instructions.",
+    ],
+    setup: {
+      tutorialTitle: "S12 setup workflow",
+      tutorialBody:
+        "S12 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
+      accessories: [
+        "Accessory list pending final product information.",
+      ],
+      compatibilityNotes: [
+        "Compatibility notes pending final product information.",
+      ],
+    },
+    reminders: [
+      "This is a reserved article. Product specifications and purchase links will be completed later.",
+    ],
+    downloads: {
+      manual: {
+        label: "Download S12 User Manual",
+        href: "/manuals/S12_User_Manual.pdf",
+        external: true,
+      },
+      firmware: {
+        label: "Request S12 firmware support",
+        href: "mailto:service@anykingscreen.com?subject=S12%20Firmware%20Support",
+      },
+      note: "The S12 User Manual is now available for direct download. For firmware or setup questions, contact support.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "Warranty details pending",
+    },
+    sections: [
+      {
+        title: "Coming Soon",
+        items: [
+          {
+            question: "When will S12 product details be added?",
+            answer:
+              "This article is currently reserved for the AnyKing S12. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "s13-extender",
+    name: "AnyKing S13",
+    shortName: "S13 Extender",
+    image: s15PlusPlaceholder,
+    asin: "TBD",
+    amazonUrl: "#",
+    heroTitle: "S13 setup and coming-soon guide",
+    heroBody:
+      "A placeholder help article for the AnyKing S13. The user manual is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
+    overview: {
+      listingTitle: "S13 product information will be added soon.",
+      designSummary:
+        "The S13 is a portable laptop screen extender. Detailed product copy, images, and compatibility guidance will be completed later.",
+      highlights: [
+        "S13 User Manual is available for download.",
+        "Product specifications are pending final confirmation.",
+        "Compatibility notes and accessories will be updated after product details are provided.",
+      ],
+      productLinks: [
+        { label: "Contact support for S13", href: "mailto:service@anykingscreen.com?subject=S13%20Support" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "S13" },
+      { label: "ASIN", value: "TBD" },
+      { label: "Status", value: "Product details pending" },
+    ],
+    compatibility: [
+      "Compatibility guidance will be added after final S13 product information is confirmed.",
+    ],
+    connectionMethods: [
+      "Please refer to the S13 User Manual for setup instructions.",
+    ],
+    setup: {
+      tutorialTitle: "S13 setup workflow",
+      tutorialBody:
+        "S13 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
+      accessories: [
+        "Accessory list pending final product information.",
+      ],
+      compatibilityNotes: [
+        "Compatibility notes pending final product information.",
+      ],
+    },
+    reminders: [
+      "This is a reserved article. Product specifications and purchase links will be completed later.",
+    ],
+    downloads: {
+      manual: {
+        label: "Download S13 User Manual",
+        href: "/manuals/S13_User_Manual.pdf",
+        external: true,
+      },
+      firmware: {
+        label: "Request S13 firmware support",
+        href: "mailto:service@anykingscreen.com?subject=S13%20Firmware%20Support",
+      },
+      note: "The S13 User Manual is now available for direct download. For firmware or setup questions, contact support.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "Warranty details pending",
+    },
+    sections: [
+      {
+        title: "Coming Soon",
+        items: [
+          {
+            question: "When will S13 product details be added?",
+            answer:
+              "This article is currently reserved for the AnyKing S13. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "z3-extender",
+    name: "AnyKing Z3",
+    shortName: "Z3 Extender",
+    image: s15PlusPlaceholder,
+    asin: "TBD",
+    amazonUrl: "#",
+    heroTitle: "Z3 setup and coming-soon guide",
+    heroBody:
+      "A placeholder help article for the AnyKing Z3. The user manual is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
+    overview: {
+      listingTitle: "Z3 product information will be added soon.",
+      designSummary:
+        "The Z3 is a portable laptop screen extender. Detailed product copy, images, and compatibility guidance will be completed later.",
+      highlights: [
+        "Z3 User Manual is available for download.",
+        "Product specifications are pending final confirmation.",
+        "Compatibility notes and accessories will be updated after product details are provided.",
+      ],
+      productLinks: [
+        { label: "Contact support for Z3", href: "mailto:service@anykingscreen.com?subject=Z3%20Support" },
+      ],
+    },
+    specifications: [
+      { label: "Brand", value: "Anyking" },
+      { label: "Model", value: "Z3" },
+      { label: "ASIN", value: "TBD" },
+      { label: "Status", value: "Product details pending" },
+    ],
+    compatibility: [
+      "Compatibility guidance will be added after final Z3 product information is confirmed.",
+    ],
+    connectionMethods: [
+      "Please refer to the Z3 User Manual for setup instructions.",
+    ],
+    setup: {
+      tutorialTitle: "Z3 setup workflow",
+      tutorialBody:
+        "Z3 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
+      accessories: [
+        "Accessory list pending final product information.",
+      ],
+      compatibilityNotes: [
+        "Compatibility notes pending final product information.",
+      ],
+    },
+    reminders: [
+      "This is a reserved article. Product specifications and purchase links will be completed later.",
+    ],
+    downloads: {
+      manual: {
+        label: "Download Z3 User Manual",
+        href: "/manuals/Z3_User_Manual.pdf",
+        external: true,
+      },
+      firmware: {
+        label: "Request Z3 firmware support",
+        href: "mailto:service@anykingscreen.com?subject=Z3%20Firmware%20Support",
+      },
+      note: "The Z3 User Manual is now available for direct download. For firmware or setup questions, contact support.",
+    },
+    support: {
+      email: "service@anykingscreen.com",
+      phone: "+1 (888) 688-5025",
+      warranty: "Warranty details pending",
+    },
+    sections: [
+      {
+        title: "Coming Soon",
+        items: [
+          {
+            question: "When will Z3 product details be added?",
+            answer:
+              "This article is currently reserved for the AnyKing Z3. Product images, specifications, compatibility notes, and purchase links will be added after the final product information is provided.",
           },
         ],
       },
