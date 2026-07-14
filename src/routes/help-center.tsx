@@ -860,7 +860,7 @@ function HelpCenterPage() {
                 </summary>
                 <div className="divide-y divide-white">
                   {group.items.map((product) => {
-                    const isPlaceholder = product.image?.includes("placeholder");
+                    const isPlaceholder = ["s15-plus-extender", "f4-extender", "m5-extender", "s12-extender", "s13-extender", "z3-extender"].includes(product.slug);
                     return "href" in product ? (
                       <a
                         key={product.slug}
@@ -1213,7 +1213,7 @@ function HelpCenterPage() {
 
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {products.map((product) => {
-              const isPlaceholder = product.image?.includes("placeholder");
+              const isPlaceholder = ["s15-plus-extender", "f4-extender", "m5-extender", "s12-extender", "s13-extender", "z3-extender"].includes(product.slug);
               return (
                 <Link
                   key={product.name}
