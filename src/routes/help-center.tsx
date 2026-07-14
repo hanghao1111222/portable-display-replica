@@ -859,15 +859,20 @@ function HelpCenterPage() {
                   <span className="details-chevron text-slate-400">⌄</span>
                 </summary>
                 <div className="divide-y divide-white">
-                  {group.items.map((product) =>
-                    "href" in product ? (
+                  {group.items.map((product) => {
+                    const isPlaceholder = product.image?.includes("placeholder");
+                    return "href" in product ? (
                       <a
                         key={product.slug}
                         href={product.href}
                         className="flex items-center gap-4 bg-slate-50 px-4 py-3 hover:bg-slate-100 transition-colors"
                       >
-                        <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50">
-                          <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                        <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50 text-slate-400">
+                          {isPlaceholder ? (
+                            <Laptop className="h-6 w-6 stroke-[1.5]" />
+                          ) : (
+                            <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                          )}
                         </span>
                         <span className="text-sm font-semibold text-slate-700">{product.name}</span>
                         <ChevronRight className="ml-auto h-4 w-4 text-slate-400 shrink-0" />
@@ -879,14 +884,18 @@ function HelpCenterPage() {
                         params={{ article: product.slug }}
                         className="flex items-center gap-4 bg-slate-50 px-4 py-3 hover:bg-slate-100 transition-colors"
                       >
-                        <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50">
-                          <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                        <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200/50 text-slate-400">
+                          {isPlaceholder ? (
+                            <Laptop className="h-6 w-6 stroke-[1.5]" />
+                          ) : (
+                            <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                          )}
                         </span>
                         <span className="text-sm font-semibold text-slate-700">{product.name}</span>
                         <ChevronRight className="ml-auto h-4 w-4 text-slate-400 shrink-0" />
                       </Link>
-                    )
-                  )}
+                    );
+                  })}
                 </div>
               </details>
             ))}
@@ -1203,26 +1212,31 @@ function HelpCenterPage() {
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {products.map((product) => (
-              <Link
-                key={product.name}
-                to="/help-articles/$article"
-                params={{ article: product.slug }}
-                className="group overflow-hidden rounded-xl border border-border/40 bg-card/60 text-center shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-card/85 hover:border-border/80 hover:shadow-xl backdrop-blur-sm"
-              >
-                <div className="aspect-[16/10] p-4 bg-white/5">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    loading="lazy"
-                    className="h-full w-full object-contain object-center transition duration-500 group-hover:scale-[1.02]"
-                  />
-                </div>
-                <div className="px-5 py-5">
-                  <h3 className="font-semibold text-foreground">{product.name}</h3>
-                </div>
-              </Link>
-            ))}
+            {products.map((product) => {
+              const isPlaceholder = product.image?.includes("placeholder");
+              return (
+                <Link
+                  key={product.name}
+                  to="/help-articles/$article"
+                  params={{ article: product.slug }}
+                  className="group overflow-hidden rounded-xl border border-border/40 bg-card/60 text-center shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-card/85 hover:border-border/80 hover:shadow-xl backdrop-blur-sm"
+                >
+                  {!isPlaceholder && (
+                    <div className="aspect-[16/10] p-4 bg-white/5">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        loading="lazy"
+                        className="h-full w-full object-contain object-center transition duration-500 group-hover:scale-[1.02]"
+                      />
+                    </div>
+                  )}
+                  <div className="px-5 py-5">
+                    <h3 className="font-semibold text-foreground">{product.name}</h3>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

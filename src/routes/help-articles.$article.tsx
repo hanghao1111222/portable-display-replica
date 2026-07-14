@@ -449,13 +449,15 @@ function HelpCenterArticlePage() {
               <p className="text-sm font-semibold tracking-[0.18em] text-primary">1. PRODUCT OVERVIEW</p>
               <h2 className="mt-4 text-3xl font-bold tracking-tight">1.1 Design & look</h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">{article.overview.designSummary}</p>
-              <figure className="mt-8 flex justify-center">
-                <img
-                  src={article.image}
-                  alt={article.name}
-                  className="max-h-[360px] w-full max-w-[520px] object-contain"
-                />
-              </figure>
+              {!article.image.includes("placeholder") && (
+                <figure className="mt-8 flex justify-center">
+                  <img
+                    src={article.image}
+                    alt={article.name}
+                    className="max-h-[360px] w-full max-w-[520px] object-contain"
+                  />
+                </figure>
+              )}
             </section>
 
             <section id="key-highlights" className="mt-14 scroll-mt-28">
