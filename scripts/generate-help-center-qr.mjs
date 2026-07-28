@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import QRCode from "qrcode";
 
-const url = "https://www.anykingscreen.com/help-center";
+const url = "https://www.anykingscreen.com/help-center?lang=ja";
 const size = 420;
 const logo = await readFile("public/anyking-mark.jpg");
 const logoHref = `data:image/jpeg;base64,${logo.toString("base64")}`;
@@ -55,7 +55,23 @@ const brandedSvg = qrSvg.replace(
     opacity="0.97"
   />
   ${logoSvg}
-</svg>`
+</svg>`,
 );
 
-await writeFile("public/help-center-qr.svg", brandedSvg, "utf8");
+const qrPng = await QRCode.toBuffer(url, {
+  type: "png",
+  errorCorrectionLevel: "H",
+  margin: 3,
+  width: 1200,
+  color: {
+    dark: "#111827",
+    light: "#ffffff",
+  },
+});
+
+await Promise.all([
+  writeFile("public/help-center-qr.svg", brandedSvg, "utf8"),
+  writeFile("public/help-center-qr.png", qrPng),
+]);
+
+console.log(`Generated help center QR codes for ${url}`);

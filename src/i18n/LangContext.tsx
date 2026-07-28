@@ -1,6 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { strings, type Lang, type Strings } from "./strings";
-import { createLanguageCookie, languageForCountry, readCountryCookie } from "./geoLocale";
+import {
+  createLanguageCookie,
+  languageForCountry,
+  parseLanguage,
+  readCountryCookie,
+} from "./geoLocale";
 
 type Ctx = {
   lang: Lang;
@@ -20,8 +25,20 @@ export function LangProvider({
   const [lang, setLangState] = useState<Lang>(initialLang);
 
   useEffect(() => {
-    const stored = typeof window !== "undefined" ? localStorage.getItem("lang") : null;
-    if (stored === "en" || stored === "ja") {
+    const requestedLanguage =
+      typeof window !== "undefined"
+        ? parseLanguage(new URLSearchParams(window.location.search).get("lang"))
+        : null;
+    if (requestedLanguage) {
+      setLangState(requestedLanguage);
+      localStorage.setItem("lang", requestedLanguage);
+      document.cookie = createLanguageCookie(requestedLanguage);
+      return;
+    }
+
+    const stored =
+      typeof window !== "undefined" ? parseLanguage(localStorage.getItem("lang")) : null;
+    if (stored) {
       setLangState(stored);
       document.cookie = createLanguageCookie(stored);
       return;

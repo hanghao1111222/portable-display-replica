@@ -38,6 +38,10 @@ export function createLanguageCookie(lang: Lang): string {
   return `${LANGUAGE_COOKIE_NAME}=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`;
 }
 
+export function parseLanguage(value: string | null | undefined): Lang | null {
+  return value === "en" || value === "ja" ? value : null;
+}
+
 function readCookieValue(cookieHeader: string, name: string): string | null {
   const prefix = `${name}=`;
   return (
@@ -55,8 +59,7 @@ export function readCountryCookie(cookieHeader: string): string | null {
 }
 
 export function readLanguageCookie(cookieHeader: string): Lang | null {
-  const value = readCookieValue(cookieHeader, LANGUAGE_COOKIE_NAME);
-  return value === "en" || value === "ja" ? value : null;
+  return parseLanguage(readCookieValue(cookieHeader, LANGUAGE_COOKIE_NAME));
 }
 
 export function languageForCountry(country: string | null): Lang | null {
