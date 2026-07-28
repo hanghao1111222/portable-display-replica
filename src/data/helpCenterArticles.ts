@@ -82,8 +82,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       "Everything customers need before buying or setting up the AnyKing A6, including compatible laptop types, connection methods, no-signal fixes, display settings, and warranty support.",
     connectionVideo: {
       title: "A6 connection tutorial",
-      body:
-        "Watch this setup video first to understand the recommended A6 connection workflow before checking cable requirements or troubleshooting no-signal issues.",
+      body: "Watch this setup video first to understand the recommended A6 connection workflow before checking cable requirements or troubleshooting no-signal issues.",
       youtubeId: "theaUO0U5xQ",
     },
     overview: {
@@ -98,7 +97,11 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Travel-friendly form factor focused on coding, analysis, business travel, and home office multitasking.",
       ],
       productLinks: [
-        { label: "Product purchase page", href: "https://www.amazon.com/dp/B0GJS4XGDJ", external: true },
+        {
+          label: "Product purchase page",
+          href: "https://www.amazon.com/dp/B0GJS4XGDJ",
+          external: true,
+        },
         { label: "Product detail page", href: "/products/a6" },
       ],
     },
@@ -118,7 +121,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       { label: "Picture enhancement", value: "FHD display, blue light filter, anti-glare screen" },
       { label: "Dimensions", value: '13.38" W x 7.87" H x 0.35" D' },
       { label: "Compatible laptop size", value: '13" to 17.3"' },
-      { label: "Connectivity", value: "USB-C for plug-and-play, HDMI plus power for fallback setups" },
+      {
+        label: "Connectivity",
+        value: "USB-C for plug-and-play, HDMI plus power for fallback setups",
+      },
       { label: "Color", value: "Black" },
       { label: "Warranty", value: "1 Year Manufacturer" },
       { label: "Manufacturer", value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
@@ -165,8 +171,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         label: "Request firmware support",
         href: "mailto:service@anykingscreen.com?subject=A6%20Firmware%20Support",
       },
-      note:
-        "The A6 User Manual is now available for direct download. For firmware support, please contact our service team.",
+      note: "The A6 User Manual is now available for direct download. For firmware support, please contact our service team.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -293,8 +298,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       "A guided help article for the AnyKing S10 Pro covering port requirements, connection methods, third-screen detection issues, brightness and flicker fixes, and warranty support.",
     connectionVideo: {
       title: "S10 Pro connection tutorial",
-      body:
-        "Watch this setup video first to see the recommended cable workflow before checking specs or troubleshooting steps.",
+      body: "Watch this setup video first to see the recommended cable workflow before checking specs or troubleshooting steps.",
       youtubeId: "00AuHJqtL6o",
     },
     overview: {
@@ -306,10 +310,14 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Dual 14-inch FHD 1080P IPS side panels for a full triple-screen workstation.",
         "100% sRGB, 300 nits brightness, matte finish, and low blue light eye-care design.",
         "Fits laptops from 13 to 17.3 inches and targets business travel, coding, presentations, and multitasking.",
-        "Some base Apple silicon MacBooks, especially many M1 and M2 models, may be limited to one native external display, so full expansion can require an H5 adapter workflow depending on the exact model.",
+        "Base M1/M2 MacBooks, base M3 MacBooks with the lid open, and MacBook Neo support only one native external display, so both S10 Pro side screens require the H5 DisplayLink workflow. M4/M5 MacBooks can support two native external displays with the lid open, subject to the exact model specification.",
       ],
       productLinks: [
-        { label: "Product purchase page", href: "https://www.amazon.com/dp/B0GJSXHDCG", external: true },
+        {
+          label: "Product purchase page",
+          href: "https://www.amazon.com/dp/B0GJSXHDCG",
+          external: true,
+        },
         { label: "Product detail page", href: "/products/s10-pro" },
       ],
     },
@@ -327,7 +335,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       { label: "Picture enhancement", value: "Eye care, color enhancement" },
       { label: "Dimensions", value: '13.2" W x 8" H x 1.05" D' },
       { label: "Compatible laptop size", value: '13" to 17.3"' },
-      { label: "Connection paths", value: "USB-C workflow plus HDMI-assisted compatibility options" },
+      {
+        label: "Connection paths",
+        value: "USB-C workflow plus HDMI-assisted compatibility options",
+      },
       { label: "HDMI ports", value: "1 HDMI output" },
       { label: "Response time", value: "0.1 ms" },
       { label: "Color", value: "Yellow variant" },
@@ -335,20 +346,21 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       { label: "Manufacturer", value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
     ],
     compatibility: [
-      "Works with laptops that have two full-function USB-C ports.",
-      "Also works with one full-function USB-C port plus one HDMI port.",
-      "For some macOS and older laptop edge cases, an H5 adapter workflow may be required for dual external-screen expansion.",
+      "Native triple-screen use requires the laptop GPU to support the internal display plus two external displays and to expose two independent video-output paths.",
+      "Direct connection can use two video-capable USB-C outputs, or one video-capable USB-C output plus one HDMI output.",
+      "If the laptop supports only one native external display, both S10 Pro side screens require the H5 DisplayLink adapter or another compatible DisplayLink device.",
+      "USB-C shape, charging, SS, 5Gbps, or USB4 labeling alone does not prove that two independent displays are supported.",
       "Phones and tablets are not recommended because only one screen can work and power is often unstable.",
     ],
     connectionMethods: [
-      "Dual USB-C method: connect two full-function USB-C signal paths directly to the laptop when supported.",
-      "USB-C + HDMI method: use USB-C for one screen and power, then HDMI for the extra display signal path.",
-      "If the laptop cannot output two display signals natively, move to the H5 adapter workflow and confirm the exact cable package with support first.",
+      "Dual USB-C method: connect two independent video-capable USB-C outputs directly to the laptop.",
+      "USB-C + HDMI method: use one video-capable USB-C output for one screen and HDMI-to-Type-C for the other screen.",
+      "Limited-output method: install the H5 DisplayLink adapter and driver when the laptop cannot output two external displays natively.",
     ],
     setup: {
       tutorialTitle: "Triple-screen setup workflow",
       tutorialBody:
-        "S10 Pro is designed as a flexible portable workstation for 13-17.3 inch laptops. The cleanest setup is direct connection without docks. macOS users with base Apple silicon models should verify their exact external-display limits before buying because some models may require an H5 adapter for full dual-side-screen expansion.",
+        "S10 Pro is designed as a flexible portable workstation for 13-17.3 inch laptops. Native use requires two independent video signals while the laptop screen remains on. Verify the full model or SKU, GPU display limit, port capabilities, cables, and power before purchase. Laptops limited to one native external display require the H5 DisplayLink workflow for both side screens.",
       accessories: [
         "S10 Pro triple-screen main body with two side displays",
         "Adjustable kickstand structure",
@@ -356,14 +368,14 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "HDMI-assisted fallback workflow for broader compatibility",
       ],
       compatibilityNotes: [
-        "Windows, ChromeOS, and most Intel or Pro/Max Mac workflows are the main plug-and-play targets.",
-        "Avoid hubs during first setup so power and signal troubleshooting stays simple.",
-        "If your laptop exposes only one usable display-output path, contact support before ordering extra cables so the right adapter path is confirmed.",
+        "Compatibility must be assessed by exact model, SKU, part number, or MTM because ports can differ inside the same laptop series.",
+        "Avoid hubs during first setup unless the verified result specifically requires a Thunderbolt/USB4 dock or H5 DisplayLink device.",
+        "Official-spec support is not the same as per-device testing; BIOS, regional SKU, cables, drivers, and power can affect the result.",
       ],
     },
     reminders: [
       "When one USB-C port does not support video, keep the working USB-C cable and add HDMI.",
-      "If you need dual side screens on a limited-output laptop, confirm the H5 adapter path with support before buying extra accessories.",
+      "If you need dual side screens on a limited-output laptop, confirm the H5 DisplayLink path with support before buying extra accessories.",
       "Avoid hubs or low-quality adapters during initial setup.",
     ],
     downloads: {
@@ -376,8 +388,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         label: "Request firmware support",
         href: "mailto:service@anykingscreen.com?subject=S10%20Pro%20Firmware%20Support",
       },
-      note:
-        "The S10 Pro User Manual is now available for direct download. For firmware or adapter guidance, please contact our support team.",
+      note: "The S10 Pro User Manual is now available for direct download. For firmware or adapter guidance, please contact our support team.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -391,12 +402,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "What laptop models are compatible with the AnyKing S10 Pro?",
             answer:
-              "The S10 Pro works with most Windows laptops, MacBooks, and Chromebooks when the laptop can provide enough display-output paths. The most stable cases are two full-function USB-C outputs or one video-capable USB-C plus one HDMI output.",
+              "Use the Compatibility page and enter the full laptop model or SKU. Native triple-screen use requires support for the laptop screen plus two external displays and two independent video paths: two video-capable USB-C outputs, or one video-capable USB-C output plus HDMI. A series name alone is not enough because ports can vary by SKU.",
           },
           {
             question: "How do I know if my USB-C port supports video output?",
             answer:
-              "Your USB-C port must support DisplayPort Alt Mode to send video to the S10 Pro. If the port supports charging or data only, use HDMI for the second path or confirm an adapter workflow with support.",
+              "A USB-C port must support video output such as DisplayPort Alt Mode, Thunderbolt, or an explicitly documented display output. USB-C shape, charging, SS, 5Gbps, and even the USB4 name alone do not prove that the laptop can drive two independent displays. Check the full model specification or use the Compatibility page.",
           },
           {
             question: "Does the S10 Pro work with phones or tablets?",
@@ -411,12 +422,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "How do I set up the AnyKing S10 Pro?",
             answer:
-              "Start with the simplest direct connection workflow your laptop supports. If your laptop can output two display signals, use dual USB-C or USB-C plus HDMI. If it cannot, contact support to confirm the H5-based expansion path before buying extra parts.",
+              "If the laptop provides two independent video signals, use two video-capable USB-C outputs or one USB-C video output plus HDMI-to-Type-C. If it supports only one native external display, install the H5 DisplayLink adapter and driver. Add 5V/2A power if brightness is low or either screen restarts.",
           },
           {
             question: 'Why is my laptop not detecting the third screen or showing "No Signal"?',
             answer:
-              "First, reconnect all cables and ports firmly. If you are using two USB-C cables, one port may not support video, so keep the working USB-C cable and add HDMI. If the laptop still cannot output the second extra display, confirm whether your model needs the H5 adapter workflow.",
+              "Test each side separately, swap the cables, and add 5V/2A power. If both screens work individually but only one works at a time, the laptop may expose only one independent native video path. Check the exact model result above; limited-output models require the H5 DisplayLink adapter and driver for two independent side screens.",
           },
         ],
       },
@@ -493,28 +504,32 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     image: p7Product,
     asin: "B0H25VMK6H",
     amazonUrl: "https://www.amazon.com/dp/B0H25VMK6H",
-    heroTitle: "P7 setup, compatibility, and dual-screen workflow",
+    heroTitle: "P7 setup, triple-screen compatibility, and support",
     heroBody:
-      "Everything customers need before buying or setting up the AnyKing P7 15.6-inch laptop screen extender, including laptop fit, display specs, connection methods, modes, and support.",
+      "Everything customers need before buying or setting up the AnyKing P7 15.6-inch laptop screen extender, including laptop fit, two-side-screen output requirements, connection methods, modes, and support.",
     connectionVideo: {
       title: "P7 connection tutorial",
-      body:
-        "Watch this setup video first to understand the recommended P7 cable workflow before checking compatibility details or troubleshooting display signal issues.",
+      body: "Watch this setup video first to understand the recommended P7 cable workflow before checking compatibility details or troubleshooting display signal issues.",
       youtubeId: "RR-CwA9Xq6M",
     },
     overview: {
       listingTitle:
-        'Laptop Screen Extender, 15.6-inch FHD 1080P IPS Triple Screen Laptop Monitor Extender for 13-17.3 inch laptops, 100% sRGB portable dual monitor extender for meetings, spreadsheets, coding, travel, and work.',
+        "Laptop Screen Extender, 15.6-inch FHD 1080P IPS Triple Screen Laptop Monitor Extender for 13-17.3 inch laptops, 100% sRGB portable dual monitor extender for meetings, spreadsheets, coding, travel, and work.",
       designSummary:
-        'The P7 is a larger 15.6-inch dual-side laptop screen extender for users who want more workspace than a standard 14-inch setup. It combines two FHD IPS side panels, a folding rear support structure, adjustable side screens, and a travel bag-friendly body for desk, office, and mobile workflows.',
+        "The P7 is a larger 15.6-inch dual-side laptop screen extender for users who want more workspace than a standard 14-inch setup. It combines two FHD IPS side panels, a folding rear support structure, adjustable side screens, and a travel bag-friendly body for desk, office, and mobile workflows.",
       highlights: [
-        'Dual 15.6-inch FHD 1080P IPS side panels create a spacious triple-screen workstation.',
-        '100% sRGB, 300 nits brightness, 1000:1 contrast, 16:9 aspect ratio, and low blue light support for clearer daily work.',
-        'Fits 13-17.3 inch laptops, with a rear grip range designed for roughly 11.8-15 inch laptop screen widths.',
-        'Supports mirror, extend, and portrait workflows for spreadsheets, meetings, coding, gaming, presentations, and multitasking.',
+        "Dual 15.6-inch FHD 1080P IPS side panels create a spacious triple-screen workstation.",
+        "100% sRGB, 300 nits brightness, 1000:1 contrast, 16:9 aspect ratio, and low blue light support for clearer daily work.",
+        "Fits 13-17.3 inch laptops, with a rear grip range designed for roughly 11.8-15 inch laptop screen widths.",
+        "Supports mirror, extend, and portrait workflows for spreadsheets, meetings, coding, gaming, presentations, and multitasking.",
+        "Base M1/M2 MacBooks, base M3 MacBooks with the lid open, and MacBook Neo support only one native external display, so both P7 side screens require the H5 DisplayLink workflow. M4/M5 MacBooks can support two native external displays with the lid open, subject to the exact model specification.",
       ],
       productLinks: [
-        { label: "Product purchase page", href: "https://www.amazon.com/dp/B0H25VMK6H", external: true },
+        {
+          label: "Product purchase page",
+          href: "https://www.amazon.com/dp/B0H25VMK6H",
+          external: true,
+        },
         { label: "Product detail page", href: "/products/p7-156-extender" },
       ],
     },
@@ -534,28 +549,35 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       { label: "Screen finish", value: "Matte / low blue light" },
       { label: "Compatible laptop size", value: '13" to 17.3"' },
       { label: "Laptop grip range", value: '11.8" to 15"' },
-      { label: "Viewing adjustment", value: "180-degree adjustable side screens, 90-degree tilt stand" },
+      {
+        label: "Viewing adjustment",
+        value: "180-degree adjustable side screens, 90-degree tilt stand",
+      },
       { label: "Weight", value: "3.9 lbs" },
-      { label: "Connection paths", value: "USB-C workflow plus HDMI-assisted compatibility options" },
+      {
+        label: "Connection paths",
+        value: "USB-C workflow plus HDMI-assisted compatibility options",
+      },
       { label: "Color", value: "Black" },
       { label: "Warranty", value: "1 Year Manufacturer" },
     ],
     compatibility: [
-      "Works with laptops that can provide two display-output paths through USB-C and/or HDMI.",
+      "Native triple-screen use requires the laptop GPU to support the internal display plus two external displays and to expose two independent video-output paths.",
+      "Direct connection can use two video-capable USB-C outputs, or one video-capable USB-C output plus one HDMI output.",
+      "If the laptop supports only one native external display, both P7 side screens require the H5 DisplayLink adapter or another compatible DisplayLink device.",
+      "USB-C shape, charging, SS, 5Gbps, or USB4 labeling alone does not prove that two independent displays are supported.",
       "Best fit is for 13-17.3 inch laptops with enough rear screen width for the extender grip.",
-      "USB-C ports should support video output / DisplayPort Alt Mode for a single-cable screen path.",
-      "For laptops with limited display outputs, use HDMI-assisted setup or contact support before ordering extra adapters.",
     ],
     connectionMethods: [
-      "Dual USB-C method: connect both side displays through video-capable USB-C ports when your laptop supports it.",
-      "USB-C + HDMI method: use USB-C for one screen and HDMI for the other display signal path.",
+      "Dual USB-C method: connect two independent video-capable USB-C outputs directly to the laptop.",
+      "USB-C + HDMI method: use one video-capable USB-C output for one screen and HDMI-to-Type-C for the other screen.",
+      "Limited-output method: install the H5 DisplayLink adapter and driver when the laptop cannot output two external displays natively.",
       "Mirror mode duplicates your laptop screen, Extend mode creates more workspace, and Portrait mode can be used for vertical documents or dashboards.",
-      "During first setup, connect directly to the laptop instead of using a hub, dock, or splitter.",
     ],
     setup: {
       tutorialTitle: "P7 triple-screen setup workflow",
       tutorialBody:
-        'Open the rear grip, attach the P7 to the laptop screen, unfold the two 15.6-inch side panels, then connect the supported USB-C and/or HDMI signal paths. Start in Extend mode for the best productivity experience.',
+        "Open the rear grip, attach the P7, and unfold both 15.6-inch side panels. Native use requires two independent video signals while the laptop screen remains on. Verify the full model or SKU, GPU display limit, port capabilities, cables, and power before purchase. Limited-output laptops require the H5 DisplayLink workflow for both side screens.",
       accessories: [
         "P7 triple-screen main body with two 15.6-inch side displays",
         "Rear grip and adjustable support stand",
@@ -564,14 +586,14 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Travel bag for carrying the larger screen extender",
       ],
       compatibilityNotes: [
-        "Windows, macOS, ChromeOS, Linux, and select consoles or Android devices may work depending on available display-output ports.",
-        "Base Apple silicon MacBooks can have external-display limits, so confirm the exact MacBook model before purchase.",
-        "If the display flickers or shows no signal, test direct cable connection and add external power before using adapters.",
+        "Compatibility must be assessed by exact model, SKU, part number, or MTM because ports can differ inside the same laptop series.",
+        "Avoid hubs during first setup unless the verified result specifically requires a Thunderbolt/USB4 dock or H5 DisplayLink device.",
+        "Official-spec support is not the same as per-device testing; BIOS, regional SKU, cables, drivers, and power can affect the result.",
       ],
     },
     reminders: [
-      "Confirm your laptop has enough display-output paths before purchase.",
-      "For the cleanest first setup, avoid hubs and low-quality adapters.",
+      "Use the Compatibility page and confirm the exact laptop SKU before purchase.",
+      "If you need both side screens on a limited-output laptop, confirm the H5 DisplayLink path with support before buying extra accessories.",
       "Use Extend mode to get the full productivity benefit of the dual side screens.",
     ],
     downloads: {
@@ -584,8 +606,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         label: "Request firmware support",
         href: "mailto:service@anykingscreen.com?subject=P7%2015.6%20Firmware%20Support",
       },
-      note:
-        "The P7 Pro User Manual is now available for direct download. For the older P7 model, you can download the [P7 standard manual](/manuals/P7_User_Manual.pdf). For firmware support, please contact us.",
+      note: "The P7 Pro User Manual is now available for direct download. For the older P7 model, you can download the [P7 standard manual](/manuals/P7_User_Manual.pdf). For firmware support, please contact us.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -599,12 +620,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "What laptop models are compatible with the AnyKing P7?",
             answer:
-              "The P7 is designed for 13-17.3 inch laptops that can output two display signals through USB-C and/or HDMI. The most stable setup is direct connection through video-capable USB-C ports or USB-C plus HDMI.",
+              "Use the Compatibility page and enter the full laptop model or SKU. Native triple-screen use requires support for the laptop screen plus two external displays and two independent video paths: two video-capable USB-C outputs, or one video-capable USB-C output plus HDMI. A series name alone is not enough because ports can vary by SKU.",
           },
           {
             question: "Will the P7 work with my MacBook?",
             answer:
-              "Many MacBooks can use the P7, but base Apple silicon models may have native external-display limits. Please confirm your exact MacBook model and chip generation before purchase if you need both side screens active.",
+              "Base M1/M2 MacBooks, base M3 MacBooks with the lid open, and MacBook Neo support only one native external display, so both P7 side screens require the H5 DisplayLink adapter and driver. M4/M5 MacBooks can support two native external displays with the lid open, subject to the exact model specification.",
           },
           {
             question: "Can I use the P7 with consoles, phones, or tablets?",
@@ -619,12 +640,12 @@ export const helpCenterArticles: HelpCenterArticle[] = [
           {
             question: "How do I set up the AnyKing P7?",
             answer:
-              "Attach the rear grip to your laptop, unfold the two side screens, connect the supported USB-C and/or HDMI paths, then choose Extend, Mirror, or Portrait mode in your display settings.",
+              "Attach the rear grip and unfold both side screens. If the laptop provides two independent video signals, use two video-capable USB-C outputs or one USB-C video output plus HDMI-to-Type-C. If it supports only one native external display, install the H5 DisplayLink adapter and driver. Then choose Extend, Mirror, or Portrait mode in display settings.",
           },
           {
             question: 'Why does one screen show "No Signal"?',
             answer:
-              "The most common cause is that one cable path is providing power only or the laptop cannot output a second display signal. Try a video-capable USB-C port, add HDMI for the second path, and avoid hubs during troubleshooting.",
+              "Test each side separately, swap the cables, and add external power. If both screens work individually but only one works at a time, the laptop may expose only one independent native video path. Check the exact model result above; limited-output models require the H5 DisplayLink adapter and driver for two independent side screens.",
           },
         ],
       },
@@ -676,8 +697,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       "A placeholder help article for the AnyKing S15 Plus. The connection tutorial is available now; product specs, compatibility notes, and purchase links will be added when final product information is ready.",
     connectionVideo: {
       title: "S15 Plus connection tutorial",
-      body:
-        "Watch this setup video first. Full S15 Plus product details are reserved and will be completed after the final product information is added.",
+      body: "Watch this setup video first. Full S15 Plus product details are reserved and will be completed after the final product information is added.",
       youtubeId: "H87DfRJeQXE",
     },
     overview: {
@@ -690,7 +710,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Compatibility notes and accessories will be updated after product details are provided.",
       ],
       productLinks: [
-        { label: "Contact support for S15 Plus", href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Support" },
+        {
+          label: "Contact support for S15 Plus",
+          href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Support",
+        },
       ],
     },
     specifications: [
@@ -711,12 +734,8 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       tutorialTitle: "S15 Plus setup workflow",
       tutorialBody:
         "S15 Plus setup details are reserved for the final documentation. The video above is the primary setup reference for now.",
-      accessories: [
-        "Accessory list pending final product information.",
-      ],
-      compatibilityNotes: [
-        "Compatibility notes pending final product information.",
-      ],
+      accessories: ["Accessory list pending final product information."],
+      compatibilityNotes: ["Compatibility notes pending final product information."],
     },
     reminders: [
       "This is a reserved article. Product specifications and purchase links will be completed later.",
@@ -731,8 +750,7 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         label: "Request S15 Plus firmware support",
         href: "mailto:service@anykingscreen.com?subject=S15%20Plus%20Firmware%20Support",
       },
-      note:
-        "The S15 Plus User Manual is now available for direct download. Detailed specifications will be updated when final product information is ready.",
+      note: "The S15 Plus User Manual is now available for direct download. Detailed specifications will be updated when final product information is ready.",
     },
     support: {
       email: "service@anykingscreen.com",
@@ -772,7 +790,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Compatibility notes and accessories will be updated after product details are provided.",
       ],
       productLinks: [
-        { label: "Contact support for F4", href: "mailto:service@anykingscreen.com?subject=F4%20Support" },
+        {
+          label: "Contact support for F4",
+          href: "mailto:service@anykingscreen.com?subject=F4%20Support",
+        },
       ],
     },
     specifications: [
@@ -793,12 +814,8 @@ export const helpCenterArticles: HelpCenterArticle[] = [
       tutorialTitle: "F4 setup workflow",
       tutorialBody:
         "F4 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
-      accessories: [
-        "Accessory list pending final product information.",
-      ],
-      compatibilityNotes: [
-        "Compatibility notes pending final product information.",
-      ],
+      accessories: ["Accessory list pending final product information."],
+      compatibilityNotes: ["Compatibility notes pending final product information."],
     },
     reminders: [
       "This is a reserved article. Product specifications and purchase links will be completed later.",
@@ -853,7 +870,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Compatibility notes and accessories will be updated after product details are provided.",
       ],
       productLinks: [
-        { label: "Contact support for M5", href: "mailto:service@anykingscreen.com?subject=M5%20Support" },
+        {
+          label: "Contact support for M5",
+          href: "mailto:service@anykingscreen.com?subject=M5%20Support",
+        },
       ],
     },
     specifications: [
@@ -865,19 +885,13 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     compatibility: [
       "Compatibility guidance will be added after final M5 product information is confirmed.",
     ],
-    connectionMethods: [
-      "Please refer to the M5 User Manual for setup instructions.",
-    ],
+    connectionMethods: ["Please refer to the M5 User Manual for setup instructions."],
     setup: {
       tutorialTitle: "M5 setup workflow",
       tutorialBody:
         "M5 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
-      accessories: [
-        "Accessory list pending final product information.",
-      ],
-      compatibilityNotes: [
-        "Compatibility notes pending final product information.",
-      ],
+      accessories: ["Accessory list pending final product information."],
+      compatibilityNotes: ["Compatibility notes pending final product information."],
     },
     reminders: [
       "This is a reserved article. Product specifications and purchase links will be completed later.",
@@ -932,7 +946,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Compatibility notes and accessories will be updated after product details are provided.",
       ],
       productLinks: [
-        { label: "Contact support for S12", href: "mailto:service@anykingscreen.com?subject=S12%20Support" },
+        {
+          label: "Contact support for S12",
+          href: "mailto:service@anykingscreen.com?subject=S12%20Support",
+        },
       ],
     },
     specifications: [
@@ -944,19 +961,13 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     compatibility: [
       "Compatibility guidance will be added after final S12 product information is confirmed.",
     ],
-    connectionMethods: [
-      "Please refer to the S12 User Manual for setup instructions.",
-    ],
+    connectionMethods: ["Please refer to the S12 User Manual for setup instructions."],
     setup: {
       tutorialTitle: "S12 setup workflow",
       tutorialBody:
         "S12 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
-      accessories: [
-        "Accessory list pending final product information.",
-      ],
-      compatibilityNotes: [
-        "Compatibility notes pending final product information.",
-      ],
+      accessories: ["Accessory list pending final product information."],
+      compatibilityNotes: ["Compatibility notes pending final product information."],
     },
     reminders: [
       "This is a reserved article. Product specifications and purchase links will be completed later.",
@@ -1011,7 +1022,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Compatibility notes and accessories will be updated after product details are provided.",
       ],
       productLinks: [
-        { label: "Contact support for S13", href: "mailto:service@anykingscreen.com?subject=S13%20Support" },
+        {
+          label: "Contact support for S13",
+          href: "mailto:service@anykingscreen.com?subject=S13%20Support",
+        },
       ],
     },
     specifications: [
@@ -1023,19 +1037,13 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     compatibility: [
       "Compatibility guidance will be added after final S13 product information is confirmed.",
     ],
-    connectionMethods: [
-      "Please refer to the S13 User Manual for setup instructions.",
-    ],
+    connectionMethods: ["Please refer to the S13 User Manual for setup instructions."],
     setup: {
       tutorialTitle: "S13 setup workflow",
       tutorialBody:
         "S13 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
-      accessories: [
-        "Accessory list pending final product information.",
-      ],
-      compatibilityNotes: [
-        "Compatibility notes pending final product information.",
-      ],
+      accessories: ["Accessory list pending final product information."],
+      compatibilityNotes: ["Compatibility notes pending final product information."],
     },
     reminders: [
       "This is a reserved article. Product specifications and purchase links will be completed later.",
@@ -1090,7 +1098,10 @@ export const helpCenterArticles: HelpCenterArticle[] = [
         "Compatibility notes and accessories will be updated after product details are provided.",
       ],
       productLinks: [
-        { label: "Contact support for Z3", href: "mailto:service@anykingscreen.com?subject=Z3%20Support" },
+        {
+          label: "Contact support for Z3",
+          href: "mailto:service@anykingscreen.com?subject=Z3%20Support",
+        },
       ],
     },
     specifications: [
@@ -1102,19 +1113,13 @@ export const helpCenterArticles: HelpCenterArticle[] = [
     compatibility: [
       "Compatibility guidance will be added after final Z3 product information is confirmed.",
     ],
-    connectionMethods: [
-      "Please refer to the Z3 User Manual for setup instructions.",
-    ],
+    connectionMethods: ["Please refer to the Z3 User Manual for setup instructions."],
     setup: {
       tutorialTitle: "Z3 setup workflow",
       tutorialBody:
         "Z3 setup details are reserved for the final documentation. The manual below is the primary reference for now.",
-      accessories: [
-        "Accessory list pending final product information.",
-      ],
-      compatibilityNotes: [
-        "Compatibility notes pending final product information.",
-      ],
+      accessories: ["Accessory list pending final product information."],
+      compatibilityNotes: ["Compatibility notes pending final product information."],
     },
     reminders: [
       "This is a reserved article. Product specifications and purchase links will be completed later.",

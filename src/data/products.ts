@@ -1,5 +1,5 @@
-import s10proA from "@/assets/product-s10pro-a.jpg";
 import a6A from "@/assets/product-a6-a.jpg";
+import a6Main20260717 from "@/assets/product-a6-main-20260717.jpg";
 import p7Main from "@/assets/product-p7-156-main.jpg";
 import p7Productivity from "@/assets/product-p7-156-productivity.jpg";
 import p7Fit from "@/assets/product-p7-156-fit.jpg";
@@ -8,7 +8,7 @@ import p7Modes from "@/assets/product-p7-156-modes.jpg";
 import p7Compatibility from "@/assets/product-p7-156-compatibility.jpg";
 import p7Portable from "@/assets/product-p7-156-portable.jpg";
 import p7Scenes from "@/assets/product-p7-156-scenes.jpg";
-import s10proA11 from "@/assets/product-s10pro-1.1.jpg";
+import s10proMain20260717 from "@/assets/product-s10pro-main-20260717.jpg";
 import s10proA700x900 from "@/assets/product-s10pro-700x900-1.1.jpg";
 import s10g1 from "@/assets/s10pro-gallery-1-multitasking.jpg";
 import s10g2 from "@/assets/s10pro-gallery-2-display.jpg";
@@ -196,7 +196,7 @@ export const products: Product[] = [
     rating: 4.81,
     reviews: 412,
     images: [
-      s10proA11,
+      s10proMain20260717,
       s10g1,
       s10g2,
       s10g6,
@@ -378,7 +378,7 @@ export const products: Product[] = [
     rating: 4.76,
     reviews: 287,
     images: [
-      a6A,
+      a6Main20260717,
       a6g2,
       a6g3,
       a6g4,

@@ -1,6 +1,7 @@
 import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +10,8 @@ import {
 } from "@/components/ui/accordion";
 import { SiteLayout } from "@/components/SiteLayout";
 import { getHelpCenterArticle } from "@/data/helpCenterArticles";
+import { useLang } from "@/i18n/LangContext";
+import { jaText, localizeHelpArticle } from "@/i18n/helpJa";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -25,18 +28,41 @@ function openSmartSupport() {
   const chatHost = document.getElementById("nextop-chat");
   const chatFrame = document.querySelector<HTMLIFrameElement>('iframe[title="nextop live chat"]');
   const clickable = chatHost?.querySelector<HTMLElement>(
-    'button, [role="button"], a, iframe, [class*="bubble"], [class*="launcher"], [class*="chat"]'
+    'button, [role="button"], a, iframe, [class*="bubble"], [class*="launcher"], [class*="chat"]',
   );
 
   clickable?.click();
   chatHost?.click();
   chatFrame?.click();
+
+  if (!chatHost && !chatFrame) {
+    document.getElementById("support")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
+const warrantyActivationSchema = z
+  .object({
+    orderId: z
+      .string()
+      .trim()
+      .regex(/^\d{3}-\d{7}-\d{7}$/),
+    fullName: z.string().trim().min(1).max(120),
+    email: z.string().trim().email().max(254),
+    phone: z.string().trim().max(40).optional(),
+    articleSlug: z.string().trim().min(1).max(100),
+  })
+  .strict();
+
 const activateWarrantyFn = createServerFn({ method: "POST" })
-  .handler(async ({ data }: { data: { orderId: string; fullName: string; email: string; phone?: string; model: string } }) => {
+  .inputValidator(warrantyActivationSchema)
+  .handler(async ({ data }) => {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const article = getHelpCenterArticle(data.articleSlug);
+
+    if (!article) {
+      return { success: false, message: "Invalid product model." };
+    }
 
     // Server-side validation
     const orderPattern = /^\d{3}-\d{7}-\d{7}$/;
@@ -49,10 +75,18 @@ const activateWarrantyFn = createServerFn({ method: "POST" })
       return { success: false, message: "Invalid email format." };
     }
 
-    // Fallback Mock mode if env keys are not present
+    // Mock mode is allowed only during explicit local development.
     if (!supabaseUrl || !supabaseServiceKey) {
-      console.warn("Supabase env credentials are not configured. Running in Mock Mode.");
-      return { success: true, isMock: true, message: "Successfully activated (Mock mode)." };
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Supabase env credentials are not configured. Running in Mock Mode.");
+        return { success: true, isMock: true, message: "Successfully activated (Mock mode)." };
+      }
+
+      console.error("Supabase env credentials are not configured.");
+      return {
+        success: false,
+        message: "Warranty registration is temporarily unavailable. Please try again later.",
+      };
     }
 
     try {
@@ -60,24 +94,27 @@ const activateWarrantyFn = createServerFn({ method: "POST" })
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": supabaseServiceKey,
-          "Authorization": `Bearer ${supabaseServiceKey}`,
-          "Prefer": "return=minimal"
+          apikey: supabaseServiceKey,
+          Authorization: `Bearer ${supabaseServiceKey}`,
+          Prefer: "return=minimal",
         },
         body: JSON.stringify({
           order_id: data.orderId,
           full_name: data.fullName,
           email: data.email,
           phone: data.phone || null,
-          product_model: data.model,
-          created_at: new Date().toISOString()
-        })
+          product_model: article.name,
+          created_at: new Date().toISOString(),
+        }),
       });
 
       if (!response.ok) {
         const errText = await response.text();
         console.error("Supabase Database Error Response:", errText);
-        return { success: false, message: "Database rejected the warranty registration. Please verify details." };
+        return {
+          success: false,
+          message: "Database rejected the warranty registration. Please verify details.",
+        };
       }
 
       return { success: true };
@@ -108,7 +145,10 @@ export const Route = createFileRoute("/help-articles/$article")({
 
 function HelpCenterArticlePage() {
   const { article: articleSlug } = Route.useParams();
-  const article = getHelpCenterArticle(articleSlug);
+  const { lang } = useLang();
+  const sourceArticle = getHelpCenterArticle(articleSlug);
+  const article = sourceArticle ? localizeHelpArticle(sourceArticle, lang) : undefined;
+  const tx = (text: string) => jaText(lang, text);
 
   // Warranty Extended Activation states
   const [isWarrantyOpen, setIsWarrantyOpen] = React.useState(false);
@@ -116,7 +156,9 @@ function HelpCenterArticlePage() {
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
-  const [formStatus, setFormStatus] = React.useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [formStatus, setFormStatus] = React.useState<"idle" | "submitting" | "success" | "error">(
+    "idle",
+  );
   const [errorMsg, setErrorMsg] = React.useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
@@ -137,7 +179,11 @@ function HelpCenterArticlePage() {
 
     if (!orderId.trim() || !fullName.trim() || !email.trim()) {
       setFormStatus("error");
-      setErrorMsg("Please fill out all required fields.");
+      setErrorMsg(
+        lang === "ja"
+          ? "必須項目をすべて入力してください。"
+          : "Please fill out all required fields.",
+      );
       return;
     }
 
@@ -145,7 +191,11 @@ function HelpCenterArticlePage() {
     const orderPattern = /^\d{3}-\d{7}-\d{7}$/;
     if (!orderPattern.test(orderId.trim())) {
       setFormStatus("error");
-      setErrorMsg("Please enter a valid Amazon Order ID (e.g., 123-4567890-1234567).");
+      setErrorMsg(
+        lang === "ja"
+          ? "有効なAmazon注文番号を入力してください（例：123-4567890-1234567）。"
+          : "Please enter a valid Amazon Order ID (e.g., 123-4567890-1234567).",
+      );
       return;
     }
 
@@ -153,7 +203,11 @@ function HelpCenterArticlePage() {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email.trim())) {
       setFormStatus("error");
-      setErrorMsg("Please enter a valid email address.");
+      setErrorMsg(
+        lang === "ja"
+          ? "有効なメールアドレスを入力してください。"
+          : "Please enter a valid email address.",
+      );
       return;
     }
 
@@ -166,15 +220,17 @@ function HelpCenterArticlePage() {
           fullName: fullName.trim(),
           email: email.trim(),
           phone: phone.trim(),
-          model: article.name,
-        }
+          articleSlug,
+        },
       });
 
       if (response.success) {
         setFormStatus("success");
       } else {
         setFormStatus("error");
-        setErrorMsg(response.message || "Failed to activate warranty. Please check your order details.");
+        setErrorMsg(
+          response.message || "Failed to activate warranty. Please check your order details.",
+        );
       }
     } catch (err: any) {
       console.error("Submit Error:", err);
@@ -204,12 +260,14 @@ function HelpCenterArticlePage() {
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Help Center
+            {tx("Back to Help Center")}
           </Link>
           <div className="mt-8 rounded-lg border border-border/60 bg-card p-8 shadow-sm">
-            <h1 className="text-3xl font-bold text-foreground">Article not found</h1>
+            <h1 className="text-3xl font-bold text-foreground">{tx("Article not found")}</h1>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              We couldn't find that help article. Please return to the help center and choose a supported guide.
+              {lang === "ja"
+                ? "指定された記事が見つかりません。ヘルプセンターへ戻り、別のガイドを選択してください。"
+                : "We couldn't find that help article. Please return to the help center and choose a supported guide."}
             </p>
           </div>
         </section>
@@ -226,39 +284,39 @@ function HelpCenterArticlePage() {
     ...(article.connectionVideo
       ? [
           {
-            title: "Connection Tutorial",
-            items: [{ id: "connection-video", label: "Watch setup video" }],
+            title: tx("Connection Tutorial"),
+            items: [{ id: "connection-video", label: tx("Watch setup video") }],
           },
         ]
       : []),
     {
-      title: "1. Product Overview",
+      title: tx("1. Product Overview"),
       items: [
-        { id: "design-look", label: "1.1 Design & look" },
-        { id: "key-highlights", label: "1.2 Key highlights" },
-        { id: "product-links", label: "1.3 Product page links" },
+        { id: "design-look", label: tx("1.1 Design & look") },
+        { id: "key-highlights", label: tx("1.2 Key highlights") },
+        { id: "product-links", label: tx("1.3 Product page links") },
       ],
     },
     {
-      title: "2. Specifications",
-      items: [{ id: "specs", label: "2.1 Core specs" }],
+      title: tx("2. Specifications"),
+      items: [{ id: "specs", label: tx("2.1 Core specs") }],
     },
     {
-      title: "3. Setup, Install & Accessories",
+      title: tx("3. Setup, Install & Accessories"),
       items: [
-        { id: "setup-video", label: "3.1 Setup workflow" },
-        { id: "compatibility-accessories", label: "3.2 Accessories & compatibility" },
+        { id: "setup-video", label: tx("3.1 Setup workflow") },
+        { id: "compatibility-accessories", label: tx("3.2 Accessories & compatibility") },
       ],
     },
     {
-      title: "4. Downloads",
+      title: tx("4. Downloads"),
       items: [
-        { id: "user-manual", label: "4.1 User manual" },
-        { id: "firmware", label: "4.2 Firmware" },
+        { id: "user-manual", label: tx("4.1 User manual") },
+        { id: "firmware", label: tx("4.2 Firmware") },
       ],
     },
     {
-      title: "5. Common Questions",
+      title: tx("5. Common Questions"),
       items: faqLinks,
     },
   ];
@@ -272,18 +330,20 @@ function HelpCenterArticlePage() {
             className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
-            Help Center
+            {tx("Help Center")}
           </Link>
           <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                {article.shortName} Guide
+                {article.shortName} {lang === "ja" ? "ガイド" : "Guide"}
               </h1>
               <p className="mt-2 text-xs text-muted-foreground">
-                Get step-by-step setup guides, manuals, and common issue resolutions.
+                {lang === "ja"
+                  ? "セットアップ手順、マニュアル、よくある問題の解決方法をご案内します。"
+                  : "Get step-by-step setup guides, manuals, and common issue resolutions."}
               </p>
             </div>
-            
+
             {/* Warranty Promotion Card in Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/5 via-amber-500/5 to-white p-4 shadow-sm max-w-xl">
               <div className="flex items-start gap-3">
@@ -291,9 +351,13 @@ function HelpCenterArticlePage() {
                   <ShieldCheck className="h-5.5 w-5.5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-extrabold text-foreground leading-tight">Activate 1-Year Extended Warranty</h3>
+                  <h3 className="text-sm font-extrabold text-foreground leading-tight">
+                    {tx("Activate Your 1-Year Warranty")}
+                  </h3>
                   <p className="mt-1 text-[11px] text-muted-foreground leading-normal">
-                    Register your Anyking purchase within 30 days of receipt to extend your warranty to 12 months for free.
+                    {lang === "ja"
+                      ? "商品受け取り後30日以内にAnyking製品を登録すると、付属の12か月保証を有効にできます。"
+                      : "Register your Anyking purchase within 30 days of receipt to activate the included 12-month warranty."}
                   </p>
                 </div>
               </div>
@@ -302,7 +366,7 @@ function HelpCenterArticlePage() {
                 onClick={() => setIsWarrantyOpen(true)}
                 className="inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground shadow-sm transition hover:bg-primary/90"
               >
-                Activate Warranty
+                {tx("Activate Warranty")}
               </button>
             </div>
           </div>
@@ -312,7 +376,7 @@ function HelpCenterArticlePage() {
             <div className="lg:hidden mt-6 rounded-2xl border border-border/25 bg-white p-4 shadow-sm">
               <div className="mb-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-                  Start here
+                  {tx("Start here")}
                 </p>
                 <h2 className="mt-1 text-lg font-bold text-foreground">
                   {article.connectionVideo.title}
@@ -345,7 +409,9 @@ function HelpCenterArticlePage() {
               {article.connectionVideo.youtubeId && (
                 <div className="mt-3 flex flex-col gap-2 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
                   <span>
-                    If the embedded player does not load on your network, open the tutorial directly on YouTube.
+                    {lang === "ja"
+                      ? "埋め込み動画を再生できない場合は、YouTubeでチュートリアルを開いてください。"
+                      : "If the embedded player does not load on your network, open the tutorial directly on YouTube."}
                   </span>
                   <a
                     href={`https://www.youtube.com/watch?v=${article.connectionVideo.youtubeId}`}
@@ -353,7 +419,7 @@ function HelpCenterArticlePage() {
                     rel="noreferrer"
                     className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-foreground px-3 py-1.5 font-bold text-background text-[11px] transition hover:bg-foreground/85"
                   >
-                    Open tutorial
+                    {lang === "ja" ? "チュートリアルを開く" : "Open tutorial"}
                     <ArrowUpRight className="h-3 w-3" />
                   </a>
                 </div>
@@ -391,11 +457,14 @@ function HelpCenterArticlePage() {
 
           <article className="mx-auto w-full max-w-3xl text-foreground">
             {article.connectionVideo && (
-              <section id="connection-video" className="hidden lg:block scroll-mt-28 rounded-2xl border border-border/70 bg-white p-4 shadow-sm md:p-5">
+              <section
+                id="connection-video"
+                className="hidden lg:block scroll-mt-28 rounded-2xl border border-border/70 bg-white p-4 shadow-sm md:p-5"
+              >
                 <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-                      Start here
+                      {tx("Start here")}
                     </p>
                     <h2 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
                       {article.connectionVideo.title}
@@ -429,7 +498,9 @@ function HelpCenterArticlePage() {
                 {article.connectionVideo.youtubeId && (
                   <div className="mt-3 flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                     <span>
-                      If the embedded player does not load on your network, open the tutorial directly on YouTube.
+                      {lang === "ja"
+                        ? "埋め込み動画を再生できない場合は、YouTubeでチュートリアルを開いてください。"
+                        : "If the embedded player does not load on your network, open the tutorial directly on YouTube."}
                     </span>
                     <a
                       href={`https://www.youtube.com/watch?v=${article.connectionVideo.youtubeId}`}
@@ -437,7 +508,7 @@ function HelpCenterArticlePage() {
                       rel="noreferrer"
                       className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-foreground px-4 py-2 font-semibold text-background transition hover:bg-foreground/85"
                     >
-                      Open tutorial
+                      {lang === "ja" ? "チュートリアルを開く" : "Open tutorial"}
                       <ArrowUpRight className="h-4 w-4" />
                     </a>
                   </div>
@@ -445,11 +516,25 @@ function HelpCenterArticlePage() {
               </section>
             )}
 
-            <section id="design-look" className={article.connectionVideo ? "mt-14 scroll-mt-28" : "scroll-mt-28"}>
-              <p className="text-sm font-semibold tracking-[0.18em] text-primary">1. PRODUCT OVERVIEW</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight">1.1 Design & look</h2>
-              <p className="mt-6 text-base leading-8 text-muted-foreground">{article.overview.designSummary}</p>
-              {!["s15-plus-extender", "f4-extender", "m5-extender", "s12-extender", "s13-extender", "z3-extender"].includes(article.slug) && (
+            <section
+              id="design-look"
+              className={article.connectionVideo ? "mt-14 scroll-mt-28" : "scroll-mt-28"}
+            >
+              <p className="text-sm font-semibold tracking-[0.18em] text-primary">
+                1. {tx("PRODUCT OVERVIEW")}
+              </p>
+              <h2 className="mt-4 text-3xl font-bold tracking-tight">{tx("1.1 Design & look")}</h2>
+              <p className="mt-6 text-base leading-8 text-muted-foreground">
+                {article.overview.designSummary}
+              </p>
+              {![
+                "s15-plus-extender",
+                "f4-extender",
+                "m5-extender",
+                "s12-extender",
+                "s13-extender",
+                "z3-extender",
+              ].includes(article.slug) && (
                 <figure className="mt-8 flex justify-center">
                   <img
                     src={article.image}
@@ -461,7 +546,7 @@ function HelpCenterArticlePage() {
             </section>
 
             <section id="key-highlights" className="mt-14 scroll-mt-28">
-              <h2 className="text-3xl font-bold tracking-tight">1.2 Key highlights</h2>
+              <h2 className="text-3xl font-bold tracking-tight">{tx("1.2 Key highlights")}</h2>
               <ul className="mt-6 space-y-3 text-base leading-8 text-muted-foreground">
                 {article.overview.highlights.map((item) => (
                   <li key={item} className="flex gap-3">
@@ -474,7 +559,9 @@ function HelpCenterArticlePage() {
 
             <section id="product-links" className="mt-14 scroll-mt-28">
               <h2 className="text-3xl font-bold tracking-tight">1.3 Product page links</h2>
-              <p className="mt-4 text-base leading-8 text-muted-foreground">{article.overview.listingTitle}</p>
+              <p className="mt-4 text-base leading-8 text-muted-foreground">
+                {article.overview.listingTitle}
+              </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 {article.overview.productLinks.map((item) => (
                   <a
@@ -497,11 +584,16 @@ function HelpCenterArticlePage() {
                 <table className="w-full border-collapse text-sm">
                   <tbody>
                     {article.specifications.map((spec) => (
-                      <tr key={spec.label} className="flex flex-col sm:table-row border-b border-border/70 last:border-b-0">
+                      <tr
+                        key={spec.label}
+                        className="flex flex-col sm:table-row border-b border-border/70 last:border-b-0"
+                      >
                         <th className="block w-full sm:table-cell sm:w-40 bg-secondary/45 px-4 py-3 text-left font-semibold text-foreground">
                           {spec.label}
                         </th>
-                        <td className="block w-full sm:table-cell px-4 py-3 leading-7 text-muted-foreground">{spec.value}</td>
+                        <td className="block w-full sm:table-cell px-4 py-3 leading-7 text-muted-foreground">
+                          {spec.value}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -510,9 +602,13 @@ function HelpCenterArticlePage() {
             </section>
 
             <section id="setup-video" className="mt-16 scroll-mt-28">
-              <h2 className="text-center text-3xl font-bold tracking-tight">3. Setup, Install & Accessories</h2>
+              <h2 className="text-center text-3xl font-bold tracking-tight">
+                3. Setup, Install & Accessories
+              </h2>
               <h3 className="mt-8 text-xl font-bold">3.1 Setup workflow</h3>
-              <p className="mt-4 text-base leading-8 text-muted-foreground">{article.setup.tutorialBody}</p>
+              <p className="mt-4 text-base leading-8 text-muted-foreground">
+                {article.setup.tutorialBody}
+              </p>
               <ul className="mt-5 space-y-3 text-base leading-8 text-muted-foreground">
                 {article.connectionMethods.map((item) => (
                   <li key={item} className="flex gap-3">
@@ -530,7 +626,7 @@ function HelpCenterArticlePage() {
                   <tbody>
                     <tr className="flex flex-col sm:table-row border-b border-border/70">
                       <th className="block w-full sm:table-cell sm:w-40 bg-secondary/45 px-4 py-3 text-left font-semibold text-foreground">
-                        Accessories
+                        {lang === "ja" ? "付属品" : "Accessories"}
                       </th>
                       <td className="block w-full sm:table-cell px-4 py-3">
                         <ul className="space-y-2 leading-7 text-muted-foreground">
@@ -542,7 +638,7 @@ function HelpCenterArticlePage() {
                     </tr>
                     <tr className="flex flex-col sm:table-row">
                       <th className="block w-full sm:table-cell sm:w-40 bg-secondary/45 px-4 py-3 text-left font-semibold text-foreground">
-                        Compatibility
+                        {lang === "ja" ? "互換性" : "Compatibility"}
                       </th>
                       <td className="block w-full sm:table-cell px-4 py-3">
                         <ul className="space-y-2 leading-7 text-muted-foreground">
@@ -559,7 +655,7 @@ function HelpCenterArticlePage() {
 
             <section id="user-manual" className="mt-16 scroll-mt-28 text-center">
               <h2 className="text-3xl font-bold tracking-tight">4. Downloads</h2>
-              <h3 className="mt-8 text-xl font-bold">4.1 User manual</h3>
+              <h3 className="mt-8 text-xl font-bold">{tx("4.1 User manual")}</h3>
               <a
                 href={article.downloads.manual.href}
                 target={article.downloads.manual.external ? "_blank" : undefined}
@@ -571,7 +667,7 @@ function HelpCenterArticlePage() {
             </section>
 
             <section id="firmware" className="mt-8 scroll-mt-28 text-center">
-              <h3 className="text-xl font-bold">4.2 Firmware</h3>
+              <h3 className="text-xl font-bold">{tx("4.2 Firmware")}</h3>
               <a
                 href={article.downloads.firmware.href}
                 target={article.downloads.firmware.external ? "_blank" : undefined}
@@ -582,7 +678,7 @@ function HelpCenterArticlePage() {
               </a>
             </section>
 
-            <section id="faq-1" className="mt-16 scroll-mt-28">
+            <section className="mt-16 scroll-mt-28">
               <h2 className="text-center text-3xl font-bold tracking-tight">5. Common Questions</h2>
               <div className="mt-8 space-y-8">
                 {article.sections.map((section, index) => (
@@ -611,9 +707,14 @@ function HelpCenterArticlePage() {
           </article>
         </div>
 
-        <section className="border-t border-border/60 bg-[#f4f7fb] px-5 py-16">
+        <section
+          id="support"
+          className="scroll-mt-28 border-t border-border/60 bg-[#f4f7fb] px-5 py-16"
+        >
           <div className="mx-auto max-w-5xl text-center">
-            <h2 className="text-2xl font-bold text-foreground">Can't find the answer?</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              {lang === "ja" ? "お探しの回答が見つかりませんか？" : "Can't find the answer?"}
+            </h2>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
               <a
                 href="#"
@@ -624,18 +725,26 @@ function HelpCenterArticlePage() {
                 className="group text-center cursor-pointer"
               >
                 <MessageCircle className="mx-auto h-6 w-6 text-primary" />
-                <p className="mt-3 text-sm font-bold text-foreground">Live chat</p>
-                <p className="mt-2 text-xs leading-5 text-muted-foreground">Use the chat bubble for quick setup help.</p>
+                <p className="mt-3 text-sm font-bold text-foreground">{tx("Live chat")}</p>
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                  {lang === "ja"
+                    ? "チャットからセットアップについてすぐに相談できます。"
+                    : "Use the chat bubble for quick setup help."}
+                </p>
               </a>
               <a href={`tel:${article.support.phone}`} className="group text-center">
                 <Phone className="mx-auto h-6 w-6 text-primary" />
-                <p className="mt-3 text-sm font-bold text-foreground">Call us</p>
-                <p className="mt-2 text-xs leading-5 text-muted-foreground">{article.support.phone}</p>
+                <p className="mt-3 text-sm font-bold text-foreground">{tx("Call us")}</p>
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                  {article.support.phone}
+                </p>
               </a>
               <a href={`mailto:${article.support.email}`} className="group text-center">
                 <Mail className="mx-auto h-6 w-6 text-primary" />
-                <p className="mt-3 text-sm font-bold text-foreground">Email us</p>
-                <p className="mt-2 text-xs leading-5 text-muted-foreground">{article.support.email}</p>
+                <p className="mt-3 text-sm font-bold text-foreground">{tx("Email us")}</p>
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                  {article.support.email}
+                </p>
               </a>
             </div>
           </div>
@@ -655,7 +764,7 @@ function HelpCenterArticlePage() {
               type="button"
               onClick={closeWarrantyModal}
               className="absolute right-4 top-4 h-7 w-7 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors text-sm font-bold"
-              aria-label="Close dialog"
+              aria-label={lang === "ja" ? "ダイアログを閉じる" : "Close dialog"}
             >
               ✕
             </button>
@@ -667,15 +776,23 @@ function HelpCenterArticlePage() {
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-extrabold text-slate-900">Activate Warranty</h2>
-                    <p className="text-xs text-slate-500">Claim your 12-month free extension</p>
+                    <h2 className="text-lg font-extrabold text-slate-900">
+                      {tx("Activate Warranty")}
+                    </h2>
+                    <p className="text-xs text-slate-500">
+                      {lang === "ja"
+                        ? "付属の12か月保証を有効にします"
+                        : "Activate your included 12-month coverage"}
+                    </p>
                   </div>
                 </div>
 
                 <div className="mt-5 space-y-4">
                   {/* Prefilled Product Model */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">Product Model</label>
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
+                      {lang === "ja" ? "製品モデル" : "Product Model"}
+                    </label>
                     <input
                       type="text"
                       disabled
@@ -686,14 +803,19 @@ function HelpCenterArticlePage() {
 
                   {/* Amazon Order ID */}
                   <div>
-                    <label htmlFor="w-order" className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label
+                      htmlFor="w-order"
+                      className="block text-xs font-bold text-slate-700 uppercase tracking-wider"
+                    >
                       Amazon Order ID <span className="text-primary">*</span>
                     </label>
                     <input
                       id="w-order"
                       type="text"
                       required
-                      placeholder="e.g. 123-4567890-1234567"
+                      placeholder={
+                        lang === "ja" ? "例：123-4567890-1234567" : "e.g. 123-4567890-1234567"
+                      }
                       value={orderId}
                       onChange={(e) => setOrderId(e.target.value)}
                       className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
@@ -702,14 +824,17 @@ function HelpCenterArticlePage() {
 
                   {/* Full Name */}
                   <div>
-                    <label htmlFor="w-name" className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label
+                      htmlFor="w-name"
+                      className="block text-xs font-bold text-slate-700 uppercase tracking-wider"
+                    >
                       Full Name <span className="text-primary">*</span>
                     </label>
                     <input
                       id="w-name"
                       type="text"
                       required
-                      placeholder="Your Full Name"
+                      placeholder={lang === "ja" ? "お名前" : "Your Full Name"}
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
@@ -718,7 +843,10 @@ function HelpCenterArticlePage() {
 
                   {/* Email */}
                   <div>
-                    <label htmlFor="w-email" className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label
+                      htmlFor="w-email"
+                      className="block text-xs font-bold text-slate-700 uppercase tracking-wider"
+                    >
                       Email Address <span className="text-primary">*</span>
                     </label>
                     <input
@@ -734,13 +862,16 @@ function HelpCenterArticlePage() {
 
                   {/* Phone */}
                   <div>
-                    <label htmlFor="w-phone" className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label
+                      htmlFor="w-phone"
+                      className="block text-xs font-bold text-slate-700 uppercase tracking-wider"
+                    >
                       Phone / Contact <span className="text-slate-400">(Optional)</span>
                     </label>
                     <input
                       id="w-phone"
                       type="tel"
-                      placeholder="Your Phone Number"
+                      placeholder={lang === "ja" ? "電話番号" : "Your Phone Number"}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
@@ -762,7 +893,7 @@ function HelpCenterArticlePage() {
                     onClick={closeWarrantyModal}
                     className="rounded-full border border-slate-200 px-5 py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 transition"
                   >
-                    Cancel
+                    {lang === "ja" ? "キャンセル" : "Cancel"}
                   </button>
                   <button
                     type="submit"
@@ -772,7 +903,7 @@ function HelpCenterArticlePage() {
                     {formStatus === "submitting" ? (
                       <>
                         <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        Activating...
+                        {lang === "ja" ? "登録中..." : "Activating..."}
                       </>
                     ) : (
                       "Activate Now"
@@ -786,24 +917,44 @@ function HelpCenterArticlePage() {
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-green-600">
                   <ShieldCheck className="h-8 w-8" />
                 </div>
-                <h2 className="mt-5 text-xl font-extrabold text-slate-900">Warranty Activated!</h2>
+                <h2 className="mt-5 text-xl font-extrabold text-slate-900">
+                  {lang === "ja" ? "保証を有効化しました" : "Warranty Activated!"}
+                </h2>
                 <p className="mt-2 text-sm text-slate-500 leading-relaxed">
-                  Thank you, <strong>{fullName}</strong>. Your 12-month free extended warranty is now active for product:
+                  Thank you, <strong>{fullName}</strong>. Your included 12-month warranty is now
+                  active for product:
                 </p>
                 <div className="my-4 rounded-xl bg-slate-50 p-4 border border-slate-100 text-left space-y-1.5 text-xs">
-                  <p className="text-slate-500"><strong className="text-slate-700">Model:</strong> {article.name}</p>
-                  <p className="text-slate-500"><strong className="text-slate-700">Order ID:</strong> {orderId}</p>
-                  <p className="text-slate-500"><strong className="text-slate-700">Email:</strong> {email}</p>
+                  <p className="text-slate-500">
+                    <strong className="text-slate-700">
+                      {lang === "ja" ? "モデル：" : "Model:"}
+                    </strong>{" "}
+                    {article.name}
+                  </p>
+                  <p className="text-slate-500">
+                    <strong className="text-slate-700">
+                      {lang === "ja" ? "注文番号：" : "Order ID:"}
+                    </strong>{" "}
+                    {orderId}
+                  </p>
+                  <p className="text-slate-500">
+                    <strong className="text-slate-700">
+                      {lang === "ja" ? "メール：" : "Email:"}
+                    </strong>{" "}
+                    {email}
+                  </p>
                 </div>
                 <p className="text-xs text-slate-400 font-medium">
-                  A confirmation has been sent to your email. If you have questions, contact service@anykingscreen.com.
+                  {lang === "ja"
+                    ? "ご不明点は service@anykingscreen.com までお問い合わせください。"
+                    : "If you have questions, contact service@anykingscreen.com."}
                 </p>
                 <button
                   type="button"
                   onClick={closeWarrantyModal}
                   className="mt-6 w-full rounded-full bg-slate-900 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition"
                 >
-                  Done
+                  {lang === "ja" ? "完了" : "Done"}
                 </button>
               </div>
             )}

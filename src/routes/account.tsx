@@ -6,18 +6,18 @@ import { useLang, formatPrice } from "@/i18n/LangContext";
 import { useCart } from "@/context/CartContext";
 import { products } from "@/data/products";
 import { toast } from "sonner";
-import { 
-  User as UserIcon, 
-  ShoppingBag, 
-  Settings, 
-  CreditCard, 
-  LogOut, 
-  Calendar, 
-  CheckCircle2, 
+import {
+  User as UserIcon,
+  ShoppingBag,
+  Settings,
+  CreditCard,
+  LogOut,
+  Calendar,
+  CheckCircle2,
   ArrowRight,
   TrendingUp,
   Award,
-  PackageOpen
+  PackageOpen,
 } from "lucide-react";
 
 export const Route = createFileRoute("/account")({
@@ -102,7 +102,7 @@ const accountStrings = {
     shopCta: "モニターを見る",
     joinedDate: "登録日",
     updating: "変更を保存中...",
-  }
+  },
 };
 
 function AccountPage() {
@@ -113,7 +113,7 @@ function AccountPage() {
   const { addToCart, setCartOpen } = useCart();
 
   const [activeTab, setActiveTab] = useState<"dashboard" | "orders" | "settings">("dashboard");
-  
+
   // Profile settings state
   const [profileName, setProfileName] = useState("");
   const [profileEmail, setProfileEmail] = useState("");
@@ -143,7 +143,7 @@ function AccountPage() {
 
   const userOrders = getUserOrders();
   const totalSpent = userOrders.reduce((sum, order) => sum + order.subtotal, 0);
-  
+
   // Determine membership tier based on spending
   let tier = s.tierMember;
   let tierColor = "text-amber-700 bg-amber-50 border-amber-200/55";
@@ -182,14 +182,16 @@ function AccountPage() {
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profileName.trim() || !profileEmail.trim()) {
-      toast.error("Name and Email are required.");
+      toast.error(
+        lang === "ja" ? "お名前とメールアドレスは必須です。" : "Name and Email are required.",
+      );
       return;
     }
-    
+
     setIsUpdating(true);
     const success = await updateProfile(profileName, profileEmail, profilePassword || undefined);
     setIsUpdating(false);
-    
+
     if (success) {
       setProfilePassword(""); // clear password field
     }
@@ -208,7 +210,6 @@ function AccountPage() {
     <SiteLayout>
       <div className="bg-muted/30 min-h-screen py-10">
         <div className="mx-auto max-w-6xl px-4 md:px-8">
-          
           {/* Header section */}
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-border/60 pb-8 mb-8">
             <div>
@@ -225,7 +226,6 @@ function AccountPage() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-[240px_1fr]">
-            
             {/* Sidebar Navigation */}
             <aside className="space-y-1.5">
               <button
@@ -242,7 +242,9 @@ function AccountPage() {
                 <ShoppingBag className="h-4.5 w-4.5" />
                 {s.tabOrders}
                 {userOrders.length > 0 && (
-                  <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${activeTab === "orders" ? "bg-primary-foreground text-primary" : "bg-muted-foreground/20 text-muted-foreground"}`}>
+                  <span
+                    className={`ml-auto text-xs px-2 py-0.5 rounded-full ${activeTab === "orders" ? "bg-primary-foreground text-primary" : "bg-muted-foreground/20 text-muted-foreground"}`}
+                  >
                     {userOrders.length}
                   </span>
                 )}
@@ -258,7 +260,6 @@ function AccountPage() {
 
             {/* Dashboard Panels */}
             <main>
-              
               {/* Tab 1: Dashboard Overview */}
               {activeTab === "dashboard" && (
                 <div className="space-y-6">
@@ -266,11 +267,17 @@ function AccountPage() {
                   <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-neutral-900 to-neutral-800 p-6 md:p-8 text-white shadow-lg">
                     <div className="relative z-10 flex flex-col justify-between h-full gap-4">
                       <div>
-                        <h2 className="text-xl md:text-2xl font-bold font-display">{s.welcome} {currentUser.name}</h2>
-                        <p className="text-white/60 text-xs mt-1">{s.joinedDate}: {formatDate(currentUser.createdAt)}</p>
+                        <h2 className="text-xl md:text-2xl font-bold font-display">
+                          {s.welcome} {currentUser.name}
+                        </h2>
+                        <p className="text-white/60 text-xs mt-1">
+                          {s.joinedDate}: {formatDate(currentUser.createdAt)}
+                        </p>
                       </div>
                       <div className="flex gap-2">
-                        <span className={`inline-flex items-center gap-1 text-xs border rounded-full px-3 py-1 font-semibold ${tierColor}`}>
+                        <span
+                          className={`inline-flex items-center gap-1 text-xs border rounded-full px-3 py-1 font-semibold ${tierColor}`}
+                        >
                           <Award className="h-3.5 w-3.5" />
                           {tier}
                         </span>
@@ -284,16 +291,28 @@ function AccountPage() {
                   {/* Stats counters */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">{s.statsOrders}</p>
-                      <h3 className="text-3xl font-bold text-foreground mt-2">{userOrders.length}</h3>
+                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
+                        {s.statsOrders}
+                      </p>
+                      <h3 className="text-3xl font-bold text-foreground mt-2">
+                        {userOrders.length}
+                      </h3>
                     </div>
                     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">{s.statsSpent}</p>
-                      <h3 className="text-3xl font-bold text-foreground mt-2">{formatPrice(totalSpent, lang)}</h3>
+                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
+                        {s.statsSpent}
+                      </p>
+                      <h3 className="text-3xl font-bold text-foreground mt-2">
+                        {formatPrice(totalSpent, lang)}
+                      </h3>
                     </div>
                     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">{s.statsTier}</p>
-                      <h3 className="text-lg font-bold text-primary mt-3 flex items-center gap-1.5">{tier}</h3>
+                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
+                        {s.statsTier}
+                      </p>
+                      <h3 className="text-lg font-bold text-primary mt-3 flex items-center gap-1.5">
+                        {tier}
+                      </h3>
                     </div>
                   </div>
 
@@ -311,7 +330,7 @@ function AccountPage() {
                         </button>
                       )}
                     </div>
-                    
+
                     {userOrders.length === 0 ? (
                       <div className="text-center py-10">
                         <PackageOpen className="mx-auto h-12 w-12 text-muted-foreground/50 stroke-1" />
@@ -328,11 +347,15 @@ function AccountPage() {
                         <div className="flex flex-wrap items-center justify-between gap-3 text-xs bg-muted/40 rounded-xl p-3.5">
                           <div>
                             <span className="text-muted-foreground mr-1.5">{s.orderId}:</span>
-                            <span className="font-semibold text-foreground">{userOrders[0].id}</span>
+                            <span className="font-semibold text-foreground">
+                              {userOrders[0].id}
+                            </span>
                           </div>
                           <div>
                             <span className="text-muted-foreground mr-1.5">{s.date}:</span>
-                            <span className="font-semibold text-foreground">{formatDate(userOrders[0].createdAt)}</span>
+                            <span className="font-semibold text-foreground">
+                              {formatDate(userOrders[0].createdAt)}
+                            </span>
                           </div>
                           <div>
                             <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 font-semibold px-2 py-0.5 rounded-full border border-emerald-200/55">
@@ -343,14 +366,19 @@ function AccountPage() {
                         </div>
 
                         {userOrders[0].items.map((item) => (
-                          <div key={item.productSlug} className="flex gap-4 items-center border border-border/40 rounded-xl p-3 bg-background">
+                          <div
+                            key={item.productSlug}
+                            className="flex gap-4 items-center border border-border/40 rounded-xl p-3 bg-background"
+                          >
                             <img
                               src={item.image}
                               alt={item.name}
                               className="h-16 w-16 rounded-lg object-contain bg-muted p-1 border"
                             />
                             <div className="flex-1 min-w-0">
-                              <h5 className="font-semibold text-sm leading-tight text-foreground truncate">{item.name}</h5>
+                              <h5 className="font-semibold text-sm leading-tight text-foreground truncate">
+                                {item.name}
+                              </h5>
                               <p className="text-muted-foreground text-xs mt-1">
                                 Qty {item.quantity} · {formatPrice(item.price, lang)}
                               </p>
@@ -385,7 +413,10 @@ function AccountPage() {
                     </div>
                   ) : (
                     userOrders.map((order) => (
-                      <div key={order.id} className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+                      <div
+                        key={order.id}
+                        className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm"
+                      >
                         {/* Order banner info */}
                         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/60 bg-muted/20 px-5 py-4 text-xs font-medium text-muted-foreground">
                           <div className="flex gap-6">
@@ -395,11 +426,15 @@ function AccountPage() {
                             </div>
                             <div>
                               <p className="uppercase tracking-wider font-semibold">{s.date}</p>
-                              <p className="text-foreground font-semibold mt-1 text-sm">{formatDate(order.createdAt)}</p>
+                              <p className="text-foreground font-semibold mt-1 text-sm">
+                                {formatDate(order.createdAt)}
+                              </p>
                             </div>
                             <div>
                               <p className="uppercase tracking-wider font-semibold">{s.total}</p>
-                              <p className="text-foreground font-bold mt-1 text-sm">{formatPrice(order.subtotal, lang)}</p>
+                              <p className="text-foreground font-bold mt-1 text-sm">
+                                {formatPrice(order.subtotal, lang)}
+                              </p>
                             </div>
                           </div>
                           <div>
@@ -413,14 +448,19 @@ function AccountPage() {
                         {/* Order items list */}
                         <div className="p-5 divide-y divide-border/40">
                           {order.items.map((item) => (
-                            <div key={item.productSlug} className="flex gap-4 items-center py-4 first:pt-0 last:pb-0">
+                            <div
+                              key={item.productSlug}
+                              className="flex gap-4 items-center py-4 first:pt-0 last:pb-0"
+                            >
                               <img
                                 src={item.image}
                                 alt={item.name}
                                 className="h-16 w-16 rounded-xl object-contain bg-muted p-1 border"
                               />
                               <div className="flex-1 min-w-0">
-                                <h5 className="font-semibold text-sm leading-tight text-foreground truncate">{item.name}</h5>
+                                <h5 className="font-semibold text-sm leading-tight text-foreground truncate">
+                                  {item.name}
+                                </h5>
                                 <p className="text-muted-foreground text-xs mt-1.5">
                                   Qty {item.quantity} · {formatPrice(item.price, lang)}
                                 </p>
@@ -450,7 +490,10 @@ function AccountPage() {
 
                   <form onSubmit={handleUpdateProfile} className="space-y-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-foreground/85" htmlFor="profile-name">
+                      <label
+                        className="text-xs font-semibold text-foreground/85"
+                        htmlFor="profile-name"
+                      >
                         {s.fullName}
                       </label>
                       <input
@@ -464,7 +507,10 @@ function AccountPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-foreground/85" htmlFor="profile-email">
+                      <label
+                        className="text-xs font-semibold text-foreground/85"
+                        htmlFor="profile-email"
+                      >
                         {s.emailAddress}
                       </label>
                       <input
@@ -478,7 +524,10 @@ function AccountPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-foreground/85" htmlFor="profile-password">
+                      <label
+                        className="text-xs font-semibold text-foreground/85"
+                        htmlFor="profile-password"
+                      >
                         {s.newPassword}
                       </label>
                       <input
@@ -501,10 +550,8 @@ function AccountPage() {
                   </form>
                 </div>
               )}
-
             </main>
           </div>
-
         </div>
       </div>
     </SiteLayout>

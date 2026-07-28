@@ -5,36 +5,68 @@ import { Facebook, Mail, ChevronUp, Youtube, Music2, Phone } from "lucide-react"
 export function Footer() {
   const { lang } = useLang();
 
-  const columns = [
-    {
-      title: "SHOP THE STORE",
-      links: [
-        { label: "ALL PRODUCTS", to: "/products" },
-        { label: "A6 PORTABLE MONITOR", to: "/products/a6" },
-        { label: "S10 PRO EXTENDER", to: "/products/s10-pro" },
-        { label: '34" CURVED ULTRAWIDE EXTENDER', to: "/products" },
-      ],
-    },
-    {
-      title: "SUPPORT",
-      links: [
-        { label: "CONTACT US", to: "mailto:service@anykingscreen.com", external: true },
-        { label: "HELP CENTER", to: "/help-center" },
-        { label: "FAQS", to: "/reviews" },
-        { label: "SHIPPING", to: "/checkout" },
-        { label: "WARRANTY", to: "/products" },
-        { label: "RETURN & REFUND", to: "/products" },
-      ],
-    },
-    {
-      title: "INFORMATION",
-      links: [
-        { label: "ABOUT US", to: "/about" },
-        { label: "PRIVACY POLICY", to: "/" },
-        { label: "TERMS OF SERVICE", to: "/" },
-      ],
-    },
-  ] as const;
+  const columns =
+    lang === "ja"
+      ? [
+          {
+            title: "製品を探す",
+            links: [
+              { label: "すべての製品", to: "/products" },
+              { label: "A6 ポータブルモニター", to: "/products/a6" },
+              { label: "S10 PRO エクステンダー", to: "/products/s10-pro" },
+              { label: "34インチ曲面ウルトラワイド", to: "/products" },
+            ],
+          },
+          {
+            title: "サポート",
+            links: [
+              { label: "お問い合わせ", to: "/contact" },
+              { label: "ヘルプセンター", to: "/help-center" },
+              { label: "よくあるご質問", to: "/reviews" },
+              { label: "配送について", to: "/checkout" },
+              { label: "保証について", to: "/products" },
+              { label: "返品・返金", to: "/products" },
+            ],
+          },
+          {
+            title: "会社情報",
+            links: [
+              { label: "Anykingについて", to: "/about" },
+              { label: "プライバシーポリシー", to: "/" },
+              { label: "利用規約", to: "/" },
+            ],
+          },
+        ]
+      : [
+          {
+            title: "SHOP THE STORE",
+            links: [
+              { label: "ALL PRODUCTS", to: "/products" },
+              { label: "A6 PORTABLE MONITOR", to: "/products/a6" },
+              { label: "S10 PRO EXTENDER", to: "/products/s10-pro" },
+              { label: '34" CURVED ULTRAWIDE EXTENDER', to: "/products" },
+            ],
+          },
+          {
+            title: "SUPPORT",
+            links: [
+              { label: "CONTACT US", to: "/contact" },
+              { label: "HELP CENTER", to: "/help-center" },
+              { label: "FAQS", to: "/reviews" },
+              { label: "SHIPPING", to: "/checkout" },
+              { label: "WARRANTY", to: "/products" },
+              { label: "RETURN & REFUND", to: "/products" },
+            ],
+          },
+          {
+            title: "INFORMATION",
+            links: [
+              { label: "ABOUT US", to: "/about" },
+              { label: "PRIVACY POLICY", to: "/" },
+              { label: "TERMS OF SERVICE", to: "/" },
+            ],
+          },
+        ];
 
   const paymentLogos = [
     { name: "American Express", src: "/payment-logos/american-express.png" },
@@ -59,21 +91,12 @@ export function Footer() {
               <ul className="space-y-4">
                 {column.links.map((link) => (
                   <li key={link.label}>
-                    {link.external ? (
-                      <a
-                        href={link.to}
-                        className="text-[11px] font-medium tracking-[0.24em] text-slate-500 transition hover:text-sky-600"
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link
-                        to={link.to}
-                        className="text-[11px] font-medium tracking-[0.24em] text-slate-500 transition hover:text-sky-600"
-                      >
-                        {link.label}
-                      </Link>
-                    )}
+                    <Link
+                      to={link.to}
+                      className="text-[11px] font-medium tracking-[0.24em] text-slate-500 transition hover:text-sky-600"
+                    >
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -83,7 +106,7 @@ export function Footer() {
           <div className="space-y-8">
             <div className="space-y-6">
               <h3 className="text-sm font-semibold tracking-[0.18em] text-slate-900">
-                GET IN TOUCH
+                {lang === "ja" ? "お問い合わせ" : "GET IN TOUCH"}
               </h3>
               <div className="space-y-4">
                 <a
@@ -105,7 +128,7 @@ export function Footer() {
 
             <div className="space-y-5">
               <h3 className="text-sm font-semibold tracking-[0.18em] text-slate-900">
-                FOLLOW US
+                {lang === "ja" ? "公式SNS" : "FOLLOW US"}
               </h3>
               <div className="flex items-center gap-4 text-slate-600">
                 <a href="#" className="transition hover:text-sky-600" aria-label="Facebook">
@@ -139,13 +162,11 @@ export function Footer() {
         </div>
 
         <div className="relative mt-14 border-t border-slate-200 pt-8">
-          <p className="text-center text-xs text-slate-500">
-            © {new Date().getFullYear()} Anyking
-          </p>
+          <p className="text-center text-xs text-slate-500">© {new Date().getFullYear()} Anyking</p>
           <button
             onClick={scrollToTop}
             className="absolute right-0 top-4 rounded-md bg-slate-200 px-3 py-3 text-slate-500 shadow-sm transition hover:bg-slate-300 hover:text-slate-700"
-            aria-label="Back to top"
+            aria-label={lang === "ja" ? "ページ上部へ戻る" : "Back to top"}
           >
             <ChevronUp className="h-5 w-5" />
           </button>

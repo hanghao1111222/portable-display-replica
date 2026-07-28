@@ -5,14 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 
 export function CartDrawer() {
-  const {
-    cartItems,
-    isCartOpen,
-    setCartOpen,
-    updateQuantity,
-    removeFromCart,
-    cartSubtotal,
-  } = useCart();
+  const { cartItems, isCartOpen, setCartOpen, updateQuantity, removeFromCart, cartSubtotal } =
+    useCart();
   const { lang } = useLang();
   const navigate = useNavigate();
 
@@ -21,7 +15,7 @@ export function CartDrawer() {
       {isCartOpen && (
         <>
           <motion.button
-            aria-label="Close cart"
+            aria-label={lang === "ja" ? "カートを閉じる" : "Close cart"}
             className="fixed inset-0 z-50 bg-black/60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -38,12 +32,14 @@ export function CartDrawer() {
             <div className="h-16 border-b border-border px-5 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-primary" />
-                <h2 className="font-semibold text-lg">Your Cart</h2>
+                <h2 className="font-semibold text-lg">
+                  {lang === "ja" ? "ショッピングカート" : "Your Cart"}
+                </h2>
               </div>
               <button
                 onClick={() => setCartOpen(false)}
                 className="p-2 rounded-full hover:bg-accent transition"
-                aria-label="Close cart"
+                aria-label={lang === "ja" ? "カートを閉じる" : "Close cart"}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -52,7 +48,7 @@ export function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               {cartItems.length === 0 ? (
                 <div className="h-full flex items-center justify-center text-center text-muted-foreground">
-                  <p>Your cart is empty.</p>
+                  <p>{lang === "ja" ? "カートは空です。" : "Your cart is empty."}</p>
                 </div>
               ) : (
                 cartItems.map((item) => (
@@ -71,21 +67,17 @@ export function CartDrawer() {
                         <div className="mt-2 flex items-center justify-between gap-2">
                           <div className="flex items-center border border-border rounded-full">
                             <button
-                              onClick={() =>
-                                updateQuantity(item.product.slug, item.quantity - 1)
-                              }
+                              onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
                               className="w-8 h-8 flex items-center justify-center"
-                              aria-label="Decrease quantity"
+                              aria-label={lang === "ja" ? "数量を減らす" : "Decrease quantity"}
                             >
                               <Minus className="w-3 h-3" />
                             </button>
                             <span className="w-8 text-center text-sm">{item.quantity}</span>
                             <button
-                              onClick={() =>
-                                updateQuantity(item.product.slug, item.quantity + 1)
-                              }
+                              onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
                               className="w-8 h-8 flex items-center justify-center"
-                              aria-label="Increase quantity"
+                              aria-label={lang === "ja" ? "数量を増やす" : "Increase quantity"}
                             >
                               <Plus className="w-3 h-3" />
                             </button>
@@ -93,7 +85,7 @@ export function CartDrawer() {
                           <button
                             onClick={() => removeFromCart(item.product.slug)}
                             className="p-2 rounded-full hover:bg-accent transition text-muted-foreground hover:text-destructive"
-                            aria-label="Remove item"
+                            aria-label={lang === "ja" ? "商品を削除" : "Remove item"}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -107,7 +99,7 @@ export function CartDrawer() {
 
             <div className="border-t border-border p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Subtotal</span>
+                <span className="text-muted-foreground">{lang === "ja" ? "小計" : "Subtotal"}</span>
                 <span className="font-semibold text-lg">{formatPrice(cartSubtotal, lang)}</span>
               </div>
               <button
@@ -118,7 +110,7 @@ export function CartDrawer() {
                 }}
                 className="w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Checkout
+                {lang === "ja" ? "レジに進む" : "Checkout"}
               </button>
             </div>
           </motion.aside>

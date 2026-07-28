@@ -14,6 +14,63 @@ export function CheckoutModal() {
   const { currentUser, createOrder } = useAuth();
   const { lang } = useLang();
   const navigate = useNavigate();
+  const copy =
+    lang === "ja"
+      ? {
+          saved: "注文をアカウントに保存しました。",
+          close: "チェックアウトを閉じる",
+          title: "チェックアウト",
+          shopifyTitle: "Shopifyで購入手続きを完了します",
+          amazonTitle: "Amazonで購入手続きを完了します",
+          shopifyBody: "安全にお支払いいただくため、Shopifyの決済画面へ移動します。",
+          amazonBody: "新しいタブでAmazonの商品ページを開き、購入手続きを完了します。",
+          empty: "カートは空です。",
+          quantity: "数量",
+          summary: "注文概要",
+          subtotal: "小計",
+          shopifySecure: "Shopify セキュアチェックアウト",
+          amazonFlow: "Amazon購入フロー",
+          shopifySecurity: "お支払いは、PCIに準拠したShopifyの決済システムで安全に処理されます。",
+          amazonSecurity: "商品詳細と購入手続きはAmazonの商品ページから進みます。",
+          signedIn: "ログイン中",
+          recorded: "この購入はアカウントの注文履歴に記録されます。",
+          shopifyGuest:
+            "ログインまたはアカウントを作成すると、後から注文記録を確認できます。ログインせずにShopifyへ進むこともできます。",
+          amazonGuest:
+            "ログインまたはアカウントを作成すると、後から注文記録を確認できます。ゲストとしてAmazonへ進むこともできます。",
+          shopifyContinue: "Shopifyの決済へ進む",
+          amazonContinue: "Amazonへ進む",
+          back: "ストアへ戻る",
+        }
+      : {
+          saved: "Order saved to your account.",
+          close: "Close checkout",
+          title: "Checkout",
+          shopifyTitle: "Purchase completes on Shopify",
+          amazonTitle: "Purchase completes on Amazon",
+          shopifyBody: "We will redirect you to Shopify to securely complete your payment.",
+          amazonBody:
+            "We will open the product page in a new tab so you can finish the order on Amazon, just like your reference flow.",
+          empty: "Your cart is empty.",
+          quantity: "Qty",
+          summary: "Order summary",
+          subtotal: "Subtotal",
+          shopifySecure: "Shopify Secure Checkout",
+          amazonFlow: "Amazon checkout flow",
+          shopifySecurity:
+            "Your transaction is processed securely through Shopify's PCI-compliant payment gateway.",
+          amazonSecurity:
+            "Product detail pages and checkout will open the Amazon listing first, so the purchase path stays consistent with your existing site.",
+          signedIn: "Signed in as",
+          recorded: "This purchase will be recorded in your account order history.",
+          shopifyGuest:
+            "Sign in or create an account to view order records later. You can still continue to Shopify checkout.",
+          amazonGuest:
+            "Sign in or create an account to view order records later. You can still continue to Amazon as a guest.",
+          shopifyContinue: "Continue to Shopify Checkout",
+          amazonContinue: "Continue to Amazon",
+          back: "Back to store",
+        };
 
   const amazonUrl = useMemo(
     () => cartItems.find((item) => item.product.amazonUrl)?.product.amazonUrl,
@@ -31,7 +88,7 @@ export function CheckoutModal() {
       if (order) {
         clearCart();
         setCheckoutOpen(false);
-        toast.success("Order saved to your account.");
+        toast.success(copy.saved);
         navigate({ to: "/account", search: { tab: "orders" } });
       }
     }
@@ -42,7 +99,7 @@ export function CheckoutModal() {
       {isCheckoutOpen && (
         <>
           <motion.button
-            aria-label="Close checkout"
+            aria-label={copy.close}
             className="fixed inset-0 z-50 bg-black/60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -59,12 +116,12 @@ export function CheckoutModal() {
               <div className="h-14 px-5 border-b border-border flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Package className="w-5 h-5 text-primary" />
-                  <h2 className="font-semibold">Checkout</h2>
+                  <h2 className="font-semibold">{copy.title}</h2>
                 </div>
                 <button
                   onClick={() => setCheckoutOpen(false)}
                   className="p-2 rounded-full hover:bg-accent transition"
-                  aria-label="Close checkout"
+                  aria-label={copy.close}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -78,21 +135,17 @@ export function CheckoutModal() {
                     </div>
                     <div>
                       <p className="font-semibold">
-                        {shopifyConfig.useShopifyCheckout
-                          ? "Purchase completes on Shopify"
-                          : "Purchase completes on Amazon"}
+                        {shopifyConfig.useShopifyCheckout ? copy.shopifyTitle : copy.amazonTitle}
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {shopifyConfig.useShopifyCheckout
-                          ? "We will redirect you to Shopify to securely complete your payment."
-                          : "We will open the product page in a new tab so you can finish the order on Amazon, just like your reference flow."}
+                        {shopifyConfig.useShopifyCheckout ? copy.shopifyBody : copy.amazonBody}
                       </p>
                     </div>
                   </div>
 
                   {cartItems.length === 0 ? (
                     <div className="rounded-2xl border border-dashed border-border p-8 text-center text-muted-foreground">
-                      Your cart is empty.
+                      {copy.empty}
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -109,7 +162,8 @@ export function CheckoutModal() {
                           <div className="min-w-0 flex-1">
                             <p className="font-medium leading-tight">{item.product.name}</p>
                             <p className="text-sm text-muted-foreground">
-                              Qty {item.quantity} · {formatPrice(item.product.price, lang)}
+                              {copy.quantity} {item.quantity} ·{" "}
+                              {formatPrice(item.product.price, lang)}
                             </p>
                           </div>
                           {!shopifyConfig.useShopifyCheckout && item.product.amazonUrl && (
@@ -132,10 +186,10 @@ export function CheckoutModal() {
                 <div className="border-t md:border-t-0 md:border-l border-border bg-muted/20 p-5 md:p-6 space-y-5">
                   <div className="space-y-2">
                     <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
-                      Order summary
+                      {copy.summary}
                     </p>
                     <div className="flex items-baseline justify-between gap-4">
-                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="text-muted-foreground">{copy.subtotal}</span>
                       <span className="text-2xl font-semibold">
                         {formatPrice(cartSubtotal, lang)}
                       </span>
@@ -145,49 +199,45 @@ export function CheckoutModal() {
                   <div className="rounded-2xl border border-border bg-background p-4 space-y-3">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                      {shopifyConfig.useShopifyCheckout
-                        ? "Shopify Secure Checkout"
-                        : "Amazon checkout flow"}
+                      {shopifyConfig.useShopifyCheckout ? copy.shopifySecure : copy.amazonFlow}
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {shopifyConfig.useShopifyCheckout
-                        ? "Your transaction is processed securely through Shopify's PCI-compliant payment gateway."
-                        : "Product detail pages and checkout will open the Amazon listing first, so the purchase path stays consistent with your existing site."}
+                        ? copy.shopifySecurity
+                        : copy.amazonSecurity}
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-border bg-background p-4 text-sm text-muted-foreground leading-relaxed">
                     {currentUser ? (
                       <>
-                        Signed in as{" "}
+                        {copy.signedIn}{" "}
                         <span className="font-semibold text-foreground">{currentUser.name}</span>.
-                        This purchase will be recorded in your account order history.
+                        {copy.recorded}
                       </>
                     ) : (
-                      <>
-                        {shopifyConfig.useShopifyCheckout
-                          ? "Sign in or create an account to view order records later. You can still continue to Shopify checkout."
-                          : "Sign in or create an account to view order records later. You can still continue to Amazon as a guest."}
-                      </>
+                      <>{shopifyConfig.useShopifyCheckout ? copy.shopifyGuest : copy.amazonGuest}</>
                     )}
                   </div>
 
                   <div className="space-y-3">
                     <button
-                      disabled={shopifyConfig.useShopifyCheckout ? cartItems.length === 0 : !amazonUrl}
+                      disabled={
+                        shopifyConfig.useShopifyCheckout ? cartItems.length === 0 : !amazonUrl
+                      }
                       onClick={openCheckout}
                       className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {shopifyConfig.useShopifyCheckout
-                        ? "Continue to Shopify Checkout"
-                        : "Continue to Amazon"}
+                        ? copy.shopifyContinue
+                        : copy.amazonContinue}
                       <ArrowRight className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setCheckoutOpen(false)}
                       className="w-full rounded-full border border-border px-6 py-3 font-medium hover:bg-accent transition"
                     >
-                      Back to store
+                      {copy.back}
                     </button>
                   </div>
                 </div>

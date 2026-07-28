@@ -13,6 +13,7 @@ import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpCenterRouteImport } from './routes/help-center'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompatibilityRouteImport } from './routes/compatibility'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AccountRouteImport } from './routes/account'
@@ -41,6 +42,11 @@ const LoginRoute = LoginRouteImport.update({
 const HelpCenterRoute = HelpCenterRouteImport.update({
   id: '/help-center',
   path: '/help-center',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompatibilityRoute = CompatibilityRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
+  '/contact': typeof ContactRoute
   '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
+  '/contact': typeof ContactRoute
   '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/compatibility': typeof CompatibilityRoute
+  '/contact': typeof ContactRoute
   '/help-center': typeof HelpCenterRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/checkout'
     | '/compatibility'
+    | '/contact'
     | '/help-center'
     | '/login'
     | '/register'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/checkout'
     | '/compatibility'
+    | '/contact'
     | '/help-center'
     | '/login'
     | '/register'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/checkout'
     | '/compatibility'
+    | '/contact'
     | '/help-center'
     | '/login'
     | '/register'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   CheckoutRoute: typeof CheckoutRoute
   CompatibilityRoute: typeof CompatibilityRoute
+  ContactRoute: typeof ContactRoute
   HelpCenterRoute: typeof HelpCenterRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/help-center'
       fullPath: '/help-center'
       preLoaderRoute: typeof HelpCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compatibility': {
@@ -301,6 +321,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   CheckoutRoute: CheckoutRoute,
   CompatibilityRoute: CompatibilityRoute,
+  ContactRoute: ContactRoute,
   HelpCenterRoute: HelpCenterRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,

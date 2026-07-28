@@ -1,9 +1,19 @@
-import { ChevronLeft, ChevronRight, ShieldCheck, Play, Pause, Volume2, VolumeX, Check } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Check,
+} from "lucide-react";
 import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LangContext";
 import { reviews, reviewStats } from "@/data/reviews";
+import { reviewsJa } from "@/i18n/reviewsJa";
 import { TrustStars } from "@/components/TrustStars";
 import a6Video from "@/assets/a6-video.mp4";
 import s10proVideo from "@/assets/s10pro-video.mp4";
@@ -45,9 +55,8 @@ export function BrandStory() {
   );
 }
 
-
 export function ReviewsSection() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const scrollBy = (dir: 1 | -1) => {
@@ -62,22 +71,22 @@ export function ReviewsSection() {
     <section className="border-y border-border/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,248,251,0.94))] py-24 text-foreground">
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            {t.reviewsSec.title}
-          </h2>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">{t.reviewsSec.title}</h2>
           <div className="flex items-center justify-center gap-3 flex-wrap">
-            <span className="text-lg md:text-xl font-medium">Excellent</span>
+            <span className="text-lg md:text-xl font-medium">
+              {lang === "ja" ? "優秀" : "Excellent"}
+            </span>
             <span className="text-2xl md:text-3xl font-bold">
               {reviewStats.average.toFixed(1)} / 5
             </span>
             <TrustStars rating={reviewStats.average} size={28} />
           </div>
           <div className="flex items-center justify-center gap-2 text-sm md:text-base text-muted-foreground">
-            <span>based on</span>
+            <span>{lang === "ja" ? "全" : "based on"}</span>
             <span className="font-medium text-foreground underline underline-offset-4">
               {reviewStats.totalLabel}
             </span>
-            <span>reviews</span>
+            <span>{lang === "ja" ? "件のレビュー" : "reviews"}</span>
             <ShieldCheck className="w-5 h-5 ml-1 text-[#00b67a]" />
           </div>
         </div>
@@ -85,14 +94,14 @@ export function ReviewsSection() {
         <div className="relative mt-14">
           <button
             onClick={() => scrollBy(-1)}
-            aria-label="Previous reviews"
+            aria-label={lang === "ja" ? "前のレビュー" : "Previous reviews"}
             className="hidden md:flex absolute left-0 top-1/2 z-10 h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background text-foreground shadow-lg transition hover:scale-105"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scrollBy(1)}
-            aria-label="Next reviews"
+            aria-label={lang === "ja" ? "次のレビュー" : "Next reviews"}
             className="hidden md:flex absolute right-0 top-1/2 z-10 h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background text-foreground shadow-lg transition hover:scale-105"
           >
             <ChevronRight className="w-5 h-5" />
@@ -115,7 +124,7 @@ export function ReviewsSection() {
                 <TrustStars rating={r.stars} size={22} />
                 <h3 className="mt-5 text-xl font-bold">{r.product}</h3>
                 <p className="mt-4 line-clamp-6 text-sm leading-relaxed text-muted-foreground">
-                  {r.body}
+                  {lang === "ja" ? reviewsJa[i]?.body : r.body}
                 </p>
                 <div className="mt-auto pt-6 text-sm text-muted-foreground">— {r.name}</div>
               </motion.article>
@@ -128,7 +137,9 @@ export function ReviewsSection() {
             to="/reviews"
             className="inline-block rounded-full bg-foreground px-7 py-3.5 font-medium text-background transition hover:bg-primary hover:text-primary-foreground"
           >
-            Check our {reviewStats.totalLabel} reviews
+            {lang === "ja"
+              ? `${reviewStats.totalLabel}件以上のレビューを見る`
+              : `Check our ${reviewStats.totalLabel} reviews`}
           </Link>
         </div>
       </div>
@@ -180,6 +191,7 @@ function ShowcaseRow({
   targetLink,
   reverse = false,
 }: ShowcaseRowProps) {
+  const { lang } = useLang();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -260,7 +272,7 @@ function ShowcaseRow({
               <Play className="w-5 h-5 fill-current translate-x-0.5" />
             </div>
             <span className="text-white text-xs font-semibold tracking-wider uppercase">
-              Hover to Play
+              {lang === "ja" ? "カーソルを合わせて再生" : "Hover to Play"}
             </span>
           </motion.div>
         </div>
@@ -276,12 +288,12 @@ function ShowcaseRow({
               {isMuted ? (
                 <>
                   <VolumeX className="w-3.5 h-3.5 text-neutral-400" />
-                  <span>Click for sound</span>
+                  <span>{lang === "ja" ? "クリックして音声を再生" : "Click for sound"}</span>
                 </>
               ) : (
                 <>
                   <Volume2 className="w-3.5 h-3.5 text-primary animate-bounce" />
-                  <span>Sound on</span>
+                  <span>{lang === "ja" ? "音声オン" : "Sound on"}</span>
                 </>
               )}
             </motion.div>
@@ -297,9 +309,7 @@ function ShowcaseRow({
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         className="space-y-6"
       >
-        <h3 className="text-3xl font-bold leading-tight text-foreground md:text-4xl">
-          {title}
-        </h3>
+        <h3 className="text-3xl font-bold leading-tight text-foreground md:text-4xl">{title}</h3>
         <p className="text-muted-foreground text-lg leading-relaxed">{body}</p>
 
         <ul className="space-y-4 pt-2">

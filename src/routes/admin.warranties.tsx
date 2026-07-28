@@ -30,94 +30,133 @@ import {
   Legend,
 } from "recharts";
 
+type WarrantyRecord = {
+  id: string;
+  order_id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  product_model: string;
+  created_at: string;
+};
+
+function getErrorMessage(error: unknown, fallback: string) {
+  return error instanceof Error && error.message ? error.message : fallback;
+}
+
+function isTimeoutError(error: unknown) {
+  return error instanceof Error && error.name === "TimeoutError";
+}
+
+function getMockWarranties() {
+  return [
+    {
+      id: "mock-1",
+      order_id: "123-4567890-1234567",
+      full_name: "测试数据A",
+      email: "test.a@example.com",
+      phone: "+1 (555) 019-2834",
+      product_model: "AnyKing A6 便携式显示器",
+      created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
+    },
+    {
+      id: "mock-2",
+      order_id: "456-1122334-4455667",
+      full_name: "测试数据B",
+      email: "test.b@qq.com",
+      phone: "13800001111",
+      product_model: "AnyKing S10 Pro 双屏扩展屏",
+      created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
+    },
+    {
+      id: "mock-3",
+      order_id: "789-9988776-6655443",
+      full_name: "测试数据C",
+      email: "test.c@science.org",
+      phone: null,
+      product_model: "AnyKing P7 便携副屏",
+      created_at: new Date(Date.now() - 3600000 * 48).toISOString(),
+    },
+    {
+      id: "mock-4",
+      order_id: "101-2023030-4040505",
+      full_name: "测试数据D",
+      email: "test.d@gmail.com",
+      phone: "18823459876",
+      product_model: "AnyKing A6 便携式显示器",
+      created_at: new Date(Date.now() - 3600000 * 72).toISOString(),
+    },
+    {
+      id: "mock-5",
+      order_id: "303-4045050-6060707",
+      full_name: "测试数据E",
+      email: "test.e@avengers.com",
+      phone: null,
+      product_model: "AnyKing S15 Plus 双屏扩展屏",
+      created_at: new Date(Date.now() - 3600000 * 96).toISOString(),
+    },
+  ];
+}
+
+function mockWarrantyResponse(reason: string) {
+  console.warn(`Warranty dashboard is using mock data: ${reason}`);
+  return { success: true, data: getMockWarranties(), isMock: true };
+}
+
 // 1. 安全服务器端 API 辅助函数
-const fetchWarrantiesFn = createServerFn({ method: "POST" })
-  .handler(async ({ data }: { data: { passcode: string } }) => {
+const fetchWarrantiesFn = createServerFn({ method: "POST" }).handler(
+  async ({ data }: { data: { passcode: string } }) => {
     const correctPasscode = process.env.ADMIN_PASSWORD || "AnykingAdmin2026";
     if (data.passcode !== correctPasscode) {
       return { success: false, message: "访问口令错误，请重新输入。" };
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+    const allowDevelopmentFallback = process.env.NODE_ENV !== "production";
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      console.warn("Supabase credentials missing. Returning mock data.");
-      // 当本地开发环境没有配置 Supabase 密钥时，降级返回 Mock 数据以供开发演示
-      const mockList = [
-        {
-          id: "mock-1",
-          order_id: "123-4567890-1234567",
-          full_name: "测试数据A",
-          email: "test.a@example.com",
-          phone: "+1 (555) 019-2834",
-          product_model: "AnyKing A6 便携式显示器",
-          created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-        },
-        {
-          id: "mock-2",
-          order_id: "456-1122334-4455667",
-          full_name: "测试数据B",
-          email: "test.b@qq.com",
-          phone: "13800001111",
-          product_model: "AnyKing S10 Pro 双屏扩展屏",
-          created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
-        },
-        {
-          id: "mock-3",
-          order_id: "789-9988776-6655443",
-          full_name: "测试数据C",
-          email: "test.c@science.org",
-          phone: null,
-          product_model: "AnyKing P7 便携副屏",
-          created_at: new Date(Date.now() - 3600000 * 48).toISOString(),
-        },
-        {
-          id: "mock-4",
-          order_id: "101-2023030-4040505",
-          full_name: "测试数据D",
-          email: "test.d@gmail.com",
-          phone: "18823459876",
-          product_model: "AnyKing A6 便携式显示器",
-          created_at: new Date(Date.now() - 3600000 * 72).toISOString(),
-        },
-        {
-          id: "mock-5",
-          order_id: "303-4045050-6060707",
-          full_name: "测试数据E",
-          email: "test.e@avengers.com",
-          phone: null,
-          product_model: "AnyKing S15 Plus 双屏扩展屏",
-          created_at: new Date(Date.now() - 3600000 * 96).toISOString(),
-        },
-      ];
-      return { success: true, data: mockList, isMock: true };
+      if (allowDevelopmentFallback) return mockWarrantyResponse("Supabase credentials are missing");
+      return {
+        success: false,
+        message: "数据库环境变量未配置，请联系管理员。",
+      };
     }
 
     try {
       const response = await fetch(`${supabaseUrl}/rest/v1/warranties?order=created_at.desc`, {
         method: "GET",
+        signal: AbortSignal.timeout(10000),
         headers: {
           "Content-Type": "application/json",
-          "apikey": supabaseServiceKey,
-          "Authorization": `Bearer ${supabaseServiceKey}`,
+          apikey: supabaseServiceKey,
+          Authorization: `Bearer ${supabaseServiceKey}`,
         },
       });
 
       if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(`Supabase warranties request failed (${response.status}):`, errorBody);
+        if (allowDevelopmentFallback) {
+          return mockWarrantyResponse(`Supabase returned HTTP ${response.status}`);
+        }
         return { success: false, message: "数据库拒绝了数据拉取请求。" };
       }
 
-      const list = await response.json();
+      const list = (await response.json()) as WarrantyRecord[];
       return { success: true, data: list, isMock: false };
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Fetch API error:", err);
+      if (allowDevelopmentFallback) {
+        return mockWarrantyResponse(isTimeoutError(err) ? "request timed out" : "network error");
+      }
       return { success: false, message: "服务器连接失败，请稍后重试。" };
     }
-  });
+  },
+);
 
-const deleteWarrantyFn = createServerFn({ method: "POST" })
-  .handler(async ({ data }: { data: { passcode: string; id: string } }) => {
+const deleteWarrantyFn = createServerFn({ method: "POST" }).handler(
+  async ({ data }: { data: { passcode: string; id: string } }) => {
     const correctPasscode = process.env.ADMIN_PASSWORD || "AnykingAdmin2026";
     if (data.passcode !== correctPasscode) {
       return { success: false, message: "访问口令验证失败。" };
@@ -136,8 +175,8 @@ const deleteWarrantyFn = createServerFn({ method: "POST" })
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "apikey": supabaseServiceKey,
-          "Authorization": `Bearer ${supabaseServiceKey}`,
+          apikey: supabaseServiceKey,
+          Authorization: `Bearer ${supabaseServiceKey}`,
         },
       });
 
@@ -146,11 +185,12 @@ const deleteWarrantyFn = createServerFn({ method: "POST" })
       }
 
       return { success: true };
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Delete API error:", err);
       return { success: false, message: "数据库连接失败。" };
     }
-  });
+  },
+);
 
 // 2. 客户端路由页面
 export const Route = createFileRoute("/admin/warranties")({
@@ -162,7 +202,7 @@ const COLORS = ["#f97316", "#3b82f6", "#10b981", "#8b5cf6", "#ec4899", "#f59e0b"
 function AdminWarrantiesPage() {
   const [passcode, setPasscode] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [warranties, setWarranties] = useState<any[]>([]);
+  const [warranties, setWarranties] = useState<WarrantyRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [isMock, setIsMock] = useState(false);
@@ -194,8 +234,8 @@ function AdminWarrantiesPage() {
         setLoginError(res.message || "访问口令错误，请重新输入。");
         sessionStorage.removeItem("admin_warranties_passcode");
       }
-    } catch (err: any) {
-      setLoginError(err.message || "服务器请求失败。");
+    } catch (err: unknown) {
+      setLoginError(getErrorMessage(err, "服务器请求失败。"));
     } finally {
       setLoading(false);
     }
@@ -228,8 +268,8 @@ function AdminWarrantiesPage() {
       } else {
         toast.error(res.message || "数据库删除记录失败。");
       }
-    } catch (err: any) {
-      toast.error(err.message || "网络请求失败，请稍后重试。");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "网络请求失败，请稍后重试。"));
     }
   };
 
@@ -240,7 +280,15 @@ function AdminWarrantiesPage() {
       return;
     }
 
-    const headers = ["记录ID", "亚马逊订单号", "客户姓名", "电子邮箱", "联系电话", "激活型号", "登记激活时间"];
+    const headers = [
+      "记录ID",
+      "亚马逊订单号",
+      "客户姓名",
+      "电子邮箱",
+      "联系电话",
+      "激活型号",
+      "登记激活时间",
+    ];
     const rows = filteredData.map((w) => [
       w.id,
       w.order_id,
@@ -253,13 +301,19 @@ function AdminWarrantiesPage() {
 
     const csvContent =
       "\uFEFF" + // UTF-8 BOM，确保 Excel 打开中文不乱码
-      [headers.join(","), ...rows.map((row) => row.map((val) => `"${val.replace(/"/g, '""')}"`).join(","))].join("\n");
+      [
+        headers.join(","),
+        ...rows.map((row) => row.map((val) => `"${val.replace(/"/g, '""')}"`).join(",")),
+      ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `Anyking_延保注册报表_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute(
+      "download",
+      `Anyking_延保注册报表_${new Date().toISOString().slice(0, 10)}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -289,7 +343,7 @@ function AdminWarrantiesPage() {
 
   const stats = useMemo(() => {
     const total = filteredData.length;
-    
+
     // 今日新增
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
@@ -334,14 +388,18 @@ function AdminWarrantiesPage() {
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Lock className="h-6 w-6" />
               </div>
-              <h2 className="mt-6 text-3xl font-extrabold text-slate-900 tracking-tight">内部管理后台</h2>
+              <h2 className="mt-6 text-3xl font-extrabold text-slate-900 tracking-tight">
+                内部管理后台
+              </h2>
               <p className="mt-2 text-sm text-slate-500">
                 AnyKing 延保数据可视化与注册日志管理门户
               </p>
             </div>
             <form className="mt-8 space-y-6" onSubmit={handleLoginSubmit}>
               <div>
-                <label htmlFor="passcode" className="sr-only">访问口令</label>
+                <label htmlFor="passcode" className="sr-only">
+                  访问口令
+                </label>
                 <input
                   id="passcode"
                   name="passcode"
@@ -391,7 +449,9 @@ function AdminWarrantiesPage() {
               <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 uppercase tracking-wider">
                 AnyKing 内部管理后台
               </span>
-              <h1 className="mt-2 text-3xl font-black text-slate-900 tracking-tight">一年延保激活看板</h1>
+              <h1 className="mt-2 text-3xl font-black text-slate-900 tracking-tight">
+                一年延保激活看板
+              </h1>
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -422,7 +482,9 @@ function AdminWarrantiesPage() {
                 <div>
                   <h4 className="text-sm font-bold text-amber-900">本地模拟演示模式已启用</h4>
                   <p className="mt-1 text-xs text-amber-700 leading-relaxed">
-                    当前本地开发环境未检测到 Vercel 云端数据库环境变量（`SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`）。为了展示看板设计与图表逻辑，已自动为您载入预填的模拟分析数据。线上部署后将自动切换为从您的 Supabase 数据库中安全拉取真实客户记录。
+                    当前本地开发环境未检测到 Vercel 云端数据库环境变量（`SUPABASE_URL` /
+                    `SUPABASE_SERVICE_ROLE_KEY`）。为了展示看板设计与图表逻辑，已自动为您载入预填的模拟分析数据。线上部署后将自动切换为从您的
+                    Supabase 数据库中安全拉取真实客户记录。
                   </p>
                 </div>
               </div>
@@ -433,29 +495,39 @@ function AdminWarrantiesPage() {
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">累计激活总量</span>
+                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                  累计激活总量
+                </span>
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
                   <Users className="h-5 w-5" />
                 </div>
               </div>
               <p className="mt-4 text-3xl font-black text-slate-900">{stats.total}</p>
-              <span className="mt-1 block text-xs text-slate-400">数据库中已登记激活的设备总数</span>
+              <span className="mt-1 block text-xs text-slate-400">
+                数据库中已登记激活的设备总数
+              </span>
             </div>
 
             <div className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">今日新增激活</span>
+                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                  今日新增激活
+                </span>
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-green-100 text-green-600">
                   <CheckCircle2 className="h-5 w-5" />
                 </div>
               </div>
               <p className="mt-4 text-3xl font-black text-slate-900">{stats.todayCount}</p>
-              <span className="mt-1 block text-xs text-slate-400">今日凌晨 00:00 以来新提交的记录</span>
+              <span className="mt-1 block text-xs text-slate-400">
+                今日凌晨 00:00 以来新提交的记录
+              </span>
             </div>
 
             <div className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">明星激活屏幕</span>
+                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                  明星激活屏幕
+                </span>
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
                   <TrendingUp className="h-5 w-5" />
                 </div>
@@ -477,7 +549,14 @@ function AdminWarrantiesPage() {
                 <div className="mt-6 h-64 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={stats.modelDistribution} margin={{ bottom: 20 }}>
-                      <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} angle={-15} textAnchor="end" stroke="#64748b" />
+                      <XAxis
+                        dataKey="name"
+                        tick={{ fontSize: 10 }}
+                        interval={0}
+                        angle={-15}
+                        textAnchor="end"
+                        stroke="#64748b"
+                      />
                       <YAxis allowDecimals={false} stroke="#64748b" />
                       <Tooltip formatter={(value) => [`${value} 台已激活`, "激活量"]} />
                       <Bar dataKey="value" fill="#f97316" radius={[4, 4, 0, 0]} />
@@ -511,9 +590,15 @@ function AdminWarrantiesPage() {
                 </div>
                 <div className="space-y-1.5 border-t border-slate-100 pt-3">
                   {stats.modelDistribution.map((entry, index) => (
-                    <div key={entry.name} className="flex items-center justify-between text-xs text-slate-600 font-medium">
+                    <div
+                      key={entry.name}
+                      className="flex items-center justify-between text-xs text-slate-600 font-medium"
+                    >
                       <div className="flex items-center gap-1.5 truncate">
-                        <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                        <span
+                          className="h-2.5 w-2.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
                         <span className="truncate">{entry.name.replace("AnyKing ", "")}</span>
                       </div>
                       <span className="font-extrabold">{entry.value} 台</span>
@@ -623,7 +708,9 @@ function AdminWarrantiesPage() {
                 <div className="py-20 text-center text-slate-400">
                   <ShieldAlert className="mx-auto h-12 w-12 text-slate-300" />
                   <p className="mt-4 text-sm font-bold">没有找到匹配的延保激活记录。</p>
-                  <p className="mt-1 text-xs text-slate-400">可以尝试更改搜索词，或将机型筛选下拉框重置为“全部机型”。</p>
+                  <p className="mt-1 text-xs text-slate-400">
+                    可以尝试更改搜索词，或将机型筛选下拉框重置为“全部机型”。
+                  </p>
                 </div>
               )}
             </div>

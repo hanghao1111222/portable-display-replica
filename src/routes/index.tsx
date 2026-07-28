@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { MediaMarquee } from "@/components/MediaMarquee";
-import { ProductCard } from "@/components/ProductCard";
+import { HomeProductShowcase } from "@/components/HomeProductShowcase";
 import { FeatureBlock, ScenesBlock } from "@/components/FeatureBlocks";
 import { ReviewsSection, CTASection, BrandStory, VideoShowcase } from "@/components/Sections";
 import { FAQ } from "@/components/FAQ";
@@ -16,13 +16,13 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <SiteLayout>
       <HeroCarousel />
       <MediaMarquee />
 
-      <section className="mx-auto max-w-7xl px-5 lg:px-10 py-24">
+      <section className="mx-auto max-w-[1440px] px-5 py-24 lg:px-10">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-12">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-2">— 01</p>
@@ -36,11 +36,7 @@ function Index() {
             {t.grid.view} →
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {products.map((p, i) => (
-            <ProductCard key={p.slug} product={p} index={i} />
-          ))}
-        </div>
+        <HomeProductShowcase products={products} />
       </section>
 
       <FeatureBlock />
@@ -49,20 +45,23 @@ function Index() {
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <p className="text-xs uppercase tracking-[0.3em] text-primary mb-2">
-                — Compatibility
+                — {lang === "ja" ? "互換性チェック" : "Compatibility"}
               </p>
               <h2 className="text-3xl md:text-4xl font-bold">
-                Unsure whether it connects directly? Check the model first.
+                {lang === "ja"
+                  ? "直接接続できるか不安ですか？まずは機種を確認しましょう。"
+                  : "Unsure whether it connects directly? Check the model first."}
               </h2>
               <p className="mt-3 text-muted-foreground leading-7">
-                We added a compatibility page where shoppers can enter common laptop models and
-                quickly see whether USB-C direct connection works or whether an HDMI-to-Type-C or H5
-                HDMI Adapter cable is required.
+                {lang === "ja"
+                  ? "互換性チェックでは、一般的なノートPCの型番を入力するだけで、USB-Cで直接接続できるか、HDMI-Type-C変換ケーブルやH5 DisplayLinkアダプターが必要かをすぐに確認できます。"
+                  : "We added a compatibility page where shoppers can enter common laptop models and quickly see whether USB-C direct connection works or whether an HDMI-to-Type-C or H5 DisplayLink Adapter is required."}
               </p>
             </div>
             <Button asChild className="rounded-full px-6">
               <Link to="/compatibility">
-                Open compatibility checker <ArrowRight className="h-4 w-4" />
+                {lang === "ja" ? "互換性を確認" : "Open compatibility checker"}{" "}
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
           </div>

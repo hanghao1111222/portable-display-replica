@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { LangProvider } from "@/i18n/LangContext";
+import { LangProvider, useLang } from "@/i18n/LangContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "sonner";
 import { CartProvider } from "@/context/CartContext";
@@ -15,24 +15,30 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { siteTheme, siteThemeClassName } from "@/config/site-theme";
+import { getInitialLanguage } from "@/i18n/locale.functions";
 
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
+  const { lang } = useLang();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          {lang === "ja" ? "ページが見つかりません" : "Page not found"}
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          {lang === "ja"
+            ? "お探しのページは存在しないか、移動された可能性があります。"
+            : "The page you're looking for doesn't exist or has been moved."}
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            {lang === "ja" ? "ホームへ戻る" : "Go home"}
           </Link>
         </div>
       </div>
@@ -43,15 +49,18 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const { lang } = useLang();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {lang === "ja" ? "ページを読み込めませんでした" : "This page didn't load"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {lang === "ja"
+            ? "問題が発生しました。再読み込みするか、ホームへ戻ってください。"
+            : "Something went wrong on our end. You can try refreshing or head back home."}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -61,13 +70,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {lang === "ja" ? "もう一度試す" : "Try again"}
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            {lang === "ja" ? "ホームへ戻る" : "Go home"}
           </a>
         </div>
       </div>
@@ -76,14 +85,22 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: () => getInitialLanguage(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Anyking — Premium portable USB-C monitors" },
-      { name: "description", content: "Ultra-portable USB-C monitors for productivity, gaming and travel. Free worldwide shipping, 30-day returns, 2-year warranty." },
+      {
+        name: "description",
+        content:
+          "Ultra-portable USB-C monitors for productivity, gaming and travel. Free worldwide shipping, 30-day returns, 2-year warranty.",
+      },
       { property: "og:title", content: "Anyking" },
-      { property: "og:description", content: "Ultra-portable USB-C monitors trusted by 800,000+ remote workers." },
+      {
+        property: "og:description",
+        content: "Ultra-portable USB-C monitors trusted by 800,000+ remote workers.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -174,10 +191,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const initialLang = Route.useLoaderData();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LangProvider>
+      <LangProvider initialLang={initialLang}>
         <AuthProvider>
           <CartProvider>
             <Outlet />

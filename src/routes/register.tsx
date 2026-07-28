@@ -9,7 +9,7 @@ export const Route = createFileRoute("/register")({
 });
 
 function RegisterPage() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const navigate = useNavigate();
   const { register, currentUser } = useAuth();
   const [name, setName] = useState("");
@@ -52,7 +52,9 @@ function RegisterPage() {
             </div>
           )}
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="register-name">{t.auth.name}</label>
+            <label className="text-sm font-medium" htmlFor="register-name">
+              {t.auth.name}
+            </label>
             <input
               id="register-name"
               type="text"
@@ -63,7 +65,9 @@ function RegisterPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="register-email">Email</label>
+            <label className="text-sm font-medium" htmlFor="register-email">
+              {lang === "ja" ? "メールアドレス" : "Email"}
+            </label>
             <input
               id="register-email"
               type="email"
@@ -75,7 +79,9 @@ function RegisterPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="register-password">{t.auth.password}</label>
+            <label className="text-sm font-medium" htmlFor="register-password">
+              {t.auth.password}
+            </label>
             <input
               id="register-password"
               type="password"

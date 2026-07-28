@@ -24,6 +24,8 @@ import { helpCenterArticles } from "@/data/helpCenterArticles";
 import mobileCompatibilityCard from "@/assets/mobile-compatibility-card.jpg";
 import mobileSetupCard from "@/assets/mobile-setup-card.jpg";
 import mobileBuyingGuideBanner from "@/assets/s10pro-aplus-ecosystem.jpg";
+import { useLang } from "@/i18n/LangContext";
+import { jaText, localizeHelpArticles, localizeHelpValue } from "@/i18n/helpJa";
 
 export const Route = createFileRoute("/help-center")({
   head: () => ({
@@ -39,24 +41,24 @@ export const Route = createFileRoute("/help-center")({
   component: HelpCenterPage,
 });
 
-const anchors = [
+const baseAnchors = [
   { label: "Setup Guide", href: "#featured" },
   { label: "Products", href: "#products" },
   { label: "FAQ Articles", href: "#articles" },
   { label: "Can't find answers?", href: "#support" },
 ] as const;
 
-const quickLinks = [
+const baseQuickLinks = [
   { label: "Setup Guide", href: "#articles", icon: Settings },
   { label: "Troubleshooting", href: "#troubleshooting", icon: Wrench },
   { label: "Warranty & Returns", href: "#warranty-returns", icon: ShieldCheck },
   { label: "Contact Support", href: "#support", icon: Headphones },
 ] as const;
 
-const featured = [
+const baseFeatured = [
   {
     title: "Laptop Compatibility",
-    body: "Check if your laptop supports direct USB-C video or needs an H5 adapter cable.",
+    body: "Check whether your laptop provides the required video outputs or needs an H5 DisplayLink adapter.",
     to: "/compatibility",
     icon: Laptop,
   },
@@ -68,29 +70,29 @@ const featured = [
   },
 ] as const;
 
-const products = helpCenterArticles.map((article) => ({
+const baseProducts = helpCenterArticles.map((article) => ({
   name: article.shortName,
   image: article.image,
   slug: article.slug,
-})) as const;
+}));
 
-const mobileProductGroups = [
+const baseMobileProductGroups = [
   {
     title: "Portable Monitor Guides",
-    items: products,
+    items: baseProducts,
   },
   {
     title: "Connection Help",
     items: [
       {
         name: "Laptop Compatibility",
-        image: products[0]?.image,
+        image: baseProducts[0]?.image,
         slug: "compatibility",
         href: "/compatibility",
       },
       {
         name: "Cable & Port Guide",
-        image: products[1]?.image ?? products[0]?.image,
+        image: baseProducts[1]?.image ?? baseProducts[0]?.image,
         slug: "cable-guide",
         href: "/compatibility",
       },
@@ -98,7 +100,7 @@ const mobileProductGroups = [
   },
 ] as const;
 
-const faqGroups = [
+const baseFaqGroups = [
   {
     id: "getting-started",
     title: "Getting Started",
@@ -107,7 +109,7 @@ const faqGroups = [
       {
         question: "What should I check before the first setup?",
         answer:
-          "Confirm the monitor, bracket, video cable, and power cable are in the box. Then check your laptop ports. A full-featured USB-C or Thunderbolt port can usually connect directly. HDMI-only or older USB-A laptops usually need HDMI video plus USB power, and some older models may need the H5 adapter cable.",
+          "Confirm the monitor, bracket, video cable, and power cable are in the box. Then check your laptop ports. A video-capable USB-C or Thunderbolt port can usually connect directly. HDMI-only or older USB-A laptops usually need HDMI video plus USB power, and limited-output models may need the H5 DisplayLink adapter.",
       },
       {
         question: "How do I connect with one USB-C cable?",
@@ -139,7 +141,7 @@ const faqGroups = [
       {
         question: "Why does the display show no signal or a black screen?",
         answer:
-          "First reconnect the cable firmly, then verify the laptop output supports video. If you are using USB-C and the screen has power but no image, try HDMI plus USB power. If your laptop is an older model without direct video support, use the H5 adapter cable.",
+          "First reconnect the cable firmly, then verify the laptop output supports video. If you are using USB-C and the screen has power but no image, try HDMI plus USB power. If the laptop lacks enough native display outputs, use the H5 DisplayLink adapter and driver.",
       },
       {
         question: "What should I do if the screen flickers or flashes?",
@@ -176,7 +178,7 @@ const faqGroups = [
       {
         question: "How do I request a replacement?",
         answer:
-          "Contact support with your order number, laptop model, connection method, and a short video or photo of the issue. If the problem is caused by laptop port compatibility, support may send the correct H5 adapter cable instead of replacing the full product.",
+          "Contact support with your order number, full laptop model or SKU, connection method, and a short video or photo of the issue. If the problem is caused by the laptop display-output limit, support may recommend the H5 DisplayLink adapter instead of replacing the full product.",
       },
       {
         question: "What is the return policy?",
@@ -215,16 +217,12 @@ const faqGroups = [
 ] as const;
 
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={props.className}
-  >
+  <svg viewBox="0 0 24 24" fill="currentColor" className={props.className}>
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
   </svg>
 );
 
-const contactCards = [
+const baseContactCards = [
   {
     title: "WhatsApp",
     body: "+1 (657) 395-7180. Message us directly on WhatsApp.",
@@ -249,7 +247,7 @@ type HelpSearchResult = {
   title: string;
   description: string;
   href: string;
-  type: "FAQ" | "A6 Guide" | "S10 Pro Guide" | "Compatibility" | "Support";
+  type: "FAQ" | "A6 Guide" | "S10 Pro Guide" | "P7 Guide" | "Compatibility" | "Support";
   keywords: string;
   body: string;
 };
@@ -263,11 +261,7 @@ function escapeRegExp(string: string) {
 }
 
 function getSearchTerms(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
+  return value.toLowerCase().trim().split(/\s+/).filter(Boolean);
 }
 
 function normalizeSearchText(value: string) {
@@ -275,11 +269,18 @@ function normalizeSearchText(value: string) {
 }
 
 function getArticleResultType(shortName: string): HelpSearchResult["type"] {
-  return shortName.toLowerCase().includes("a6") ? "A6 Guide" : "S10 Pro Guide";
+  const normalizedName = shortName.toLowerCase();
+  if (normalizedName.includes("a6")) return "A6 Guide";
+  if (normalizedName.includes("p7")) return "P7 Guide";
+  return "S10 Pro Guide";
 }
 
-function buildHelpSearchIndex(): HelpSearchResult[] {
-  const faqEntries = faqGroups.flatMap((group) =>
+function buildHelpSearchIndex(
+  faqSource = baseFaqGroups,
+  articleSource = helpCenterArticles,
+  contactSource = baseContactCards,
+): HelpSearchResult[] {
+  const faqEntries = faqSource.flatMap((group) =>
     group.articles.map((article) => ({
       title: article.question,
       description: article.answer,
@@ -287,10 +288,10 @@ function buildHelpSearchIndex(): HelpSearchResult[] {
       type: "FAQ" as const,
       keywords: `${group.title} ${group.description}`,
       body: `${article.question} ${article.answer}`,
-    }))
+    })),
   );
 
-  const productEntries = helpCenterArticles.flatMap((article) => {
+  const productEntries = articleSource.flatMap((article) => {
     const type = getArticleResultType(article.shortName);
     const baseKeywords = `${article.name} ${article.shortName} ${article.asin}`;
 
@@ -350,7 +351,7 @@ function buildHelpSearchIndex(): HelpSearchResult[] {
           type,
           keywords: `${baseKeywords} ${section.title}`,
           body: `${item.question} ${item.answer}`,
-        }))
+        })),
       ),
     ];
   });
@@ -360,19 +361,22 @@ function buildHelpSearchIndex(): HelpSearchResult[] {
     ...productEntries,
     {
       title: "Compatibility checker",
-      description: "Check whether your laptop supports direct USB-C video, HDMI, or an H5 adapter workflow.",
+      description:
+        "Check whether your laptop supports direct USB-C video, HDMI, or an H5 DisplayLink workflow.",
       href: "/compatibility",
       type: "Compatibility",
-      keywords: "compatibility laptop model MacBook Windows Chromebook USB-C HDMI H5 adapter port checker",
+      keywords:
+        "compatibility laptop model MacBook Windows Chromebook USB-C HDMI H5 adapter port checker",
       body: "Laptop compatibility checker for Anyking portable monitors and triple screen extenders.",
     },
     {
       title: "Contact Anyking support",
-      description: "Get direct help by live chat, phone, or email when setup troubleshooting does not solve the issue.",
+      description:
+        "Get direct help by live chat, phone, or email when setup troubleshooting does not solve the issue.",
       href: "/help-center#support",
       type: "Support",
       keywords: "support contact service email phone warranty replacement return chat help",
-      body: contactCards.map((card) => `${card.title} ${card.body} ${card.href}`).join(" "),
+      body: contactSource.map((card) => `${card.title} ${card.body} ${card.href}`).join(" "),
     },
   ];
 }
@@ -400,11 +404,11 @@ function scoreSearchResult(result: HelpSearchResult, terms: string[]) {
   }, 0);
 }
 
-function getHelpSearchResults(query: string) {
+function getHelpSearchResults(query: string, index = helpSearchIndex) {
   const terms = getSearchTerms(query);
   if (terms.length === 0) return [];
 
-  return helpSearchIndex
+  return index
     .map((result) => ({ ...result, score: scoreSearchResult(result, terms) }))
     .filter((result) => result.score > 0)
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
@@ -415,7 +419,7 @@ function openSmartSupport() {
   const chatHost = document.getElementById("nextop-chat");
   const chatFrame = document.querySelector<HTMLIFrameElement>('iframe[title="nextop live chat"]');
   const clickable = chatHost?.querySelector<HTMLElement>(
-    'button, [role="button"], a, iframe, [class*="bubble"], [class*="launcher"], [class*="chat"]'
+    'button, [role="button"], a, iframe, [class*="bubble"], [class*="launcher"], [class*="chat"]',
   );
 
   clickable?.click();
@@ -443,7 +447,7 @@ function HighlightText({ text, highlight }: { text: string; highlight: string })
           </mark>
         ) : (
           part
-        )
+        ),
       )}
     </>
   );
@@ -464,10 +468,14 @@ function HelpSearchResultsPanel({
   onAskSupport: () => void;
   compact?: boolean;
 }) {
+  const { lang } = useLang();
   if (!query.trim()) return null;
 
   return (
-    <div className={`help-search-results ${compact ? "help-search-results-compact" : ""}`} role="listbox">
+    <div
+      className={`help-search-results ${compact ? "help-search-results-compact" : ""}`}
+      role="listbox"
+    >
       {results.length > 0 ? (
         results.map((result, index) => (
           <button
@@ -492,10 +500,18 @@ function HelpSearchResultsPanel({
         ))
       ) : (
         <div className="help-search-empty">
-          <span>No exact matches</span>
-          <p>Try keywords like USB-C, HDMI, no signal, MacBook, H5 adapter.</p>
-          <button type="button" onMouseDown={(event) => event.preventDefault()} onClick={onAskSupport}>
-            Ask smart support
+          <span>{lang === "ja" ? "一致する結果がありません" : "No exact matches"}</span>
+          <p>
+            {lang === "ja"
+              ? "USB-C、HDMI、信号なし、MacBook、H5 DisplayLinkなどで検索してください。"
+              : "Try keywords like USB-C, HDMI, no signal, MacBook, H5 DisplayLink."}
+          </p>
+          <button
+            type="button"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={onAskSupport}
+          >
+            {lang === "ja" ? "スマートサポートに質問" : "Ask smart support"}
           </button>
         </div>
       )}
@@ -504,8 +520,38 @@ function HelpSearchResultsPanel({
 }
 
 function HelpCenterPage() {
+  const { lang } = useLang();
+  const tx = (text: string) => jaText(lang, text);
+  const localizedArticles = React.useMemo(
+    () => localizeHelpArticles(helpCenterArticles, lang),
+    [lang],
+  );
+  const anchors = React.useMemo(() => localizeHelpValue(baseAnchors, lang), [lang]);
+  const quickLinks = React.useMemo(() => localizeHelpValue(baseQuickLinks, lang), [lang]);
+  const featured = React.useMemo(() => localizeHelpValue(baseFeatured, lang), [lang]);
+  const products = React.useMemo(
+    () =>
+      localizedArticles.map((article) => ({
+        name: article.shortName,
+        image: article.image,
+        slug: article.slug,
+      })),
+    [localizedArticles],
+  );
+  const mobileProductGroups = React.useMemo(
+    () => localizeHelpValue(baseMobileProductGroups, lang),
+    [lang],
+  );
+  const faqGroups = React.useMemo(() => localizeHelpValue(baseFaqGroups, lang), [lang]);
+  const contactCards = React.useMemo(() => localizeHelpValue(baseContactCards, lang), [lang]);
+  const localizedSearchIndex = React.useMemo(
+    () => buildHelpSearchIndex(faqGroups, localizedArticles, contactCards),
+    [contactCards, faqGroups, localizedArticles],
+  );
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [activeSearchSurface, setActiveSearchSurface] = React.useState<"hero" | "sticky" | null>(null);
+  const [activeSearchSurface, setActiveSearchSurface] = React.useState<"hero" | "sticky" | null>(
+    null,
+  );
   const [activeSearchIndex, setActiveSearchIndex] = React.useState(0);
   const [activeMobileTab, setActiveMobileTab] = React.useState("about");
 
@@ -520,7 +566,7 @@ function HelpCenterPage() {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   }, []);
@@ -555,7 +601,10 @@ function HelpCenterPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const searchResults = React.useMemo(() => getHelpSearchResults(searchQuery), [searchQuery]);
+  const searchResults = React.useMemo(
+    () => getHelpSearchResults(searchQuery, localizedSearchIndex),
+    [localizedSearchIndex, searchQuery],
+  );
   const selectedSearchResult = searchResults[activeSearchIndex] ?? searchResults[0];
 
   const openResult = React.useCallback((result: RankedHelpSearchResult) => {
@@ -570,7 +619,7 @@ function HelpCenterPage() {
         support: "mobile-support",
       };
       const isMobile = window.matchMedia("(max-width: 767px)").matches;
-      const targetId = hash && isMobile ? mobileHashMap[hash] ?? hash : hash;
+      const targetId = hash && isMobile ? (mobileHashMap[hash] ?? hash) : hash;
       const el = targetId ? document.getElementById(targetId) : null;
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -603,7 +652,7 @@ function HelpCenterPage() {
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setActiveSearchIndex((current) =>
-        searchResults.length === 0 ? 0 : (current + 1) % searchResults.length
+        searchResults.length === 0 ? 0 : (current + 1) % searchResults.length,
       );
       return;
     }
@@ -611,7 +660,9 @@ function HelpCenterPage() {
     if (event.key === "ArrowUp") {
       event.preventDefault();
       setActiveSearchIndex((current) =>
-        searchResults.length === 0 ? 0 : (current - 1 + searchResults.length) % searchResults.length
+        searchResults.length === 0
+          ? 0
+          : (current - 1 + searchResults.length) % searchResults.length,
       );
       return;
     }
@@ -639,12 +690,12 @@ function HelpCenterPage() {
 
     return faqGroups
       .map((group) => {
-        const matchingArticles = group.articles.filter(
-          (article) => {
-            const content = normalizeSearchText(`${article.question} ${article.answer} ${group.title}`);
-            return terms.every((term) => content.includes(term));
-          }
-        );
+        const matchingArticles = group.articles.filter((article) => {
+          const content = normalizeSearchText(
+            `${article.question} ${article.answer} ${group.title}`,
+          );
+          return terms.every((term) => content.includes(term));
+        });
         return {
           ...group,
           articles: matchingArticles,
@@ -709,18 +760,20 @@ function HelpCenterPage() {
         <section className="px-5 pb-7 pt-8 text-center">
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-primary" />
           <h1 className="text-[1.65rem] font-extrabold leading-tight tracking-tight">
-            Welcome to ANYKING
+            {lang === "ja" ? "ANYKINGへようこそ" : "Welcome to ANYKING"}
             <br />
-            Help Center
+            {tx("Help Center")}
           </h1>
           <p className="mx-auto mt-3 max-w-[18rem] text-xs leading-5 text-slate-500">
-            We've got you covered. Type a keyword to find setup guides, product help, or compatibility answers.
+            {lang === "ja"
+              ? "キーワードを入力して、セットアップ、製品サポート、互換性に関する回答を検索できます。"
+              : "We've got you covered. Type a keyword to find setup guides, product help, or compatibility answers."}
           </p>
           <form className="relative mx-auto mt-5 max-w-sm" onSubmit={handleSearchSubmit}>
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               type="search"
-              placeholder="Ask us anything..."
+              placeholder={lang === "ja" ? "質問を入力してください..." : "Ask us anything..."}
               value={searchQuery}
               onChange={(e) => updateSearchQuery(e.target.value, "hero")}
               onFocus={() => setActiveSearchSurface(searchQuery.trim() ? "hero" : null)}
@@ -775,7 +828,7 @@ function HelpCenterPage() {
                 scrollToMobileSection("mobile-about");
               }}
             >
-              About ANYKING
+              {lang === "ja" ? "ANYKINGについて" : "About ANYKING"}
             </a>
             <a
               className={`shrink-0 pb-1.5 transition-colors ${
@@ -789,7 +842,7 @@ function HelpCenterPage() {
                 scrollToMobileSection("mobile-products");
               }}
             >
-              Products
+              {tx("Products")}
             </a>
             <a
               className={`shrink-0 pb-1.5 transition-colors ${
@@ -803,7 +856,7 @@ function HelpCenterPage() {
                 scrollToMobileSection("mobile-learn");
               }}
             >
-              Learn & Explore
+              {lang === "ja" ? "ガイドを見る" : "Learn & Explore"}
             </a>
           </div>
         </nav>
@@ -815,10 +868,16 @@ function HelpCenterPage() {
               className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 h-full"
             >
               <div className="aspect-[1.12] bg-gradient-to-br from-orange-50 to-white p-3 flex items-center justify-center">
-                <img src={mobileCompatibilityCard} alt="Laptop compatibility guide" className="h-full w-full object-contain" />
+                <img
+                  src={mobileCompatibilityCard}
+                  alt="Laptop compatibility guide"
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div className="flex-1 flex flex-col justify-between px-3 pb-4 pt-2.5">
-                <h2 className="text-sm font-extrabold leading-tight text-slate-900">Compatibility</h2>
+                <h2 className="text-sm font-extrabold leading-tight text-slate-900">
+                  {lang === "ja" ? "互換性" : "Compatibility"}
+                </h2>
                 <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary">
                   Learn More <ArrowRight className="h-3 w-3" />
                 </span>
@@ -833,10 +892,16 @@ function HelpCenterPage() {
               }}
             >
               <div className="aspect-[1.12] bg-gradient-to-br from-red-50 to-white p-3 flex items-center justify-center">
-                <img src={mobileSetupCard} alt="Setup and support guide" className="h-full w-full object-contain" />
+                <img
+                  src={mobileSetupCard}
+                  alt="Setup and support guide"
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div className="flex-1 flex flex-col justify-between px-3 pb-4 pt-2.5">
-                <h2 className="text-sm font-extrabold leading-tight text-slate-900">Setup & Support</h2>
+                <h2 className="text-sm font-extrabold leading-tight text-slate-900">
+                  {lang === "ja" ? "セットアップ・サポート" : "Setup & Support"}
+                </h2>
                 <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary">
                   Learn More <ArrowRight className="h-3 w-3" />
                 </span>
@@ -846,7 +911,7 @@ function HelpCenterPage() {
         </section>
 
         <section id="mobile-products" className="bg-white px-4 py-9">
-          <h2 className="text-center text-2xl font-extrabold tracking-tight">Products</h2>
+          <h2 className="text-center text-2xl font-extrabold tracking-tight">{tx("Products")}</h2>
           <div className="mt-6 space-y-3">
             {mobileProductGroups.map((group, groupIndex) => (
               <details
@@ -860,7 +925,14 @@ function HelpCenterPage() {
                 </summary>
                 <div className="divide-y divide-white">
                   {group.items.map((product) => {
-                    const isPlaceholder = ["s15-plus-extender", "f4-extender", "m5-extender", "s12-extender", "s13-extender", "z3-extender"].includes(product.slug);
+                    const isPlaceholder = [
+                      "s15-plus-extender",
+                      "f4-extender",
+                      "m5-extender",
+                      "s12-extender",
+                      "s13-extender",
+                      "z3-extender",
+                    ].includes(product.slug);
                     return "href" in product ? (
                       <a
                         key={product.slug}
@@ -871,7 +943,11 @@ function HelpCenterPage() {
                           {isPlaceholder ? (
                             <Laptop className="h-6 w-6 stroke-[1.5]" />
                           ) : (
-                            <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="h-14 w-16 object-contain"
+                            />
                           )}
                         </span>
                         <span className="text-sm font-semibold text-slate-700">{product.name}</span>
@@ -888,7 +964,11 @@ function HelpCenterPage() {
                           {isPlaceholder ? (
                             <Laptop className="h-6 w-6 stroke-[1.5]" />
                           ) : (
-                            <img src={product.image} alt={product.name} className="h-14 w-16 object-contain" />
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="h-14 w-16 object-contain"
+                            />
                           )}
                         </span>
                         <span className="text-sm font-semibold text-slate-700">{product.name}</span>
@@ -903,7 +983,9 @@ function HelpCenterPage() {
         </section>
 
         <section id="mobile-learn" className="px-4 py-10">
-          <h2 className="text-center text-2xl font-extrabold tracking-tight">Learn & Explore</h2>
+          <h2 className="text-center text-2xl font-extrabold tracking-tight">
+            {lang === "ja" ? "ガイドを見る" : "Learn & Explore"}
+          </h2>
           <a
             href="#mobile-products"
             onClick={(e) => {
@@ -914,13 +996,21 @@ function HelpCenterPage() {
           >
             <div className="relative min-h-[170px] p-5 text-white flex items-center">
               <div className="absolute inset-0">
-                <img src={mobileBuyingGuideBanner} alt="Choose the right Anyking display" className="h-full w-full object-cover object-center" />
+                <img
+                  src={mobileBuyingGuideBanner}
+                  alt="Choose the right Anyking display"
+                  className="h-full w-full object-cover object-center"
+                />
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent" />
               </div>
               <div className="relative z-10">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Buying Guide</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  {lang === "ja" ? "購入ガイド" : "Buying Guide"}
+                </p>
                 <h3 className="mt-2 max-w-[13rem] text-xl font-black leading-tight">
-                  Choose the Right ANYKING Display
+                  {lang === "ja"
+                    ? "最適なANYKINGディスプレイを選ぶ"
+                    : "Choose the Right ANYKING Display"}
                 </h3>
                 <span className="mt-3 inline-flex items-center gap-2 text-xs font-bold">
                   Start Guide <ArrowRight className="h-3.5 w-3.5" />
@@ -935,9 +1025,11 @@ function HelpCenterPage() {
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
               <Headphones className="h-7 w-7 text-primary" />
             </div>
-            <h2 className="mt-4 text-2xl font-extrabold">Can't find answers?</h2>
+            <h2 className="mt-4 text-2xl font-extrabold">{tx("Can't find answers?")}</h2>
             <p className="mx-auto mt-3 max-w-xs text-xs leading-5 text-slate-500">
-              We are here to help at any time. Choose your preferred method to contact us.
+              {lang === "ja"
+                ? "いつでもサポートいたします。ご希望のお問い合わせ方法をお選びください。"
+                : "We are here to help at any time. Choose your preferred method to contact us."}
             </p>
           </div>
           <div className="mt-6 space-y-3">
@@ -964,8 +1056,14 @@ function HelpCenterPage() {
       <section className="triple-screen-hero-container help-desktop-only">
         {/* Title above the device */}
         <div className="hero-title-area">
-          <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-400 to-amber-300">Welcome to ANYKING Help Center</h1>
-          <p className="text-muted-foreground">We've got you covered for every connection question.</p>
+          <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-400 to-amber-300">
+            {lang === "ja" ? "ANYKINGヘルプセンターへようこそ" : "Welcome to ANYKING Help Center"}
+          </h1>
+          <p className="text-muted-foreground">
+            {lang === "ja"
+              ? "接続に関するあらゆる疑問をサポートします。"
+              : "We've got you covered for every connection question."}
+          </p>
         </div>
 
         {/* 3D Device */}
@@ -991,19 +1089,29 @@ function HelpCenterPage() {
                     </div>
                     <div className="mac-body">
                       <div className="mac-sidebar">
-                        <div className="sidebar-item active">Overview</div>
-                        <div className="sidebar-item">USB-C Guide</div>
-                        <div className="sidebar-item">HDMI Guide</div>
+                        <div className="sidebar-item active">
+                          {lang === "ja" ? "概要" : "Overview"}
+                        </div>
+                        <div className="sidebar-item">
+                          {lang === "ja" ? "USB-Cガイド" : "USB-C Guide"}
+                        </div>
+                        <div className="sidebar-item">
+                          {lang === "ja" ? "HDMIガイド" : "HDMI Guide"}
+                        </div>
                       </div>
                       <div className="mac-content">
                         <div>
-                          <h4>No Display Signal?</h4>
+                          <h4>
+                            {lang === "ja" ? "映像信号がありませんか？" : "No Display Signal?"}
+                          </h4>
                           <p>
-                            If your screen stays black or shows "No Signal", check your port features.
+                            {lang === "ja"
+                              ? "画面が黒いまま、または「信号なし」と表示される場合は、ポートの映像出力機能を確認してください。"
+                              : 'If your screen stays black or shows "No Signal", check your port features.'}
                           </p>
                         </div>
                         <a href="#articles" className="mac-action-btn">
-                          View guides
+                          {lang === "ja" ? "ガイドを見る" : "View guides"}
                         </a>
                       </div>
                     </div>
@@ -1023,15 +1131,17 @@ function HelpCenterPage() {
                 <div className="screen-content center-screen-content">
                   <div className="search-glass-panel search-only-panel">
                     <div className="search-copy">
-                      <p className="search-copy-kicker">Help Center</p>
-                      <h2>Search connection guides</h2>
+                      <p className="search-copy-kicker">{tx("Help Center")}</p>
+                      <h2>{lang === "ja" ? "接続ガイドを検索" : "Search connection guides"}</h2>
                     </div>
                     <form className="help-search-spotlight" onSubmit={handleSearchSubmit}>
                       <Search className="spotlight-search-icon" />
                       <input
                         id="helpSearch"
                         type="search"
-                        placeholder="Search connection guides..."
+                        placeholder={
+                          lang === "ja" ? "接続ガイドを検索..." : "Search connection guides..."
+                        }
                         className="help-search-input-spotlight"
                         value={searchQuery}
                         onChange={(e) => updateSearchQuery(e.target.value, "hero")}
@@ -1073,19 +1183,25 @@ function HelpCenterPage() {
                     </div>
                     <div className="mac-body">
                       <div className="mac-sidebar">
-                        <div className="sidebar-item active">Hardware</div>
-                        <div className="sidebar-item">Ports</div>
-                        <div className="sidebar-item">Adapter</div>
+                        <div className="sidebar-item active">
+                          {lang === "ja" ? "ハードウェア" : "Hardware"}
+                        </div>
+                        <div className="sidebar-item">{lang === "ja" ? "ポート" : "Ports"}</div>
+                        <div className="sidebar-item">
+                          {lang === "ja" ? "アダプター" : "Adapter"}
+                        </div>
                       </div>
                       <div className="mac-content">
                         <div>
-                          <h4>Device Checker</h4>
+                          <h4>{lang === "ja" ? "デバイスチェッカー" : "Device Checker"}</h4>
                           <p>
-                            Verify if your laptop model supports direct USB-C or requires an H5 adapter.
+                            {lang === "ja"
+                              ? "ノートPCに必要な映像出力があるか、H5 DisplayLinkが必要かを確認します。"
+                              : "Verify whether your laptop provides the required video outputs or needs H5 DisplayLink."}
                           </p>
                         </div>
                         <a href="/compatibility" className="mac-action-btn">
-                          Check model
+                          {lang === "ja" ? "型番を確認" : "Check model"}
                         </a>
                       </div>
                     </div>
@@ -1100,11 +1216,75 @@ function HelpCenterPage() {
           <div className="laptop-base">
             <div className="keyboard-area">
               <div className="keys-grid">
-                <div className="key-row row-1"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div className="key-row row-2"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div className="key-row row-3"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div className="key-row row-4"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div className="key-row row-5"><span></span><span></span><span></span><span className="spacebar"></span><span></span><span></span><span></span></div>
+                <div className="key-row row-1">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className="key-row row-2">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className="key-row row-3">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className="key-row row-4">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className="key-row row-5">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span className="spacebar"></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
               </div>
             </div>
             <div className="trackpad"></div>
@@ -1113,7 +1293,6 @@ function HelpCenterPage() {
 
         {/* Ambient shadow */}
         <div className="device-shadow-reflection" />
-
       </section>
 
       {/* Sticky anchor nav */}
@@ -1135,7 +1314,7 @@ function HelpCenterPage() {
             <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="search"
-              placeholder="Search help..."
+              placeholder={lang === "ja" ? "ヘルプを検索..." : "Search help..."}
               value={searchQuery}
               onChange={(e) => updateSearchQuery(e.target.value, "sticky")}
               onFocus={() => setActiveSearchSurface(searchQuery.trim() ? "sticky" : null)}
@@ -1183,7 +1362,7 @@ function HelpCenterPage() {
                   <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">{body}</p>
                 </div>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                  Learn More
+                  {lang === "ja" ? "詳しく見る" : "Learn More"}
                   <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
                 </span>
               </div>
@@ -1192,9 +1371,14 @@ function HelpCenterPage() {
         </div>
       </section>
 
-      <section id="products" className="help-desktop-only border-y border-border/30 bg-secondary/15 backdrop-blur-sm">
+      <section
+        id="products"
+        className="help-desktop-only border-y border-border/30 bg-secondary/15 backdrop-blur-sm"
+      >
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
-          <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">Products</h2>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">
+            {tx("Products")}
+          </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {["Portable Monitors", "Laptop Extenders", "Compatibility"].map((item, index) => (
               <a
@@ -1206,14 +1390,21 @@ function HelpCenterPage() {
                     : "border-border/50 bg-card/85 text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {item}
+                {tx(item)}
               </a>
             ))}
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {products.map((product) => {
-              const isPlaceholder = ["s15-plus-extender", "f4-extender", "m5-extender", "s12-extender", "s13-extender", "z3-extender"].includes(product.slug);
+              const isPlaceholder = [
+                "s15-plus-extender",
+                "f4-extender",
+                "m5-extender",
+                "s12-extender",
+                "s13-extender",
+                "z3-extender",
+              ].includes(product.slug);
               return (
                 <Link
                   key={product.name}
@@ -1243,15 +1434,22 @@ function HelpCenterPage() {
 
       <section id="articles" className="help-desktop-only mx-auto max-w-7xl px-5 py-16 lg:px-10">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">FAQ Articles</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground">Learn & Explore</h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            {tx("FAQ Articles")}
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground">
+            {lang === "ja" ? "ガイドを見る" : "Learn & Explore"}
+          </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-            Follow the most common support paths first. Each answer includes the next step if your laptop needs a
-            different cable or adapter.
+            {lang === "ja"
+              ? "よくあるサポート項目からご確認ください。各回答には、別のケーブルやアダプターが必要な場合の次の手順も掲載しています。"
+              : "Follow the most common support paths first. Each answer includes the next step if your laptop needs a different cable or adapter."}
           </p>
           {searchQuery && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs text-primary font-medium">
-              Showing search results for "{searchQuery}"
+              {lang === "ja"
+                ? `「${searchQuery}」の検索結果`
+                : `Showing search results for "${searchQuery}"`}
               <button
                 onClick={() => {
                   setSearchQuery("");
@@ -1268,7 +1466,11 @@ function HelpCenterPage() {
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
           {filteredFaqGroups.length > 0 ? (
             filteredFaqGroups.map(({ id, title, description, articles }) => (
-              <article id={id} key={title} className="rounded-xl border border-border/40 bg-card/65 p-6 shadow-sm backdrop-blur-sm">
+              <article
+                id={id}
+                key={title}
+                className="rounded-xl border border-border/40 bg-card/65 p-6 shadow-sm backdrop-blur-sm"
+              >
                 <div>
                   <h3 className="text-xl font-bold text-foreground">{title}</h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
@@ -1289,19 +1491,19 @@ function HelpCenterPage() {
                         </p>
                         <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-border/20 pt-4">
                           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground/60">
-                            Was this helpful?
+                            {lang === "ja" ? "役に立ちましたか？" : "Was this helpful?"}
                           </span>
                           <button
                             type="button"
                             className="rounded-full border border-border/50 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary hover:bg-primary/10 hover:text-primary"
                           >
-                            Yes
+                            {lang === "ja" ? "はい" : "Yes"}
                           </button>
                           <button
                             type="button"
                             className="rounded-full border border-border/50 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary hover:bg-primary/10 hover:text-primary"
                           >
-                            No
+                            {lang === "ja" ? "いいえ" : "No"}
                           </button>
                         </div>
                       </AccordionContent>
@@ -1313,16 +1515,20 @@ function HelpCenterPage() {
           ) : (
             <div className="col-span-full rounded-xl border border-border/40 bg-card/60 p-12 text-center backdrop-blur-md">
               <Headphones className="mx-auto h-12 w-12 text-primary" />
-              <h3 className="mt-4 text-lg font-bold text-foreground">Ask our smart support</h3>
+              <h3 className="mt-4 text-lg font-bold text-foreground">
+                {lang === "ja" ? "スマートサポートに質問" : "Ask our smart support"}
+              </h3>
               <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                We couldn't find an article for "{searchQuery}". Open the smart customer service chat and share your laptop model, product model, and connection method.
+                {lang === "ja"
+                  ? `「${searchQuery}」に一致する記事が見つかりませんでした。スマートサポートを開き、ノートPCの型番、製品モデル、接続方法をお知らせください。`
+                  : `We couldn't find an article for "${searchQuery}". Open the smart customer service chat and share your laptop model, product model, and connection method.`}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <button
                   onClick={handleAskSmartSupport}
                   className="rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground transition hover:bg-primary/90"
                 >
-                  Ask smart support
+                  {lang === "ja" ? "スマートサポートに質問" : "Ask smart support"}
                 </button>
                 <button
                   onClick={() => {
@@ -1331,7 +1537,7 @@ function HelpCenterPage() {
                   }}
                   className="rounded-full border border-border/60 bg-card px-5 py-2 text-xs font-semibold text-muted-foreground transition hover:border-primary/50 hover:text-primary"
                 >
-                  Clear search query
+                  {lang === "ja" ? "検索条件をクリア" : "Clear search query"}
                 </button>
               </div>
             </div>
@@ -1343,9 +1549,13 @@ function HelpCenterPage() {
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10 lg:py-20">
           <div className="text-center">
             <Headphones className="mx-auto h-12 w-12 text-primary" />
-            <h2 className="mt-5 text-3xl font-bold text-foreground md:text-4xl">Can't find answers?</h2>
+            <h2 className="mt-5 text-3xl font-bold text-foreground md:text-4xl">
+              {tx("Can't find answers?")}
+            </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
-              We are here to help at any time. Choose your preferred method to contact us.
+              {lang === "ja"
+                ? "いつでもサポートいたします。ご希望のお問い合わせ方法をお選びください。"
+                : "We are here to help at any time. Choose your preferred method to contact us."}
             </p>
           </div>
 

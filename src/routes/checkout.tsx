@@ -4,14 +4,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useLang, formatPrice } from "@/i18n/LangContext";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Lock,
-  Package,
-  ShieldCheck,
-  ShoppingBag,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Lock, Package, ShieldCheck, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { shopifyConfig } from "@/config/shopify";
 import { redirectToShopifyCheckout } from "@/lib/shopify";
@@ -160,7 +153,9 @@ function CheckoutPage() {
     setOrderPlaced(true);
     setMessage("");
     if (order) {
-      toast.success("Order saved to your account.");
+      toast.success(
+        lang === "ja" ? "注文をアカウントに保存しました。" : "Order saved to your account.",
+      );
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -180,7 +175,9 @@ function CheckoutPage() {
               <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin" />
             </div>
             <div className="space-y-2">
-              <h1 className="text-xl font-bold text-foreground">Secure Checkout</h1>
+              <h1 className="text-xl font-bold text-foreground">
+                {lang === "ja" ? "安全なチェックアウト" : "Secure Checkout"}
+              </h1>
               <p className="text-sm text-muted-foreground">
                 Connecting you to Shopify secure payment gateway...
               </p>
@@ -293,21 +290,29 @@ function CheckoutPage() {
                   <button
                     type="button"
                     onClick={() =>
-                      window.open("https://www.paypal.com/checkoutnow", "_blank", "noopener,noreferrer")
+                      window.open(
+                        "https://www.paypal.com/checkoutnow",
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
                     }
                     className="h-12 rounded-xl bg-[#ffc439] text-base font-black italic text-[#003087] shadow-sm transition hover:opacity-95"
                   >
                     PayPal
                   </button>
                 </div>
-                <p className="text-center text-sm text-gray-400">{lang === "ja" ? "または" : "OR"}</p>
+                <p className="text-center text-sm text-gray-400">
+                  {lang === "ja" ? "または" : "OR"}
+                </p>
               </div>
 
               <section className="space-y-4">
                 <div className="flex items-center justify-between gap-4">
                   <h2 className="text-3xl font-bold tracking-tight">{label.contact}</h2>
                   <p className="text-sm text-gray-500">
-                    {lang === "ja" ? "ログイン済みのアカウントを使用できます" : "Use a saved account if you have one"}
+                    {lang === "ja"
+                      ? "ログイン済みのアカウントを使用できます"
+                      : "Use a saved account if you have one"}
                   </p>
                 </div>
 
@@ -371,7 +376,9 @@ function CheckoutPage() {
                   name="apartment"
                   value={formData.apartment}
                   onChange={handleChange}
-                  placeholder={lang === "ja" ? "建物名・部屋番号（任意）" : "Apartment, suite, etc. (optional)"}
+                  placeholder={
+                    lang === "ja" ? "建物名・部屋番号（任意）" : "Apartment, suite, etc. (optional)"
+                  }
                   className={inputClass("apartment")}
                 />
                 <div className="grid gap-3 sm:grid-cols-[1fr_1fr_120px]">
@@ -391,9 +398,9 @@ function CheckoutPage() {
                   />
                   <select className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-sky-500">
                     <option>{lang === "ja" ? "国" : "Country"}</option>
-                    <option>United States</option>
-                    <option>Japan</option>
-                    <option>China</option>
+                    <option>{lang === "ja" ? "アメリカ合衆国" : "United States"}</option>
+                    <option>{lang === "ja" ? "日本" : "Japan"}</option>
+                    <option>{lang === "ja" ? "中国" : "China"}</option>
                   </select>
                 </div>
               </section>
@@ -503,21 +510,15 @@ function CheckoutPage() {
 
                 <div className="mt-6 space-y-3 border-t border-gray-100 pt-4 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-500">
-                      {lang === "ja" ? "商品数" : "Items"}
-                    </span>
+                    <span className="text-gray-500">{lang === "ja" ? "商品数" : "Items"}</span>
                     <span className="font-medium">{totalItems}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-500">
-                      {lang === "ja" ? "小計" : "Subtotal"}
-                    </span>
+                    <span className="text-gray-500">{lang === "ja" ? "小計" : "Subtotal"}</span>
                     <span className="font-medium">{formatPrice(cartSubtotal, lang)}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-500">
-                      {lang === "ja" ? "配送" : "Shipping"}
-                    </span>
+                    <span className="text-gray-500">{lang === "ja" ? "配送" : "Shipping"}</span>
                     <span className="font-medium text-emerald-600">
                       {lang === "ja" ? "無料" : "Free"}
                     </span>

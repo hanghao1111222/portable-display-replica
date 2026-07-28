@@ -106,37 +106,37 @@ export const brandSnapshots: BrandSnapshot[] = [
     brand: "Apple",
     commonPorts: "2015-2017 Mini DisplayPort / Thunderbolt 2; 2018+ USB-C / Thunderbolt",
     directPath: "MacBook Air / Pro 2018+ usually direct-connect with USB-C",
-    fallbackPath: "2015-2017 models often need HDMI or MiniDP-to-HDMI before H5",
+    fallbackPath: "2015-2017 models often need HDMI conversion or H5 DisplayLink",
   },
   {
     brand: "Dell",
     commonPorts: "XPS and Latitude often USB-C; Inspiron often mixes HDMI and USB-A",
     directPath: "XPS / modern Latitude usually direct-connect with USB-C",
-    fallbackPath: "Inspiron / older business models often need HDMI or H5",
+    fallbackPath: "Inspiron / older business models often need HDMI or H5 DisplayLink",
   },
   {
     brand: "Lenovo",
     commonPorts: "ThinkPad often USB-C + HDMI; IdeaPad often HDMI first",
     directPath: "ThinkPad X1 / Yoga / newer T and E models often direct-connect",
-    fallbackPath: "IdeaPad and older ThinkPad models often need HDMI or H5",
+    fallbackPath: "IdeaPad and older ThinkPad models often need HDMI or H5 DisplayLink",
   },
   {
     brand: "HP",
     commonPorts: "Spectre / EliteBook / Envy / Pavilion often mix USB-C and HDMI",
     directPath: "Spectre and EliteBook are most likely to direct-connect",
-    fallbackPath: "Pavilion / ProBook / older Envy often need HDMI or H5",
+    fallbackPath: "Pavilion / ProBook / older Envy often need HDMI or H5 DisplayLink",
   },
   {
     brand: "ASUS",
     commonPorts: "ZenBook / ROG / VivoBook vary a lot between USB-C, HDMI, and USB-A",
     directPath: "ZenBook and many ROG / creator models often direct-connect",
-    fallbackPath: "Older VivoBook and budget models often need HDMI or H5",
+    fallbackPath: "Older VivoBook and budget models often need HDMI or H5 DisplayLink",
   },
   {
     brand: "Acer",
     commonPorts: "Swift / Nitro newer models often USB-C; Aspire often HDMI-first",
     directPath: "Swift and newer Nitro models often direct-connect",
-    fallbackPath: "Aspire and older budget models often need HDMI or H5",
+    fallbackPath: "Aspire and older budget models often need HDMI or H5 DisplayLink",
   },
   {
     brand: "Microsoft Surface",
@@ -155,7 +155,7 @@ export const brandSnapshots: BrandSnapshot[] = [
     brand: "LG / Razer",
     commonPorts: "LG gram usually USB-C + HDMI; Razer Blade often USB-C / Thunderbolt + HDMI",
     directPath: "Modern LG gram and Razer Blade models often direct-connect",
-    fallbackPath: "Older ultrabooks or HDMI-only configs may need H5",
+    fallbackPath: "Older ultrabooks or limited-output configurations may need H5 DisplayLink",
   },
 ];
 
@@ -241,13 +241,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     ],
     yearRange: [2015, 2017],
     connection: "Mini DisplayPort / Thunderbolt 2, usually no USB-C video output",
-    cable: "H5 HDMI Adapter, plus Mini DP-to-HDMI if the laptop has no HDMI port",
+    cable: "H5 DisplayLink Adapter",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Strong",
     notes: [
       "These older laptops should not be judged as USB-C direct-connect devices.",
-      "If the laptop has no HDMI port, use Mini DP-to-HDMI first, then connect through the H5 adapter.",
+      "Install the H5 DisplayLink driver before connecting the adapter.",
     ],
   },
   {
@@ -274,13 +274,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     yearRange: [2021, 2026],
     connection: "Usually USB-C / Thunderbolt direct, with HDMI available on many business models",
     cable:
-      "Full-featured USB-C cable first; H5 HDMI Adapter if USB-C video is disabled or unavailable",
+      "Video-capable USB-C cable first; H5 DisplayLink Adapter if native video is unavailable",
     cableKey: "usb-c-to-c",
     fitLabel: "Medium-high",
     confidenceLabel: "Strong",
     notes: [
       "Recent Latitude models commonly support USB-C display output, but exact business configurations can vary.",
-      "If a company-issued laptop blocks or lacks USB-C video, switch to HDMI through the H5 adapter.",
+      "If a company-issued laptop blocks or lacks USB-C video, confirm whether H5 DisplayLink is permitted by corporate policy.",
     ],
   },
   {
@@ -296,7 +296,7 @@ export const laptopProfiles: CompatibilityProfile[] = [
     confidenceLabel: "Strong",
     notes: [
       "Precision machines usually include strong video-capable USB-C support.",
-      "If a dock or corporate policy changes the port behavior, HDMI through H5 is the fallback.",
+      "If a dock or corporate policy changes port behavior, verify the approved DisplayLink workflow.",
     ],
   },
   {
@@ -306,13 +306,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["dell inspiron", "inspiron 15", "inspiron 5000", "inspiron 3000"],
     yearRange: [2015, 2020],
     connection: "Often HDMI + USB-A, with USB-C missing or data-only on many models",
-    cable: "H5 HDMI Adapter",
+    cable: "H5 DisplayLink Adapter",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Brand-level",
     notes: [
       "This is a common support case: HDMI can carry video, while USB-A/USB-C may only provide power or data.",
-      "If USB-C direct connection does not light the monitor, use HDMI through the H5 adapter.",
+      "If native video output is insufficient, use the H5 DisplayLink adapter and driver.",
     ],
   },
   {
@@ -352,7 +352,7 @@ export const laptopProfiles: CompatibilityProfile[] = [
     confidenceLabel: "Strong",
     notes: [
       "Modern ThinkPad T-series machines usually support video over USB-C.",
-      "If a specific corporate build disables video over USB-C, use HDMI through H5.",
+      "If a corporate build disables video over USB-C, verify whether H5 DisplayLink is permitted.",
     ],
   },
   {
@@ -363,7 +363,7 @@ export const laptopProfiles: CompatibilityProfile[] = [
     yearRange: [2015, 2026],
     connection: "May be HDMI or USB-C direct, depending on model",
     cable:
-      "USB-C direct if the Type-C port supports DisplayPort; otherwise use the H5 HDMI Adapter",
+      "USB-C direct if the Type-C port supports DisplayPort; otherwise verify H5 DisplayLink",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Brand-level",
@@ -380,13 +380,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     yearRange: [2020, 2026],
     connection: "Usually USB-C direct on Yoga / Slim models; IdeaPad configurations vary",
     cable:
-      "Full-featured USB-C cable if the Type-C port supports DisplayPort; otherwise H5 HDMI Adapter",
+      "Video-capable USB-C cable if the port supports DisplayPort; otherwise H5 DisplayLink Adapter",
     cableKey: "usb-c-to-c",
     fitLabel: "Medium-high",
     confidenceLabel: "Brand-level",
     notes: [
       "Yoga and Slim models are more likely to support USB-C video than entry-level IdeaPad models.",
-      "If the exact Type-C port only supports data, use HDMI through the H5 adapter.",
+      "If the exact Type-C port supports data only, verify the HDMI or H5 DisplayLink path.",
     ],
   },
   {
@@ -396,13 +396,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["lenovo ideapad", "ideapad 3", "ideapad 5", "ideapad 330", "ideapad 520"],
     yearRange: [2016, 2020],
     connection: "Often HDMI + USB-A; USB-C video support is inconsistent",
-    cable: "H5 HDMI Adapter",
+    cable: "H5 DisplayLink Adapter",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Brand-level",
     notes: [
       "Older IdeaPad models are common HDMI fallback cases.",
-      "If USB-C direct does not show an image, use HDMI through H5.",
+      "If USB-C direct does not show an image, verify HDMI or H5 DisplayLink support.",
     ],
   },
   {
@@ -428,7 +428,7 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["hp omen", "victus", "omen 16", "victus 15", "victus 16"],
     yearRange: [2020, 2026],
     connection: "Usually USB-C plus HDMI, but exact video support depends on the model",
-    cable: "Full-featured USB-C cable first; HDMI / H5 if the USB-C port is data-only",
+    cable: "Video-capable USB-C first; HDMI or H5 DisplayLink if USB-C is data-only",
     cableKey: "usb-c-to-c",
     fitLabel: "Medium-high",
     confidenceLabel: "Brand-level",
@@ -444,13 +444,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["hp pavilion", "hp envy", "pavilion 15", "envy x360"],
     yearRange: [2015, 2020],
     connection: "Often HDMI + USB-A; some USB-C ports may not support display output",
-    cable: "H5 HDMI Adapter",
+    cable: "H5 DisplayLink Adapter",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Brand-level",
     notes: [
       "Many Pavilion and older Envy configurations include HDMI but not full USB-C video output.",
-      "H5 is the fallback when the laptop has HDMI output but cannot drive the monitor through USB-C alone.",
+      "H5 DisplayLink is the fallback when native video-output paths are insufficient.",
     ],
   },
   {
@@ -460,13 +460,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["hp probook", "probook 430", "probook 440", "probook 450"],
     yearRange: [2015, 2020],
     connection: "Often HDMI for video; USB-C support varies by generation",
-    cable: "H5 HDMI Adapter",
+    cable: "H5 DisplayLink Adapter",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Brand-level",
     notes: [
       "Older business laptops often have HDMI even when USB-C video support is limited.",
-      "Use H5 when HDMI is present and USB-C direct connection fails.",
+      "Use H5 DisplayLink when native connection cannot provide the required display path.",
     ],
   },
   {
@@ -477,13 +477,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     yearRange: [2017, 2026],
     connection: "Surface Connect or USB-C",
     cable:
-      "USB-C direct on newer Surface models; H5 adapter path for older Surface models without USB-C video",
+      "USB-C direct on newer Surface models; H5 DisplayLink path for limited-output models",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium-high",
     confidenceLabel: "Strong",
     notes: [
       "For Surface, the key factor is the generation and port layout, not just the brand.",
-      "USB-C versions are easier; older Surface Laptop models may need Mini DisplayPort or Surface adapter output before using H5.",
+      "USB-C versions are easier; verify the exact external-display limit before selecting H5 DisplayLink.",
     ],
   },
   {
@@ -494,13 +494,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     yearRange: [2017, 2019],
     connection:
       "Surface Connect with limited video ports; older models often rely on MiniDP or special adapters",
-    cable: "H5 HDMI Adapter after the appropriate Surface or MiniDP conversion path",
+    cable: "H5 DisplayLink Adapter after confirming Surface driver support",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Strong",
     notes: [
       "These are common support cases because they are not simple USB-C direct-connect machines.",
-      "If you do not have the right Surface output adapter, H5 alone will not bypass the missing video port.",
+      "Confirm that the Surface model and operating system support the H5 DisplayLink driver.",
     ],
   },
   {
@@ -526,13 +526,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["asus zenbook pro", "zenbook s", "expertbook", "proart", "vivobook pro"],
     yearRange: [2019, 2026],
     connection: "USB-C / Thunderbolt or HDMI depending on model",
-    cable: "Full-featured USB-C cable first; HDMI / H5 if the USB-C port is not video-capable",
+    cable: "Video-capable USB-C first; HDMI or H5 DisplayLink when native output is insufficient",
     cableKey: "usb-c-to-c",
     fitLabel: "Medium-high",
     confidenceLabel: "Brand-level",
     notes: [
       "ASUS creator laptops often work directly when the USB-C port supports DisplayPort Alt Mode.",
-      "If the laptop is HDMI-first, the H5 path is still a valid fallback.",
+      "If native display paths are insufficient, H5 DisplayLink is the fallback.",
     ],
   },
   {
@@ -542,13 +542,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["asus vivobook", "vivobook 15", "vivobook 14"],
     yearRange: [2016, 2020],
     connection: "Often HDMI + USB-A; USB-C may be data-only on budget models",
-    cable: "H5 HDMI Adapter",
+    cable: "H5 DisplayLink Adapter",
     cableKey: "h5-hdmi-adapter",
     fitLabel: "Medium",
     confidenceLabel: "Brand-level",
     notes: [
       "Many budget VivoBook models have USB-C ports that are not display-capable.",
-      "H5 is the safer support recommendation when HDMI is present and USB-C direct fails.",
+      "H5 DisplayLink is the safer support recommendation when native video output is insufficient.",
     ],
   },
   {
@@ -580,7 +580,7 @@ export const laptopProfiles: CompatibilityProfile[] = [
     confidenceLabel: "Strong",
     notes: [
       "Swift models are more likely to support USB-C video than entry-level Aspire machines.",
-      "If the USB-C port is data-only, fall back to HDMI through H5.",
+      "If the USB-C port is data-only, verify HDMI or H5 DisplayLink.",
     ],
   },
   {
@@ -590,13 +590,13 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["acer nitro", "nitro 5", "nitro 16", "predator"],
     yearRange: [2020, 2026],
     connection: "HDMI plus USB-C on many gaming models",
-    cable: "USB-C to USB-C if the port supports video; otherwise HDMI / H5",
+    cable: "USB-C to USB-C if the port supports video; otherwise HDMI or H5 DisplayLink",
     cableKey: "usb-c-to-c",
     fitLabel: "Medium-high",
     confidenceLabel: "Brand-level",
     notes: [
       "Gaming models often support external displays, but the exact port capability still matters.",
-      "If the USB-C port does not expose video, HDMI through H5 is the safe fallback.",
+      "If USB-C does not expose video, verify HDMI or H5 DisplayLink.",
     ],
   },
   {
@@ -638,7 +638,7 @@ export const laptopProfiles: CompatibilityProfile[] = [
     aliases: ["razer blade", "blade 15", "blade 16"],
     yearRange: [2020, 2026],
     connection: "USB-C / Thunderbolt and HDMI are common on Blade models",
-    cable: "Full-featured USB-C cable first; HDMI / H5 if the USB-C port is not video-capable",
+    cable: "Video-capable USB-C first; HDMI or H5 DisplayLink when native output is insufficient",
     cableKey: "usb-c-to-c",
     fitLabel: "High",
     confidenceLabel: "Strong",
