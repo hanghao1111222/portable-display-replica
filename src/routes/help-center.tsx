@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Cable,
   ChevronRight,
+  Download,
   Headphones,
   Laptop,
   Mail,
@@ -44,8 +45,42 @@ export const Route = createFileRoute("/help-center")({
 const baseAnchors = [
   { label: "Setup Guide", href: "#featured" },
   { label: "Products", href: "#products" },
+  { label: "Software Center", href: "#software-center" },
   { label: "FAQ Articles", href: "#articles" },
   { label: "Can't find answers?", href: "#support" },
+] as const;
+
+const softwarePlatforms = [
+  {
+    key: "windows",
+    name: "Windows",
+    downloadUrl: "https://media.kidovix.com/0/InnovRayDisplayWidgetCenter_64bit.exe",
+    fileName: "InnovRayDisplayWidgetCenter_64bit.exe",
+    detailEn: "Windows 10 or Windows 11",
+    detailJa: "Windows 10 / Windows 11",
+    actionEn: "Download for Windows",
+    actionJa: "Windows版をダウンロード",
+  },
+  {
+    key: "mac-arm",
+    name: "macOS ARM",
+    downloadUrl: "https://media.kidovix.com/0/InnovRayDisplayWidgetCenterr_arm_64bit.dmg",
+    fileName: "InnovRayDisplayWidgetCenterr_arm_64bit.dmg",
+    detailEn: "Mac with Apple silicon (M-series)",
+    detailJa: "Appleシリコン搭載Mac（Mシリーズ）",
+    actionEn: "Download for macOS ARM",
+    actionJa: "macOS ARM版をダウンロード",
+  },
+  {
+    key: "mac-intel",
+    name: "macOS Intel",
+    downloadUrl: "https://media.kidovix.com/0/InnovRayDisplayWidgetCenter_intel_64bit.dmg",
+    fileName: "InnovRayDisplayWidgetCenter_intel_64bit.dmg",
+    detailEn: "Mac with an Intel processor",
+    detailJa: "Intelプロセッサ搭載Mac",
+    actionEn: "Download for macOS Intel",
+    actionJa: "macOS Intel版をダウンロード",
+  },
 ] as const;
 
 const baseQuickLinks = [
@@ -519,6 +554,115 @@ function HelpSearchResultsPanel({
   );
 }
 
+function SoftwareCenterPanel({ lang, compact = false }: { lang: "en" | "ja"; compact?: boolean }) {
+  const steps =
+    lang === "ja"
+      ? [
+          "お使いのOSを選択します。",
+          "ボタンを押すと、対応する公式インストーラーのダウンロードが始まります。",
+          "ブラウザのダウンロード進捗が完了するまで待ちます。",
+          "インストーラーを開き、画面の案内に沿ってインストールを完了します。",
+        ]
+      : [
+          "Select your operating system.",
+          "Click the button to start downloading the matching official installer.",
+          "Wait for the browser's download progress to finish.",
+          "Open the installer and follow the on-screen steps to complete installation.",
+        ];
+
+  return (
+    <div
+      className={`overflow-hidden rounded-3xl border border-border/60 bg-card shadow-sm ${
+        compact ? "p-5" : "p-8 lg:p-10"
+      }`}
+    >
+      <div className={compact ? "" : "grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start"}>
+        <div>
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <Download className="h-5 w-5" />
+          </div>
+          <p className="mt-5 text-xs font-bold uppercase tracking-[0.22em] text-primary">
+            {lang === "ja" ? "ソフトウェアセンター" : "Software Center"}
+          </p>
+          <h2
+            className={`${compact ? "mt-2 text-2xl" : "mt-3 text-3xl"} font-black tracking-tight`}
+          >
+            Innovray Display Center
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">
+            {lang === "ja"
+              ? "お使いのOSを選択すると、Innovray公式サーバーから対応するディスプレイ管理ソフトウェアを直接ダウンロードできます。"
+              : "Choose your operating system to download the matching display management software directly from Innovray's official server."}
+          </p>
+
+          <div className="mt-6 grid gap-3">
+            {softwarePlatforms.map((platform) => (
+              <a
+                key={platform.key}
+                href={platform.downloadUrl}
+                download={platform.fileName}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 rounded-2xl border border-border/60 bg-background/80 p-4 transition hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-md"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                  <Laptop className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-extrabold text-foreground">
+                    {platform.name}
+                  </span>
+                  <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
+                    {lang === "ja" ? platform.detailJa : platform.detailEn}
+                  </span>
+                </span>
+                <span className="hidden items-center gap-1 text-xs font-bold text-primary sm:inline-flex">
+                  {lang === "ja" ? platform.actionJa : platform.actionEn}
+                  <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 text-primary sm:hidden" />
+              </a>
+            ))}
+          </div>
+
+          <p className="mt-4 text-xs leading-5 text-muted-foreground">
+            {lang === "ja"
+              ? "Macの種類が不明な場合：Appleメニュー →「このMacについて」を開き、「チップ」がMシリーズならARM版、「プロセッサ」がIntelならIntel版を選択してください。"
+              : "Not sure which Mac version to choose? Open Apple menu → About This Mac. Choose ARM for an M-series chip, or Intel when the processor is listed as Intel."}
+          </p>
+        </div>
+
+        <div className={compact ? "mt-8" : ""}>
+          <p className="text-sm font-extrabold text-foreground">
+            {lang === "ja" ? "ダウンロードとインストールの手順" : "Download and installation steps"}
+          </p>
+          <ol className="mt-4 space-y-3">
+            {steps.map((step, index) => (
+              <li
+                key={step}
+                className="flex gap-3 rounded-2xl border border-border/50 bg-secondary/20 p-4"
+              >
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-black text-primary-foreground">
+                  {index + 1}
+                </span>
+                <span className="pt-0.5 text-sm leading-6 text-foreground/80">{step}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-5 flex gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
+            <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0" />
+            <p className="text-xs leading-5">
+              {lang === "ja"
+                ? "ダウンロードファイルはInnovray公式サーバーから提供されます。上の対応OSをクリックすると、直接ダウンロードが始まります。"
+                : "Files are provided by Innovray's official server. Click your operating system above to start the download directly."}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function HelpCenterPage() {
   const { lang } = useLang();
   const tx = (text: string) => jaText(lang, text);
@@ -555,21 +699,51 @@ function HelpCenterPage() {
   const [activeSearchIndex, setActiveSearchIndex] = React.useState(0);
   const [activeMobileTab, setActiveMobileTab] = React.useState("about");
 
-  const scrollToMobileSection = React.useCallback((id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const offset = 110; // header height (64px) + sticky mobile tabs bar (~46px)
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = el.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
+  const scrollToMobileSection = React.useCallback(
+    (id: string, behavior: ScrollBehavior = "smooth") => {
+      const el = document.getElementById(id);
+      if (el) {
+        const offset = 110; // header height (64px) + sticky mobile tabs bar (~46px)
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = el.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  }, []);
+        window.scrollTo({
+          top: offsetPosition,
+          behavior,
+        });
+      }
+    },
+    [],
+  );
+
+  React.useEffect(() => {
+    const scrollToSoftwareCenter = (behavior: ScrollBehavior = "smooth") => {
+      if (window.location.hash !== "#software-center") return;
+
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      if (isMobile) {
+        scrollToMobileSection("mobile-software-center", behavior);
+      } else {
+        document.getElementById("software-center")?.scrollIntoView({
+          behavior,
+          block: "start",
+        });
+      }
+    };
+
+    const handleHashChange = () => scrollToSoftwareCenter("smooth");
+    const frame = window.requestAnimationFrame(() => scrollToSoftwareCenter("auto"));
+    const timer = window.setTimeout(() => scrollToSoftwareCenter("auto"), 200);
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [scrollToMobileSection]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -579,6 +753,7 @@ function HelpCenterPage() {
       const sections = [
         { id: "mobile-about", name: "about" },
         { id: "mobile-products", name: "products" },
+        { id: "mobile-software-center", name: "software" },
         { id: "mobile-learn", name: "learn" },
       ];
 
@@ -615,6 +790,7 @@ function HelpCenterPage() {
       const mobileHashMap: Record<string, string> = {
         featured: "mobile-about",
         products: "mobile-products",
+        "software-center": "mobile-software-center",
         articles: "mobile-learn",
         support: "mobile-support",
       };
@@ -846,6 +1022,20 @@ function HelpCenterPage() {
             </a>
             <a
               className={`shrink-0 pb-1.5 transition-colors ${
+                activeMobileTab === "software"
+                  ? "border-b-2 border-primary text-slate-950"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              href="#mobile-software-center"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToMobileSection("mobile-software-center");
+              }}
+            >
+              {lang === "ja" ? "ソフトウェア" : "Software"}
+            </a>
+            <a
+              className={`shrink-0 pb-1.5 transition-colors ${
                 activeMobileTab === "learn"
                   ? "border-b-2 border-primary text-slate-950"
                   : "text-slate-500 hover:text-slate-800"
@@ -980,6 +1170,10 @@ function HelpCenterPage() {
               </details>
             ))}
           </div>
+        </section>
+
+        <section id="mobile-software-center" className="bg-[#f7f8fb] px-4 py-10">
+          <SoftwareCenterPanel lang={lang} compact />
         </section>
 
         <section id="mobile-learn" className="px-4 py-10">
@@ -1429,6 +1623,15 @@ function HelpCenterPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section
+        id="software-center"
+        className="help-desktop-only scroll-mt-32 bg-secondary/10 px-5 py-16 lg:px-10"
+      >
+        <div className="mx-auto max-w-7xl">
+          <SoftwareCenterPanel lang={lang} />
         </div>
       </section>
 

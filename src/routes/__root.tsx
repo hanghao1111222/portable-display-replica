@@ -15,7 +15,8 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { siteTheme, siteThemeClassName } from "@/config/site-theme";
-import { getInitialLanguage } from "@/i18n/locale.functions";
+import { getInitialLocale } from "@/i18n/locale.functions";
+import { MarketProvider } from "@/market/MarketContext";
 
 import appCss from "../styles.css?url";
 
@@ -85,7 +86,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  loader: () => getInitialLanguage(),
+  loader: () => getInitialLocale(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -191,21 +192,23 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const initialLang = Route.useLoaderData();
+  const { lang: initialLang, market: initialMarket } = Route.useLoaderData();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LangProvider initialLang={initialLang}>
-        <AuthProvider>
-          <CartProvider>
-            <Outlet />
-            <CartDrawer />
-            <Toaster theme={siteTheme} position="bottom-right" />
-            <Analytics />
-            <SpeedInsights />
-          </CartProvider>
-        </AuthProvider>
-      </LangProvider>
+      <MarketProvider initialMarket={initialMarket}>
+        <LangProvider initialLang={initialLang}>
+          <AuthProvider>
+            <CartProvider>
+              <Outlet />
+              <CartDrawer />
+              <Toaster theme={siteTheme} position="bottom-right" />
+              <Analytics />
+              <SpeedInsights />
+            </CartProvider>
+          </AuthProvider>
+        </LangProvider>
+      </MarketProvider>
     </QueryClientProvider>
   );
 }

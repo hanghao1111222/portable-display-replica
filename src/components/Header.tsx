@@ -22,11 +22,9 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { products, type Product } from "@/data/products";
 import type { Lang } from "@/i18n/strings";
+import { useMarket } from "@/market/MarketContext";
 
 type MegaCategory = "dual" | "triple" | "quad";
-
-const AMAZON_STORE_URL =
-  "https://www.amazon.com/stores/AnykingOfficial/page/6E88A3C7-FAEA-46BA-92FE-78B580F52232?lp_asin=B0GJS4XGDJ&ref_=ast_bln&store_ref=bl_ast_dp_brandlogo_sto";
 
 type ProductDetail = {
   label: string;
@@ -96,6 +94,7 @@ function getProductDetails(product: Product, lang: Lang): ProductDetail[] {
 
 export function Header() {
   const { t, lang, setLang } = useLang();
+  const { config: marketConfig } = useMarket();
   const { cartCount, setCartOpen } = useCart();
   const { currentUser, isAuthenticated, logout } = useAuth();
   const [open, setOpen] = useState(false);
@@ -212,13 +211,20 @@ export function Header() {
             />
           </button>
           <a
-            href={AMAZON_STORE_URL}
+            href={marketConfig.amazonStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMegaOpen(false)}
             className="rounded-full px-1.5 py-3 text-foreground/80 transition hover:bg-muted hover:text-foreground lg:px-3.5"
           >
             Amazon
+          </a>
+          <a
+            href="/help-center#software-center"
+            onClick={() => setMegaOpen(false)}
+            className="rounded-full px-1.5 py-3 text-foreground/80 transition hover:bg-muted hover:text-foreground lg:px-3.5"
+          >
+            {lang === "ja" ? "ソフトウェア" : "Software"}
           </a>
           <Link
             to="/reviews"
@@ -522,12 +528,18 @@ export function Header() {
           {megaLabels.products}
         </Link>
         <a
-          href={AMAZON_STORE_URL}
+          href={marketConfig.amazonStoreUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs font-semibold tracking-tight text-foreground/75 transition-colors hover:text-primary"
         >
           Amazon
+        </a>
+        <a
+          href="/help-center#software-center"
+          className="text-xs font-semibold tracking-tight text-foreground/75 transition-colors hover:text-primary"
+        >
+          {lang === "ja" ? "ソフトウェア" : "Software"}
         </a>
         <Link to="/reviews" className="text-xs font-semibold text-foreground/75 hover:text-primary">
           {t.nav.reviews}
@@ -556,13 +568,20 @@ export function Header() {
             {megaLabels.products}
           </Link>
           <a
-            href={AMAZON_STORE_URL}
+            href={marketConfig.amazonStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
             className="block text-sm text-foreground/80"
           >
             Amazon
+          </a>
+          <a
+            href="/help-center#software-center"
+            onClick={() => setOpen(false)}
+            className="block text-sm text-foreground/80"
+          >
+            {lang === "ja" ? "ソフトウェア" : "Software"}
           </a>
           <Link
             to="/reviews"

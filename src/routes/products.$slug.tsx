@@ -18,6 +18,8 @@ import { motion } from "motion/react";
 import { reviews, expertReviews, starDistributions } from "@/data/reviews";
 import { TrustStars } from "@/components/TrustStars";
 import { useCart } from "@/context/CartContext";
+import { useMarket } from "@/market/MarketContext";
+import { getAmazonProductUrl } from "@/market/market";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -60,13 +62,14 @@ function ProductNotFound() {
 function ProductDetail() {
   const { product } = Route.useLoaderData() as { product: import("@/data/products").Product };
   const { t, lang } = useLang();
+  const { market } = useMarket();
   const { addToCart, setCartOpen } = useCart();
   const [active, setActive] = useState(0);
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
-  const amazonUrl = product.amazonUrl;
+  const amazonUrl = getAmazonProductUrl(product, market);
   const walmartUrl =
-    product.slug === "a6"
+    market === "US" && product.slug === "a6"
       ? "https://www.walmart.com/ip/14-Triple-Laptop-Screen-Extender-Lightweight-Portable-Dual-Monitor-Extender-Speaker-FHD-1080P-Travel-Display-Plug-Play-HDMI-USB-A-Type-C-Laptops-Work/19393261363"
       : undefined;
 
@@ -208,7 +211,13 @@ function ProductDetail() {
                   rel="noopener noreferrer nofollow"
                   className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
                 >
-                  Buy on Amazon
+                  {market === "JP"
+                    ? lang === "ja"
+                      ? "Amazon.co.jpで検索"
+                      : "Search on Amazon Japan"
+                    : lang === "ja"
+                      ? "Amazon.comで購入"
+                      : "Buy on Amazon"}
                 </a>
               )}
               {walmartUrl && (

@@ -12,6 +12,8 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { getHelpCenterArticle } from "@/data/helpCenterArticles";
 import { useLang } from "@/i18n/LangContext";
 import { jaText, localizeHelpArticle } from "@/i18n/helpJa";
+import { useMarket } from "@/market/MarketContext";
+import { getAmazonProductUrl } from "@/market/market";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -118,7 +120,7 @@ const activateWarrantyFn = createServerFn({ method: "POST" })
       }
 
       return { success: true };
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Supabase Connection Failure:", err);
       return { success: false, message: "Database connection failed. Please try again later." };
     }
@@ -146,6 +148,7 @@ export const Route = createFileRoute("/help-articles/$article")({
 function HelpCenterArticlePage() {
   const { article: articleSlug } = Route.useParams();
   const { lang } = useLang();
+  const { market } = useMarket();
   const sourceArticle = getHelpCenterArticle(articleSlug);
   const article = sourceArticle ? localizeHelpArticle(sourceArticle, lang) : undefined;
   const tx = (text: string) => jaText(lang, text);
@@ -232,10 +235,12 @@ function HelpCenterArticlePage() {
           response.message || "Failed to activate warranty. Please check your order details.",
         );
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Submit Error:", err);
       setFormStatus("error");
-      setErrorMsg(err.message || "A system error occurred. Please try again later.");
+      setErrorMsg(
+        err instanceof Error ? err.message : "A system error occurred. Please try again later.",
+      );
     }
   };
 
@@ -563,18 +568,26 @@ function HelpCenterArticlePage() {
                 {article.overview.listingTitle}
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                {article.overview.productLinks.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noreferrer" : undefined}
-                    className="inline-flex items-center gap-2 rounded-md border border-border bg-white px-4 py-2 text-sm font-semibold text-foreground transition hover:border-primary/50 hover:text-primary"
-                  >
-                    {item.label}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                ))}
+                {article.overview.productLinks.map((item) => {
+                  const isAmazonPurchaseLink =
+                    article.amazonUrl !== "#" && item.href === article.amazonUrl;
+                  const href = isAmazonPurchaseLink
+                    ? getAmazonProductUrl(article, market)
+                    : item.href;
+
+                  return (
+                    <a
+                      key={item.label}
+                      href={href}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noreferrer" : undefined}
+                      className="inline-flex items-center gap-2 rounded-md border border-border bg-white px-4 py-2 text-sm font-semibold text-foreground transition hover:border-primary/50 hover:text-primary"
+                    >
+                      {item.label}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  );
+                })}
               </div>
             </section>
 

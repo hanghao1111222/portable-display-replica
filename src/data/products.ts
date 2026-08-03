@@ -47,11 +47,14 @@ import a6b10 from "@/assets/a6-aplus-banner-10.jpg";
 import a6b11 from "@/assets/a6-aplus-banner-11.jpg";
 import a6b12 from "@/assets/a6-aplus-banner-12.jpg";
 import a6b14 from "@/assets/a6-aplus-banner-14.jpg";
+import type { Market } from "@/market/market";
 
 export type Product = {
   slug: string;
   name: string;
+  /** Legacy US URL kept for products restored from older saved carts. */
   amazonUrl?: string;
+  amazonUrls?: Partial<Record<Market, string>>;
   shopifyVariantId?: string;
   tagline: { en: string; ja: string };
   description: { en: string; ja: string };
@@ -181,7 +184,7 @@ export const products: Product[] = [
   {
     slug: "s10-pro",
     name: "Anyking S10 Pro",
-    amazonUrl: "https://www.amazon.com/dp/B0GJSXHDCG",
+    amazonUrls: { US: "https://www.amazon.com/dp/B0GJSXHDCG" },
     shopifyVariantId: "45001234567890",
     tagline: {
       en: "Triple‑screen workstation, anywhere.",
@@ -287,7 +290,7 @@ export const products: Product[] = [
   {
     slug: "p7-156-extender",
     name: 'Anyking P7 15.6" Extender',
-    amazonUrl: "https://www.amazon.com/dp/B0H25VMK6H",
+    amazonUrls: { US: "https://www.amazon.com/dp/B0H25VMK6H" },
     shopifyVariantId: "45001234567891",
     tagline: {
       en: "Bigger dual screens for a true mobile command center.",
@@ -363,7 +366,7 @@ export const products: Product[] = [
   {
     slug: "a6",
     name: "Anyking A6",
-    amazonUrl: "https://www.amazon.com/dp/B0GJS4XGDJ",
+    amazonUrls: { US: "https://www.amazon.com/dp/B0GJS4XGDJ" },
     shopifyVariantId: "45001234567892",
     tagline: {
       en: "One extra screen. Zero compromise.",

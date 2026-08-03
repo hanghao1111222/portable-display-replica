@@ -8,11 +8,14 @@ import { ArrowRight, ExternalLink, Lock, Package, ShieldCheck, X } from "lucide-
 import { toast } from "sonner";
 import { shopifyConfig } from "@/config/shopify";
 import { redirectToShopifyCheckout } from "@/lib/shopify";
+import { useMarket } from "@/market/MarketContext";
+import { getAmazonProductUrl } from "@/market/market";
 
 export function CheckoutModal() {
   const { isCheckoutOpen, setCheckoutOpen, cartItems, cartSubtotal, clearCart } = useCart();
   const { currentUser, createOrder } = useAuth();
   const { lang } = useLang();
+  const { market } = useMarket();
   const navigate = useNavigate();
   const copy =
     lang === "ja"
@@ -73,8 +76,8 @@ export function CheckoutModal() {
         };
 
   const amazonUrl = useMemo(
-    () => cartItems.find((item) => item.product.amazonUrl)?.product.amazonUrl,
-    [cartItems],
+    () => (cartItems.length > 0 ? getAmazonProductUrl(cartItems[0].product, market) : undefined),
+    [cartItems, market],
   );
 
   const openCheckout = () => {
@@ -166,9 +169,9 @@ export function CheckoutModal() {
                               {formatPrice(item.product.price, lang)}
                             </p>
                           </div>
-                          {!shopifyConfig.useShopifyCheckout && item.product.amazonUrl && (
+                          {!shopifyConfig.useShopifyCheckout && (
                             <a
-                              href={item.product.amazonUrl}
+                              href={getAmazonProductUrl(item.product, market)}
                               target="_blank"
                               rel="noreferrer"
                               className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-2 text-sm font-medium hover:border-primary hover:text-primary transition"

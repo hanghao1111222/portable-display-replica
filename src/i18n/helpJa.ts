@@ -3,6 +3,7 @@ import type { HelpCenterArticle } from "@/data/helpCenterArticles";
 
 const uiJa: Record<string, string> = {
   "Setup Guide": "セットアップガイド",
+  "Software Center": "ソフトウェアセンター",
   Products: "製品",
   "FAQ Articles": "よくあるご質問",
   "Can't find answers?": "解決しない場合",
