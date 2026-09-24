@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
-import { HeroCarousel } from "@/components/HeroCarousel";
+import { InteractiveHero } from "@/components/InteractiveHero";
 import { MediaMarquee } from "@/components/MediaMarquee";
 import { HomeProductShowcase } from "@/components/HomeProductShowcase";
 import { FeatureBlock, ScenesBlock } from "@/components/FeatureBlocks";
@@ -19,7 +19,7 @@ function Index() {
   const { t, lang } = useLang();
   return (
     <SiteLayout>
-      <HeroCarousel />
+      <InteractiveHero />
       <MediaMarquee />
 
       <section className="mx-auto max-w-[1440px] px-5 py-24 lg:px-10">
