@@ -80,6 +80,7 @@ export type Product = {
   discountPercent?: number;
   rating: number;
   reviews: number;
+  sold?: string;
   images: string[];
   gallery?: string[];
   gallerySection?: {
@@ -291,7 +292,8 @@ export const products: Product[] = [
     compareAt: 511.49,
     discountPercent: 30,
     rating: 5.0,
-    reviews: 0,
+    reviews: 363,
+    sold: "1000+",
     images: [
       s12Main,
       s12Display,

@@ -139,7 +139,7 @@ function ProductDetail() {
               </span>
             )}
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold">
+          <h1 className="font-sans text-4xl font-normal tracking-normal md:text-5xl">
             {product.listingTitle?.[lang] ?? product.name}
           </h1>
           <p className="text-muted-foreground text-lg">{product.tagline[lang]}</p>
@@ -155,6 +155,11 @@ function ProductDetail() {
             </div>
             <span>{product.rating.toFixed(2)}</span>
             <span className="text-muted-foreground">· {product.reviews} reviews</span>
+            {product.sold && (
+              <span className="text-muted-foreground">
+                · {lang === "ja" ? `販売数 ${product.sold}` : `${product.sold} sold`}
+              </span>
+            )}
           </div>
 
           <div className="flex items-baseline gap-3 pt-2">
