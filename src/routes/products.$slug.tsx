@@ -29,11 +29,12 @@ export const Route = createFileRoute("/products/$slug")({
   },
   head: ({ loaderData }) => {
     const p = loaderData?.product;
+    const title = p?.listingTitle?.en ?? p?.name;
     return {
       meta: [
-        { title: p ? `${p.name} — Anyking` : "Product" },
+        { title: title ? `${title} — Anyking` : "Product" },
         { name: "description", content: p?.description.en ?? "Portable monitor" },
-        { property: "og:title", content: p?.name ?? "Product" },
+        { property: "og:title", content: title ?? "Product" },
         { property: "og:description", content: p?.description.en ?? "" },
         ...(p?.images?.[0] ? [{ property: "og:image", content: p.images[0] }] : []),
       ],
@@ -68,13 +69,15 @@ function ProductDetail() {
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
   const amazonUrl = getAmazonProductUrl(product, market);
+  const isAmazonJapanUrl = amazonUrl.includes("amazon.co.jp");
   const walmartUrl =
     market === "US" && product.slug === "a6"
       ? "https://www.walmart.com/ip/14-Triple-Laptop-Screen-Extender-Lightweight-Portable-Dual-Monitor-Extender-Speaker-FHD-1080P-Travel-Display-Plug-Play-HDMI-USB-A-Type-C-Laptops-Work/19393261363"
       : undefined;
 
   const related = products.filter((p) => p.slug !== product.slug).slice(0, 4);
-  const discount = Math.round((1 - product.price / product.compareAt) * 100);
+  const discount =
+    product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100);
 
   return (
     <SiteLayout>
@@ -136,7 +139,9 @@ function ProductDetail() {
               </span>
             )}
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold">{product.name}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">
+            {product.listingTitle?.[lang] ?? product.name}
+          </h1>
           <p className="text-muted-foreground text-lg">{product.tagline[lang]}</p>
 
           <div className="flex items-center gap-2 text-sm">
@@ -160,6 +165,19 @@ function ProductDetail() {
           </div>
 
           <p className="text-foreground/90 leading-relaxed">{product.description[lang]}</p>
+
+          {product.highlights && (
+            <div className="flex flex-wrap gap-2">
+              {product.highlights[lang].map((highlight) => (
+                <span
+                  key={highlight}
+                  className="rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium"
+                >
+                  {highlight}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="flex items-center gap-4 pt-4">
             <span className="text-sm text-muted-foreground">{t.detail.quantity}</span>
@@ -211,7 +229,7 @@ function ProductDetail() {
                   rel="noopener noreferrer nofollow"
                   className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
                 >
-                  {market === "JP"
+                  {isAmazonJapanUrl
                     ? lang === "ja"
                       ? "Amazon.co.jpで検索"
                       : "Search on Amazon Japan"

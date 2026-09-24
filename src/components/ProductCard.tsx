@@ -11,7 +11,8 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
   const { t, lang } = useLang();
   const { addToCart, setCartOpen } = useCart();
   const [hover, setHover] = useState(false);
-  const discount = Math.round((1 - product.price / product.compareAt) * 100);
+  const discount =
+    product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100);
 
   return (
     <motion.div
@@ -73,7 +74,9 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
                 />
               ))}
             </div>
-            <span>{product.rating.toFixed(2)} · ({product.reviews})</span>
+            <span>
+              {product.rating.toFixed(2)} · ({product.reviews})
+            </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-xl font-semibold text-sale">

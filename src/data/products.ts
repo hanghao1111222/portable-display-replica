@@ -47,11 +47,28 @@ import a6b10 from "@/assets/a6-aplus-banner-10.jpg";
 import a6b11 from "@/assets/a6-aplus-banner-11.jpg";
 import a6b12 from "@/assets/a6-aplus-banner-12.jpg";
 import a6b14 from "@/assets/a6-aplus-banner-14.jpg";
+import s12Main from "@/assets/s12-main.jpg";
+import s12Connection from "@/assets/s12-connection.jpg";
+import s12Compatibility from "@/assets/s12-compatibility.jpg";
+import s12Display from "@/assets/s12-display.jpg";
+import s12Stand from "@/assets/s12-stand.jpg";
+import s12Portable from "@/assets/s12-portable.jpg";
+import s12Modes from "@/assets/s12-modes.jpg";
+import s12Scenarios from "@/assets/s12-scenarios.jpg";
+import s12AplusWorkspace from "@/assets/s12-aplus-workspace.jpg";
+import s12AplusDisplay from "@/assets/s12-aplus-display.jpg";
+import s12AplusStand from "@/assets/s12-aplus-stand.jpg";
+import s12AplusConnection from "@/assets/s12-aplus-connection.jpg";
+import s12AplusPortable from "@/assets/s12-aplus-portable.jpg";
+import s12AplusRemote from "@/assets/s12-aplus-remote.jpg";
+import s12AplusHdmi from "@/assets/s12-aplus-hdmi.jpg";
 import type { Market } from "@/market/market";
 
 export type Product = {
   slug: string;
   name: string;
+  listingTitle?: { en: string; ja: string };
+  highlights?: { en: string[]; ja: string[] };
   /** Legacy US URL kept for products restored from older saved carts. */
   amazonUrl?: string;
   amazonUrls?: Partial<Record<Market, string>>;
@@ -60,6 +77,7 @@ export type Product = {
   description: { en: string; ja: string };
   price: number;
   compareAt: number;
+  discountPercent?: number;
   rating: number;
   reviews: number;
   images: string[];
@@ -105,7 +123,11 @@ export type Product = {
   };
   badge?: { en: string; ja: string };
   specs: { label: { en: string; ja: string }; value: string }[];
-  features: { image?: string; title: { en: string; ja: string }; body: { en: string; ja: string } }[];
+  features: {
+    image?: string;
+    title: { en: string; ja: string };
+    body: { en: string; ja: string };
+  }[];
 };
 
 const s10ProSpecs = [
@@ -128,7 +150,10 @@ const s10ProSpecs = [
   { label: { en: "Weight", ja: "重量" }, value: "1.6 kg (3.53 lbs)" },
   { label: { en: "Color", ja: "カラー" }, value: "Black" },
   { label: { en: "Warranty", ja: "保証" }, value: "2 Years Manufacturer" },
-  { label: { en: "Manufacturer", ja: "製造元" }, value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
+  {
+    label: { en: "Manufacturer", ja: "製造元" },
+    value: "Shenzhen Baijiayoupu Technology Co., Ltd",
+  },
   { label: { en: "ASIN", ja: "ASIN" }, value: "B0GJSXHDCG" },
 ];
 
@@ -144,7 +169,10 @@ const a6Specs = [
   { label: { en: "Response time", ja: "応答速度" }, value: "0.1 ms" },
   { label: { en: "Contrast ratio", ja: "コントラスト比" }, value: "1000:1" },
   { label: { en: "Screen finish", ja: "画面仕上げ" }, value: "Matte" },
-  { label: { en: "Picture enhancement", ja: "画質補正" }, value: "Anti-Glare Screen, Blue Light Filter" },
+  {
+    label: { en: "Picture enhancement", ja: "画質補正" },
+    value: "Anti-Glare Screen, Blue Light Filter",
+  },
   { label: { en: "Connectivity", ja: "接続方式" }, value: "USB Type-C, mini HDMI" },
   { label: { en: "Ports", ja: "ポート" }, value: "2× USB-C, 1× mini HDMI, 1x Audio Jack" },
   { label: { en: "HDMI ports", ja: "HDMIポート" }, value: "1" },
@@ -152,7 +180,10 @@ const a6Specs = [
   { label: { en: "Weight", ja: "重量" }, value: "850 g (1.87 lbs)" },
   { label: { en: "Color", ja: "カラー" }, value: "Black" },
   { label: { en: "Warranty", ja: "保証" }, value: "1 Year Manufacturer" },
-  { label: { en: "Manufacturer", ja: "製造元" }, value: "Shenzhen Baijiayoupu Technology Co., Ltd" },
+  {
+    label: { en: "Manufacturer", ja: "製造元" },
+    value: "Shenzhen Baijiayoupu Technology Co., Ltd",
+  },
   { label: { en: "ASIN", ja: "ASIN" }, value: "B0GJS4XGDJ" },
 ];
 
@@ -168,19 +199,181 @@ const p7Specs = [
   { label: { en: "Contrast ratio", ja: "コントラスト比" }, value: "1000:1" },
   { label: { en: "Brightness", ja: "明るさ" }, value: "300 nits" },
   { label: { en: "Screen finish", ja: "画面仕上げ" }, value: "Matte" },
-  { label: { en: "Picture enhancement", ja: "画質補正" }, value: "Low blue light, 100% sRGB, 16.7 million colors" },
+  {
+    label: { en: "Picture enhancement", ja: "画質補正" },
+    value: "Low blue light, 100% sRGB, 16.7 million colors",
+  },
   { label: { en: "Connectivity", ja: "接続方式" }, value: "USB Type-C, mini HDMI" },
   { label: { en: "Ports", ja: "ポート" }, value: "USB-C and HDMI-assisted workflows" },
-  { label: { en: "Compatible laptop size", ja: "対応ノートPCサイズ" }, value: '13" to 17.3" laptops' },
+  {
+    label: { en: "Compatible laptop size", ja: "対応ノートPCサイズ" },
+    value: '13" to 17.3" laptops',
+  },
   { label: { en: "Laptop grip range", ja: "固定範囲" }, value: '11.8" to 15"' },
-  { label: { en: "Viewing adjustment", ja: "角度調整" }, value: "180° adjustable screens, 90° tilt stand" },
+  {
+    label: { en: "Viewing adjustment", ja: "角度調整" },
+    value: "180° adjustable screens, 90° tilt stand",
+  },
   { label: { en: "Weight", ja: "重量" }, value: "3.9 lbs" },
   { label: { en: "Color", ja: "カラー" }, value: "Black" },
   { label: { en: "Warranty", ja: "保証" }, value: "1 Year Manufacturer" },
   { label: { en: "ASIN", ja: "ASIN" }, value: "B0H25VMK6H" },
 ];
 
+const s12Specs = [
+  { label: { en: "Brand", ja: "ブランド" }, value: "Anyking" },
+  { label: { en: "Model", ja: "モデル" }, value: "S12" },
+  { label: { en: "Screen size", ja: "画面サイズ" }, value: '16" × 2' },
+  { label: { en: "Display technology", ja: "ディスプレイ技術" }, value: "IPS" },
+  { label: { en: "Resolution", ja: "解像度" }, value: "FHD+ (1920 × 1200)" },
+  { label: { en: "Aspect ratio", ja: "アスペクト比" }, value: "16:10" },
+  { label: { en: "Refresh rate", ja: "リフレッシュレート" }, value: "60 Hz" },
+  { label: { en: "Contrast ratio", ja: "コントラスト比" }, value: "1000:1" },
+  { label: { en: "Brightness", ja: "明るさ" }, value: "350 nits" },
+  { label: { en: "Color gamut", ja: "色域" }, value: "100% sRGB" },
+  { label: { en: "Connectivity", ja: "接続方式" }, value: "USB-C, HDMI" },
+  {
+    label: { en: "Compatible laptop size", ja: "対応ノートPCサイズ" },
+    value: '12" to 17.3" laptops',
+  },
+  { label: { en: "Display modes", ja: "表示モード" }, value: "Extend, Mirror, Portrait" },
+  { label: { en: "Viewing adjustment", ja: "角度調整" }, value: "180° side screens, 0–90° stand" },
+  { label: { en: "Panel thickness", ja: "パネル厚" }, value: "6.5 mm (0.25 in)" },
+  { label: { en: "Item dimensions", ja: "本体サイズ" }, value: '16.0" × 9.8" × 1.0" folded' },
+  { label: { en: "Weight", ja: "重量" }, value: "4.3 lbs (1.95 kg)" },
+  {
+    label: { en: "Systems", ja: "対応OS" },
+    value: "Windows, macOS, ChromeOS, Linux, Android",
+  },
+  { label: { en: "Color", ja: "カラー" }, value: "Silver / Black" },
+  { label: { en: "ASIN", ja: "ASIN" }, value: "B0HBPZ96MM" },
+];
+
 export const products: Product[] = [
+  {
+    slug: "s12",
+    name: "Anyking S12",
+    listingTitle: {
+      en: 'Anyking S12 16" Laptop Screen Extender, Dual 1200P IPS Displays',
+      ja: "Anyking S12 16インチ デュアル1200P ノートPC用拡張モニター",
+    },
+    highlights: {
+      en: [
+        'Dual 16" 1200P IPS Displays',
+        "Freestanding, No-Clamp Design",
+        'Fits 12–17.3" Laptops',
+        "350-Nit Brightness",
+        "100% sRGB Color",
+        "USB-C & HDMI",
+      ],
+      ja: [
+        "16インチ 1200P IPSデュアルディスプレイ",
+        "クランプ不要の自立式デザイン",
+        "12～17.3インチのノートPCに対応",
+        "350ニットの明るさ",
+        "100% sRGB",
+        "USB-C・HDMI接続",
+      ],
+    },
+    amazonUrls: {
+      US: "https://www.amazon.com/dp/B0HBPZ96MM",
+      JP: "https://www.amazon.com/dp/B0HBPZ96MM",
+    },
+    tagline: {
+      en: "Bigger 16-inch dual screens. No clamps, no compromise.",
+      ja: "16インチの大画面を2枚追加。クランプ不要で、もっと自由に。",
+    },
+    description: {
+      en: 'Two 16" 1920×1200 IPS displays turn compatible 12–17.3-inch laptops into a spacious triple-screen workstation. The freestanding aluminum design avoids pressure on your laptop screen, while 350-nit brightness, 100% sRGB color, USB-C and HDMI connectivity support focused work anywhere.',
+      ja: "16インチ・1920×1200 IPSディスプレイ2枚で、対応する12～17.3インチのノートPCを広々とした3画面ワークステーションへ。自立式アルミニウム設計でノートPC画面に負担をかけず、350ニット、100% sRGB、USB-C・HDMI接続により、場所を選ばず集中して作業できます。",
+    },
+    price: 357.99,
+    compareAt: 511.49,
+    discountPercent: 30,
+    rating: 5.0,
+    reviews: 0,
+    images: [
+      s12Main,
+      s12Display,
+      s12Stand,
+      s12Compatibility,
+      s12Connection,
+      s12Portable,
+      s12Modes,
+      s12Scenarios,
+    ],
+    gallery: [
+      s12Main,
+      s12Display,
+      s12Stand,
+      s12Compatibility,
+      s12Connection,
+      s12Portable,
+      s12Modes,
+      s12Scenarios,
+    ],
+    aplus: {
+      banners: [
+        s12AplusWorkspace,
+        s12AplusDisplay,
+        s12AplusStand,
+        s12AplusConnection,
+        s12AplusPortable,
+        s12AplusRemote,
+        s12AplusHdmi,
+      ],
+      deploy: {
+        image: s12Main,
+        title: {
+          en: "Open a no-clamp triple-screen workspace",
+          ja: "クランプ不要の3画面環境を展開",
+        },
+        body: {
+          en: 'Place S12 behind a compatible 12–17.3-inch laptop, open the two 16" side displays, and connect with two full-featured USB-C paths or USB-C plus HDMI. The freestanding support keeps the setup stable without pressing on the laptop display.',
+          ja: "S12を対応する12～17.3インチのノートPCの背面に置き、16インチのサイドディスプレイ2枚を展開。フル機能USB-Cを2系統、またはUSB-CとHDMIで接続できます。自立式サポートにより、ノートPC画面に圧力をかけず安定して設置できます。",
+        },
+      },
+    },
+    badge: { en: "New 16-inch", ja: "新16インチ" },
+    specs: s12Specs,
+    features: [
+      {
+        image: s12AplusDisplay,
+        title: {
+          en: 'More room with dual 16" 1200P displays',
+          ja: "16インチ・1200Pの大画面を2枚追加",
+        },
+        body: {
+          en: "Each 16:10 IPS panel delivers 1920×1200 resolution, 350-nit brightness, 100% sRGB color, and a 60Hz refresh rate for clearer documents, dashboards, and creative work.",
+          ja: "各16:10 IPSパネルは1920×1200、350ニット、100% sRGB、60Hzに対応。資料、ダッシュボード、制作作業をより広く鮮明に表示します。",
+        },
+      },
+      {
+        image: s12AplusStand,
+        title: { en: "Freestanding support with no clamps", ja: "クランプ不要の自立式サポート" },
+        body: {
+          en: "The rear metal stand supports both screens on your desk, reducing pressure and hinge strain on the laptop while allowing each side display to rotate up to 180°.",
+          ja: "背面メタルスタンドが2枚の画面を机上で支え、ノートPC画面への圧力やヒンジへの負担を軽減。サイド画面は最大180度まで調整できます。",
+        },
+      },
+      {
+        image: s12AplusConnection,
+        title: { en: "Two cables, three screens", ja: "2本のケーブルで3画面" },
+        body: {
+          en: "Connect compatible laptops with two full-featured USB-C ports, or combine USB-C and HDMI. Base M1/M2/M3 Macs require the supported H5-T connection cable.",
+          ja: "フル機能USB-Cポート2基、またはUSB-CとHDMIの組み合わせで接続できます。ベースモデルのM1/M2/M3 Macでは対応するH5-T接続ケーブルが必要です。",
+        },
+      },
+      {
+        image: s12AplusPortable,
+        title: { en: "Slim enough to travel", ja: "持ち運びやすいスリム設計" },
+        body: {
+          en: "The folded 16.0 × 9.8 × 1.0-inch body weighs 4.3 lb, with 6.5 mm panels that pack into a backpack for office, home, study, and travel.",
+          ja: "折りたたみ時は16.0×9.8×1.0インチ、重量4.3lb、パネル厚6.5mm。オフィス、自宅、学習、出張へ持ち運べます。",
+        },
+      },
+    ],
+  },
   {
     slug: "s10-pro",
     name: "Anyking S10 Pro",
@@ -192,18 +385,13 @@ export const products: Product[] = [
     },
     description: {
       en: 'Two 14" FHD IPS panels clip onto either side of your laptop to form an instant triple‑display setup. Anti‑glare coating, HDR10+, and a precision hinge that holds exactly where you set it.',
-      ja: '14インチのフルHD IPSパネル2枚をノートPCの両側にクリップで装着し、瞬時にトリプルディスプレイ環境を構築。アンチグレア加工、HDR10+対応、設定した角度を正確に保つ高精度ヒンジを搭載。',
+      ja: "14インチのフルHD IPSパネル2枚をノートPCの両側にクリップで装着し、瞬時にトリプルディスプレイ環境を構築。アンチグレア加工、HDR10+対応、設定した角度を正確に保つ高精度ヒンジを搭載。",
     },
     price: 189.98,
     compareAt: 239.99,
     rating: 4.81,
     reviews: 412,
-    images: [
-      s10proMain20260717,
-      s10g1,
-      s10g2,
-      s10g6,
-    ],
+    images: [s10proMain20260717, s10g1, s10g2, s10g6],
     gallery: [s10g1, s10g2, s10g3, s10g4, s10g5, s10g6, s10g7],
     gallerySection: {
       heroTitle: { en: "Be comfortable everywhere", ja: "どこでも快適に" },
@@ -232,7 +420,7 @@ export const products: Product[] = [
       deployTitle: { en: "Deploy it", ja: "展開する" },
       deployBody: {
         en: 'Introducing the Anyking S10 Pro: effortlessly attach the dual 14" panels to the back of your Mac or Windows laptop with the integrated kickstand. Connect with a single USB-C cable and watch your three-screen workstation spring into action.',
-        ja: 'Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークステーションが瞬時に展開します。',
+        ja: "Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークステーションが瞬時に展開します。",
       },
     },
     aplus: {
@@ -245,7 +433,10 @@ export const products: Product[] = [
       },
       scenes: [
         { image: s10g1, label: { en: "Multitasking Workspace", ja: "マルチタスクワークスペース" } },
-        { image: s10g3, label: { en: "Flexible Presentation Mode", ja: "プレゼンテーション・共有" } },
+        {
+          image: s10g3,
+          label: { en: "Flexible Presentation Mode", ja: "プレゼンテーション・共有" },
+        },
         { image: s10g5, label: { en: "Ultra-slim Portability", ja: "極薄で持ち運びも簡単" } },
         { image: s10g7, label: { en: "Work Anywhere", ja: "どこでも快適に作業" } },
       ],
@@ -254,7 +445,7 @@ export const products: Product[] = [
         title: { en: "Deploy it", ja: "展開する" },
         body: {
           en: 'Introducing the Anyking S10 Pro: effortlessly attach the dual 14" panels to the back of your Mac or Windows laptop with the integrated kickstand. Connect with a single USB-C cable and watch your three-screen workstation spring into action.',
-          ja: 'Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークスペースが瞬時に展開します。',
+          ja: "Anyking S10 Proのご紹介：内蔵キックスタンドで14インチデュアルパネルをMacまたはWindowsノートPCの背面に簡単に装着。USB-Cケーブル1本で接続し、3画面ワークスペースが瞬時に展開します。",
         },
       },
     },
@@ -282,7 +473,7 @@ export const products: Product[] = [
         title: { en: "100% sRGB · HDR10+", ja: "100% sRGB · HDR10+" },
         body: {
           en: 'Color‑accurate 14" IPS panels with anti‑glare coating, ready for design, video and gameplay.',
-          ja: '色精度の高い14インチIPSパネルにアンチグレア加工を施し、デザイン、動画、ゲームに最適。',
+          ja: "色精度の高い14インチIPSパネルにアンチグレア加工を施し、デザイン、動画、ゲームに最適。",
         },
       },
     ],
@@ -298,7 +489,7 @@ export const products: Product[] = [
     },
     description: {
       en: 'Dual 15.6" FHD IPS side displays expand a 13-17.3 inch laptop into a spacious triple-screen workstation. Built for spreadsheets, meetings, coding, travel work, and less window switching.',
-      ja: '15.6インチFHD IPSデュアルサイドディスプレイで、13〜17.3インチのノートPCを広々とした3画面ワークステーションへ拡張。表計算、会議、コーディング、出張作業に最適です。',
+      ja: "15.6インチFHD IPSデュアルサイドディスプレイで、13〜17.3インチのノートPCを広々とした3画面ワークステーションへ拡張。表計算、会議、コーディング、出張作業に最適です。",
     },
     price: 229.98,
     compareAt: 299.99,
@@ -314,15 +505,27 @@ export const products: Product[] = [
       p7Compatibility,
       p7Scenes,
     ],
-    gallery: [p7Main, p7Display, p7Productivity, p7Portable, p7Fit, p7Modes, p7Compatibility, p7Scenes],
+    gallery: [
+      p7Main,
+      p7Display,
+      p7Productivity,
+      p7Portable,
+      p7Fit,
+      p7Modes,
+      p7Compatibility,
+      p7Scenes,
+    ],
     aplus: {
       banners: [p7Display, p7Productivity, p7Portable, p7Fit, p7Modes, p7Compatibility, p7Scenes],
       deploy: {
         image: p7Main,
-        title: { en: "Deploy a bigger triple-screen workspace", ja: "より大きな3画面ワークスペースを展開" },
+        title: {
+          en: "Deploy a bigger triple-screen workspace",
+          ja: "より大きな3画面ワークスペースを展開",
+        },
         body: {
           en: 'The P7 adds two 15.6" side panels to compatible laptops, giving you more room for dashboards, documents, meetings, and creative tools without constantly switching windows.',
-          ja: 'P7は対応ノートPCに15.6インチのサイドパネル2枚を追加し、ダッシュボード、資料、会議、制作ツールを同時に扱える広い作業領域を実現します。',
+          ja: "P7は対応ノートPCに15.6インチのサイドパネル2枚を追加し、ダッシュボード、資料、会議、制作ツールを同時に扱える広い作業領域を実現します。",
         },
       },
     },
@@ -331,7 +534,10 @@ export const products: Product[] = [
     features: [
       {
         image: p7Productivity,
-        title: { en: "Boost productivity with dual screens", ja: "デュアルスクリーンで生産性を向上" },
+        title: {
+          en: "Boost productivity with dual screens",
+          ja: "デュアルスクリーンで生産性を向上",
+        },
         body: {
           en: "View more and switch less while handling meetings, spreadsheets, emails, and documents at the same time.",
           ja: "会議、表計算、メール、資料を同時に扱い、画面切り替えを減らして作業効率を高めます。",
@@ -347,10 +553,13 @@ export const products: Product[] = [
       },
       {
         image: p7Portable,
-        title: { en: "Portable for travel and work anywhere", ja: "旅行にも日常作業にも持ち運びやすい" },
+        title: {
+          en: "Portable for travel and work anywhere",
+          ja: "旅行にも日常作業にも持ち運びやすい",
+        },
         body: {
           en: 'A slim 0.16" profile, 3.9 lb body, rear support structure, and travel bag make the larger 15.6-inch setup easier to carry between office, home, and trips.',
-          ja: '薄さ0.16インチ、3.9lbの本体、背面サポート構造、持ち運びバッグにより、15.6インチの大型セットアップもオフィス、自宅、出張先へ運びやすくなります。',
+          ja: "薄さ0.16インチ、3.9lbの本体、背面サポート構造、持ち運びバッグにより、15.6インチの大型セットアップもオフィス、自宅、出張先へ運びやすくなります。",
         },
       },
       {
@@ -374,24 +583,21 @@ export const products: Product[] = [
     },
     description: {
       en: 'A featherlight 14" portable monitor that clips onto your laptop in seconds. 1080P FHD IPS, just 1.87 lb, with full USB-C plug‑and‑play and an integrated RGB ambient light.',
-      ja: '14インチの超軽量ポータブルモニター、ノートPCに数秒で装着。1080PフルHD IPS、わずか1.87lb、USB-Cプラグ＆プレイ対応、RGBアンビエントライト内蔵。',
+      ja: "14インチの超軽量ポータブルモニター、ノートPCに数秒で装着。1080PフルHD IPS、わずか1.87lb、USB-Cプラグ＆プレイ対応、RGBアンビエントライト内蔵。",
     },
     price: 99.98,
     compareAt: 135.99,
     rating: 4.76,
     reviews: 287,
-    images: [
-      a6Main20260717,
-      a6g2,
-      a6g3,
-      a6g4,
-      a6g6,
-    ],
+    images: [a6Main20260717, a6g2, a6g3, a6g4, a6g6],
     aplus: {
       banners: [a6b1, a6b2, a6b3, a6b4, a6b5, a6b6],
       sliders: [
         {
-          title: { en: "Details you don't notice. Until you do.", ja: "細部に宿るこだわり。違いを実感。" },
+          title: {
+            en: "Details you don't notice. Until you do.",
+            ja: "細部に宿るこだわり。違いを実感。",
+          },
           slides: [a6b7_1, a6b7_2],
         },
         {
@@ -412,7 +618,7 @@ export const products: Product[] = [
         title: { en: "Deploy it", ja: "展開する" },
         body: {
           en: 'Introducing the Anyking A6 14": effortlessly place it next to your Mac or Windows laptop with its integrated kickstand. Connect it with a USB-C cable and watch as your dual-screen workstation springs into action.',
-          ja: 'Anyking A6 14インチのご紹介：内蔵キックスタンドでMacまたはWindowsノートPCの隣に簡単に設置。USB-Cケーブルで接続すれば、デュアルスクリーンワークステーションが瞬時に展開します。',
+          ja: "Anyking A6 14インチのご紹介：内蔵キックスタンドでMacまたはWindowsノートPCの隣に簡単に設置。USB-Cケーブルで接続すれば、デュアルスクリーンワークステーションが瞬時に展開します。",
         },
       },
     },
