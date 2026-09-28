@@ -32,19 +32,24 @@ function productWeight(product: Product, lang: "en" | "ja") {
 }
 
 function productDetails(product: Product, lang: "en" | "ja"): Detail[] {
-  const isSinglePanel = product.slug === "a6";
+  const isSinglePanel = ["a6", "m5", "s13", "s15-plus"].includes(product.slug);
+  const isP7Pro = product.slug === "p7-pro";
 
   return [
     {
       label: lang === "ja" ? "接続" : "Connection",
-      value: isSinglePanel
+      value: isP7Pro
         ? lang === "ja"
-          ? "映像出力 1系統"
-          : "1 video path"
-        : lang === "ja"
-          ? "映像出力 2系統"
-          : "2 video paths",
-      note: "USB-C / HDMI",
+          ? "USB-C 1本"
+          : "One USB-C cable"
+        : isSinglePanel
+          ? lang === "ja"
+            ? "映像出力 1系統"
+            : "1 video path"
+          : lang === "ja"
+            ? "映像出力 2系統"
+            : "2 video paths",
+      note: isP7Pro ? "USB-C / USB-A" : "USB-C / HDMI",
       icon: Cable,
     },
     {
@@ -67,14 +72,24 @@ function productDetails(product: Product, lang: "en" | "ja"): Detail[] {
     },
     {
       label: lang === "ja" ? "セットアップ" : "Setup",
-      value: isSinglePanel
+      value: isP7Pro
         ? lang === "ja"
-          ? "ドライバー不要*"
-          : "Driver-free*"
+          ? "ドライバー必須"
+          : "Driver required"
+        : isSinglePanel
+          ? lang === "ja"
+            ? "ドライバー不要*"
+            : "Driver-free*"
+          : lang === "ja"
+            ? "必要に応じてH5"
+            : "H5 if required",
+      note: isP7Pro
+        ? lang === "ja"
+          ? "初回使用前に導入"
+          : "Install before first use"
         : lang === "ja"
-          ? "必要に応じてH5"
-          : "H5 if required",
-      note: lang === "ja" ? "機種により異なります" : "Model dependent",
+          ? "機種により異なります"
+          : "Model dependent",
       icon: Download,
     },
     {
@@ -90,9 +105,13 @@ export function HomeProductShowcase({ products }: { products: Product[] }) {
   const { lang } = useLang();
 
   return (
-    <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scrollbar-none lg:grid lg:grid-cols-3 lg:overflow-visible">
+    <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scrollbar-none lg:grid lg:grid-cols-2 lg:overflow-visible">
       {products.map((product, index) => {
-        const discount = Math.round((1 - product.price / product.compareAt) * 100);
+        const isAvailable = product.available !== false;
+        const discount =
+          isAvailable && product.compareAt > 0
+            ? (product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100))
+            : 0;
         const details = productDetails(product, lang);
 
         return (
@@ -120,16 +139,20 @@ export function HomeProductShowcase({ products }: { products: Product[] }) {
                       {product.badge[lang]}
                     </span>
                   )}
-                  <span className="rounded-full bg-sale px-4 py-2 text-xs font-bold text-white shadow-sm">
-                    {lang === "ja" ? `${discount}% OFF` : `Save ${discount}%`}
-                  </span>
+                  {discount > 0 && (
+                    <span className="rounded-full bg-sale px-4 py-2 text-xs font-bold text-white shadow-sm">
+                      {lang === "ja" ? `${discount}% OFF` : `Save ${discount}%`}
+                    </span>
+                  )}
                 </div>
-                <span className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold shadow-sm">
-                  <Star className="h-4 w-4 fill-primary text-primary" />
-                  {lang === "ja"
-                    ? `${product.rating.toFixed(1)}・レビュー${product.reviews}件`
-                    : `${product.rating.toFixed(1)} · ${product.reviews} reviews`}
-                </span>
+                {isAvailable && (
+                  <span className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold shadow-sm">
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    {lang === "ja"
+                      ? `${product.rating.toFixed(1)}・レビュー${product.reviews}件`
+                      : `${product.rating.toFixed(1)} · ${product.reviews} reviews`}
+                  </span>
+                )}
               </div>
 
               <div className="bg-white px-6 pb-6 pt-5">
@@ -137,17 +160,23 @@ export function HomeProductShowcase({ products }: { products: Product[] }) {
                   <h3 className="max-w-[60%] text-xl font-bold leading-tight transition group-hover:text-primary lg:text-2xl">
                     {productName(product, lang)}
                   </h3>
-                  <div className="shrink-0 text-right">
-                    <p className="text-sm text-sale">
-                      {lang === "ja" ? "価格 " : "From "}
-                      <span className="text-lg font-semibold">
-                        {formatPrice(product.price, lang)}
-                      </span>
+                  {isAvailable ? (
+                    <div className="shrink-0 text-right">
+                      <p className="text-sm text-sale">
+                        {lang === "ja" ? "価格 " : "From "}
+                        <span className="text-lg font-semibold">
+                          {formatPrice(product.price, lang)}
+                        </span>
+                      </p>
+                      <p className="text-sm text-muted-foreground line-through">
+                        {formatPrice(product.compareAt, lang)}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="shrink-0 text-right text-sm font-semibold text-primary">
+                      {lang === "ja" ? "近日発売" : "Coming soon"}
                     </p>
-                    <p className="text-sm text-muted-foreground line-through">
-                      {formatPrice(product.compareAt, lang)}
-                    </p>
-                  </div>
+                  )}
                 </div>
 
                 <div className="mt-5 flex items-center gap-2 text-base font-medium">

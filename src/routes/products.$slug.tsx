@@ -68,7 +68,8 @@ function ProductDetail() {
   const [active, setActive] = useState(0);
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
-  const amazonUrl = getAmazonProductUrl(product, market);
+  const isAvailable = product.available !== false;
+  const amazonUrl = isAvailable ? getAmazonProductUrl(product, market) : "";
   const isAmazonJapanUrl = amazonUrl.includes("amazon.co.jp");
   const walmartUrl =
     market === "US" && product.slug === "a6"
@@ -77,7 +78,9 @@ function ProductDetail() {
 
   const related = products.filter((p) => p.slug !== product.slug).slice(0, 4);
   const discount =
-    product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100);
+    isAvailable && product.compareAt > 0
+      ? (product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100))
+      : 0;
 
   return (
     <SiteLayout>
@@ -144,30 +147,40 @@ function ProductDetail() {
           </h1>
           <p className="text-muted-foreground text-lg">{product.tagline[lang]}</p>
 
-          <div className="flex items-center gap-2 text-sm">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star
-                  key={s}
-                  className={`w-4 h-4 ${s <= Math.round(product.rating) ? "fill-primary text-primary" : "text-muted"}`}
-                />
-              ))}
+          {isAvailable && (
+            <div className="flex items-center gap-2 text-sm">
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star
+                    key={s}
+                    className={`w-4 h-4 ${s <= Math.round(product.rating) ? "fill-primary text-primary" : "text-muted"}`}
+                  />
+                ))}
+              </div>
+              <span>{product.rating.toFixed(2)}</span>
+              <span className="text-muted-foreground">· {product.reviews} reviews</span>
+              {product.sold && (
+                <span className="text-muted-foreground">
+                  · {lang === "ja" ? `販売数 ${product.sold}` : `${product.sold} sold`}
+                </span>
+              )}
             </div>
-            <span>{product.rating.toFixed(2)}</span>
-            <span className="text-muted-foreground">· {product.reviews} reviews</span>
-            {product.sold && (
-              <span className="text-muted-foreground">
-                · {lang === "ja" ? `販売数 ${product.sold}` : `${product.sold} sold`}
-              </span>
-            )}
-          </div>
+          )}
 
-          <div className="flex items-baseline gap-3 pt-2">
-            <span className="text-3xl font-bold text-sale">{formatPrice(product.price, lang)}</span>
-            <span className="text-lg text-muted-foreground line-through">
-              {formatPrice(product.compareAt, lang)}
-            </span>
-          </div>
+          {isAvailable ? (
+            <div className="flex items-baseline gap-3 pt-2">
+              <span className="text-3xl font-bold text-sale">
+                {formatPrice(product.price, lang)}
+              </span>
+              <span className="text-lg text-muted-foreground line-through">
+                {formatPrice(product.compareAt, lang)}
+              </span>
+            </div>
+          ) : (
+            <div className="pt-2 text-2xl font-bold text-primary">
+              {lang === "ja" ? "近日発売" : "Coming soon"}
+            </div>
+          )}
 
           <p className="text-foreground/90 leading-relaxed">{product.description[lang]}</p>
 
@@ -176,7 +189,7 @@ function ProductDetail() {
               {product.highlights[lang].map((highlight) => (
                 <span
                   key={highlight}
-                  className="rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium"
+                  className="rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs font-medium"
                 >
                   {highlight}
                 </span>
@@ -184,90 +197,117 @@ function ProductDetail() {
             </div>
           )}
 
-          <div className="flex items-center gap-4 pt-4">
-            <span className="text-sm text-muted-foreground">{t.detail.quantity}</span>
-            <div className="flex items-center border border-border rounded-full">
-              <button
-                onClick={() => setQty(Math.max(1, qty - 1))}
-                className="w-10 h-10 flex items-center justify-center"
-              >
-                <Minus className="w-3 h-3" />
-              </button>
-              <span className="w-10 text-center">{qty}</span>
-              <button
-                onClick={() => setQty(qty + 1)}
-                className="w-10 h-10 flex items-center justify-center"
-              >
-                <Plus className="w-3 h-3" />
-              </button>
+          {isAvailable && (
+            <div className="flex items-center gap-4 pt-4">
+              <span className="text-sm text-muted-foreground">{t.detail.quantity}</span>
+              <div className="flex items-center border border-border rounded-full">
+                <button
+                  onClick={() => setQty(Math.max(1, qty - 1))}
+                  className="w-10 h-10 flex items-center justify-center"
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <span className="w-10 text-center">{qty}</span>
+                <button
+                  onClick={() => setQty(qty + 1)}
+                  className="w-10 h-10 flex items-center justify-center"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="space-y-3 pt-2">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => {
-                  addToCart(product, qty);
-                  setCartOpen(true);
-                }}
-                className="flex-1 px-5 py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:bg-primary hover:text-primary-foreground transition"
-              >
-                {t.detail.addToCart} — {formatPrice(product.price * qty, lang)}
-              </button>
-              <button
-                onClick={() => {
-                  addToCart(product, qty);
-                  setCartOpen(false);
-                  navigate({ to: "/checkout" });
-                }}
-                className="sm:w-40 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition"
-              >
-                {t.detail.buyNow}
-              </button>
-            </div>
-
-            <div className={`grid grid-cols-1 ${walmartUrl ? "sm:grid-cols-2" : ""} gap-3`}>
-              {amazonUrl && (
-                <a
-                  href={amazonUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
+            {isAvailable && (
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => {
+                    addToCart(product, qty);
+                    setCartOpen(true);
+                  }}
+                  className="flex-1 px-5 py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:bg-primary hover:text-primary-foreground transition"
                 >
-                  {isAmazonJapanUrl
-                    ? lang === "ja"
-                      ? "Amazon.co.jpで検索"
-                      : "Search on Amazon Japan"
-                    : lang === "ja"
-                      ? "Amazon.comで購入"
-                      : "Buy on Amazon"}
-                </a>
-              )}
-              {walmartUrl && (
-                <a
-                  href={walmartUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition text-center"
+                  {t.detail.addToCart} — {formatPrice(product.price * qty, lang)}
+                </button>
+                <button
+                  onClick={() => {
+                    addToCart(product, qty);
+                    setCartOpen(false);
+                    navigate({ to: "/checkout" });
+                  }}
+                  className="sm:w-40 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition"
                 >
-                  Buy at Walmart
-                </a>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3 pt-6 border-t border-border">
-            {[
-              { i: Truck, l: t.detail.shipping },
-              { i: RotateCcw, l: t.detail.returns },
-              { i: ShieldCheck, l: t.detail.warranty },
-            ].map(({ i: Icon, l }, idx) => (
-              <div key={idx} className="text-center space-y-2">
-                <Icon className="w-5 h-5 mx-auto text-primary" />
-                <p className="text-xs text-muted-foreground">{l}</p>
+                  {t.detail.buyNow}
+                </button>
               </div>
-            ))}
+            )}
+
+            {isAvailable && (
+              <div className={`grid grid-cols-1 ${walmartUrl ? "sm:grid-cols-2" : ""} gap-3`}>
+                {amazonUrl && (
+                  <a
+                    href={amazonUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="px-7 py-3.5 rounded-full bg-foreground text-background font-medium hover:bg-primary hover:text-primary-foreground transition text-center"
+                  >
+                    {isAmazonJapanUrl
+                      ? lang === "ja"
+                        ? "Amazon.co.jpで検索"
+                        : "Search on Amazon Japan"
+                      : lang === "ja"
+                        ? "Amazon.comで購入"
+                        : "Buy on Amazon"}
+                  </a>
+                )}
+                {walmartUrl && (
+                  <a
+                    href={walmartUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium hover:opacity-90 transition text-center"
+                  >
+                    Buy at Walmart
+                  </a>
+                )}
+              </div>
+            )}
+
+            {product.manualUrl && (
+              <a
+                href={product.manualUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-full border border-border px-7 py-3.5 text-center font-medium transition hover:border-primary hover:text-primary"
+              >
+                {lang === "ja" ? "ユーザーマニュアルをダウンロード" : "Download user manual"}
+              </a>
+            )}
           </div>
+
+          {isAvailable && (
+            <div className="grid grid-cols-3 gap-3 pt-6 border-t border-border">
+              {[
+                { i: Truck, l: t.detail.shipping },
+                { i: RotateCcw, l: t.detail.returns },
+                {
+                  i: ShieldCheck,
+                  l:
+                    product.slug === "p7-pro"
+                      ? lang === "ja"
+                        ? "1年間保証"
+                        : "1-year warranty"
+                      : t.detail.warranty,
+                },
+              ].map(({ i: Icon, l }, idx) => (
+                <div key={idx} className="text-center space-y-2">
+                  <Icon className="w-5 h-5 mx-auto text-primary" />
+                  <p className="text-xs text-muted-foreground">{l}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -623,13 +663,16 @@ function ProductDetail() {
         })()}
       </section>
 
-      <ExpertReviewsSection slug={product.slug} />
-
-      <CustomerReviewsSection
-        slug={product.slug}
-        productName={product.name}
-        rating={product.rating}
-      />
+      {isAvailable && (
+        <>
+          <ExpertReviewsSection slug={product.slug} />
+          <CustomerReviewsSection
+            slug={product.slug}
+            productName={product.name}
+            rating={product.rating}
+          />
+        </>
+      )}
 
       <section className="mx-auto max-w-7xl px-5 lg:px-10 py-16">
         <h2 className="text-3xl font-bold mb-8">{t.detail.relatedTitle}</h2>

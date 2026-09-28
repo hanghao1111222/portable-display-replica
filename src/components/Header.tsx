@@ -37,18 +37,18 @@ function getProductDetails(product: Product, lang: Lang): ProductDetail[] {
   const screenSize = product.specs.find((spec) => spec.label.en === "Screen size")?.value ?? "—";
   const resolution = product.specs.find((spec) => spec.label.en === "Resolution")?.value ?? "—";
   const weight = product.specs.find((spec) => spec.label.en === "Weight")?.value ?? "—";
+  const isSinglePanel = ["a6", "m5", "s13", "s15-plus"].includes(product.slug);
 
   return [
     {
       label: lang === "ja" ? "接続" : "Connection",
-      value:
-        product.slug === "a6"
-          ? lang === "ja"
-            ? "映像出力 1系統"
-            : "1 video path"
-          : lang === "ja"
-            ? "映像出力 2系統"
-            : "2 video paths",
+      value: isSinglePanel
+        ? lang === "ja"
+          ? "映像出力 1系統"
+          : "1 video path"
+        : lang === "ja"
+          ? "映像出力 2系統"
+          : "2 video paths",
       note: "USB-C / HDMI",
       icon: Cable,
     },
@@ -72,14 +72,13 @@ function getProductDetails(product: Product, lang: Lang): ProductDetail[] {
     },
     {
       label: lang === "ja" ? "セットアップ" : "Setup",
-      value:
-        product.slug === "a6"
-          ? lang === "ja"
-            ? "ドライバー不要*"
-            : "Driver-free*"
-          : lang === "ja"
-            ? "必要に応じてH5"
-            : "H5 if required",
+      value: isSinglePanel
+        ? lang === "ja"
+          ? "ドライバー不要*"
+          : "Driver-free*"
+        : lang === "ja"
+          ? "必要に応じてH5"
+          : "H5 if required",
       note: lang === "ja" ? "機種により異なります" : "Model dependent",
       icon: Download,
     },
@@ -127,8 +126,13 @@ export function Header() {
         };
 
   const megaProducts = useMemo(() => {
-    if (megaCategory === "dual") return products.filter((product) => product.slug === "a6");
-    if (megaCategory === "triple") return products.filter((product) => product.slug !== "a6");
+    const singleExtenders = new Set(["a6", "m5", "s13", "s15-plus"]);
+    if (megaCategory === "dual") {
+      return products.filter((product) => singleExtenders.has(product.slug));
+    }
+    if (megaCategory === "triple") {
+      return products.filter((product) => !singleExtenders.has(product.slug));
+    }
     return [];
   }, [megaCategory]);
 
@@ -435,7 +439,9 @@ export function Header() {
               ) : (
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                   {megaProducts.map((product) => {
-                    const discount = Math.round((1 - product.price / product.compareAt) * 100);
+                    const discount =
+                      product.discountPercent ??
+                      Math.round((1 - product.price / product.compareAt) * 100);
                     const details = getProductDetails(product, lang);
                     return (
                       <Link

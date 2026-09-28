@@ -11,8 +11,11 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
   const { t, lang } = useLang();
   const { addToCart, setCartOpen } = useCart();
   const [hover, setHover] = useState(false);
+  const isAvailable = product.available !== false;
   const discount =
-    product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100);
+    isAvailable && product.compareAt > 0
+      ? (product.discountPercent ?? Math.round((1 - product.price / product.compareAt) * 100))
+      : 0;
 
   return (
     <motion.div
@@ -65,39 +68,57 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
           <h3 className="font-display font-semibold text-lg group-hover:text-primary transition">
             {product.name}
           </h3>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star
-                  key={s}
-                  className={`w-3.5 h-3.5 ${s <= Math.round(product.rating) ? "fill-primary text-primary" : "text-muted"}`}
-                />
-              ))}
-            </div>
-            <span>
-              {product.rating.toFixed(2)} · ({product.reviews})
-            </span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-semibold text-sale">
-              {formatPrice(product.price, lang)}
-            </span>
-            <span className="text-sm text-muted-foreground line-through">
-              {formatPrice(product.compareAt, lang)}
-            </span>
-          </div>
+          {isAvailable ? (
+            <>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      className={`w-3.5 h-3.5 ${s <= Math.round(product.rating) ? "fill-primary text-primary" : "text-muted"}`}
+                    />
+                  ))}
+                </div>
+                <span>
+                  {product.rating.toFixed(2)} · ({product.reviews})
+                </span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-semibold text-sale">
+                  {formatPrice(product.price, lang)}
+                </span>
+                <span className="text-sm text-muted-foreground line-through">
+                  {formatPrice(product.compareAt, lang)}
+                </span>
+              </div>
+            </>
+          ) : (
+            <p className="text-lg font-semibold text-primary">
+              {lang === "ja" ? "近日発売" : "Coming soon"}
+            </p>
+          )}
         </div>
       </Link>
-      <button
-        onClick={() => {
-          addToCart(product, 1);
-          setCartOpen(true);
-          toast.success(t.grid.added, { description: product.name });
-        }}
-        className="mt-4 w-full px-5 py-3 rounded-full border border-border hover:border-primary text-sm font-medium transition"
-      >
-        {t.grid.addToCart}
-      </button>
+      {isAvailable ? (
+        <button
+          onClick={() => {
+            addToCart(product, 1);
+            setCartOpen(true);
+            toast.success(t.grid.added, { description: product.name });
+          }}
+          className="mt-4 w-full px-5 py-3 rounded-full border border-border hover:border-primary text-sm font-medium transition"
+        >
+          {t.grid.addToCart}
+        </button>
+      ) : (
+        <Link
+          to="/products/$slug"
+          params={{ slug: product.slug }}
+          className="mt-4 block w-full rounded-full border border-border px-5 py-3 text-center text-sm font-medium transition hover:border-primary hover:text-primary"
+        >
+          {lang === "ja" ? "商品を見る" : "View product"}
+        </Link>
+      )}
     </motion.div>
   );
 }
